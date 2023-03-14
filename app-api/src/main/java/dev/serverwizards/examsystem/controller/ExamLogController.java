@@ -37,7 +37,7 @@ public class ExamLogController {
 
     @PostMapping("")
     public ExamLogsDto addExamLog(@RequestBody ExamLogsDto examLog) {
-           examLog.setSubmittedDate(LocalDate.parse("2023-02-28"));
+           examLog.setSubmittedDate(LocalDate.parse("2023-03-07"));
 //           examLog.getExam().setYear("2023");
 //           examLog.getExam().setDay("2023-02-28");
           return service.save(examLog);

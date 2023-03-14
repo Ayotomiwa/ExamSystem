@@ -45,7 +45,6 @@ public class ExamLogServiceImpl implements ExamLogService {
         Course course;
         Exam exam;
 
-
         if(courseRepo.existsByModuleCodeAndModuleName(moduleCode, moduleName)) {
             System.out.println("Course exists");
             course = courseRepo.findByModuleCodeAndModuleName(moduleCode, moduleName);
