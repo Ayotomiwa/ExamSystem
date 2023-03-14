@@ -1,0 +1,92 @@
+*{
+    margin: 0;
+    padding: 0;
+    outline: none;
+    border: none;
+    text-decoration: none;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+body{
+    background: #dfe9f5;
+
+}
+nav{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    height: 100%;
+    left: 0;
+    background: #4C346F;
+    width: 85px;
+    overflow: hidden;
+    transition: width 0 2s linear;
+    box-shadow: 0 20px 35px rgba(0,0,0,0.1);
+    padding: 150px 0;
+}
+.logo{
+    padding: none;
+}
+#logo{
+    display: none;
+    width: 30px;
+    height: 20px;
+    transition: all 0.5s ease;
+    position: center;
+    top: 14px;
+    left: 1px;
+    text-align: center;
+}
+a{
+    position: center;
+    color: #fff;
+    font-size: 14px;
+    display: inline-table;
+    width: 3px;
+    padding: 10px;
+
+}
+.lsbu{
+    font-weight: bold;
+    color: black;
+
+}
+a:hover{
+    background: #7F63A3;
+    width: 20px;
+    border-radius: 20px;
+}
+.icon{
+    position: center;
+    max-width: 1px;
+    height: 6px;
+    top: 14px;
+    font-size: 20px;
+    text-align: center;
+}
+.nav-item{
+    position: relative;
+    top: 0;
+    margin-left: 100px;
+}
+
+
+.nav-item{
+    width: 31px;
+    display: block;
+    position: left;
+}
+.nav-item span{
+    font-size: 10px;
+    justify-content: center;
+    align-items: center;
+    vertical-align: top;
+}
+nav:hover{
+    width: 150px;
+    transition: all 1s ease;
+}
+nav:not(:hover){
+    width: 50px;
+    transition: all 0.7s ease;
+}

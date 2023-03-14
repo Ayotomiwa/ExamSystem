@@ -1,0 +1,57 @@
+.page{
+    background-color: #4C346F;
+}
+.heading{
+    color: white;
+    font-size: 50px;
+    font-family: "Space Mono", monospace;
+
+    border: 10px solid;
+    text-align: center;
+}
+
+.right{
+    height: 100vh;
+    width: 50%;
+    float: right;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.left{
+    color: white;
+    height: 100vh;
+    width: 50%;
+    float: left;
+    top: 0;
+}
+.page{
+    color:white;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+}
+
+video{
+    object-fit: cover;
+}
+.content{
+    background-color: transparent;
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.overlay{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    /*background-color: rgba(93, 0, 200, 0.2);*/
+    background-color: transparent;
+}
