@@ -44,7 +44,7 @@ function ExamLogs() {
                                 <td>{item.submittedDate}</td>
                                 <td>{item.studentsLogged}</td>
                                 <td>
-                                    <a href="#" className="exam-link">
+                                    <a href="examsystem-app/src/index#" className="exam-link">
                       <span role="img" aria-label="folder">
                         📁
                       </span>

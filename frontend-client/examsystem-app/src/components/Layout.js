@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {fas, faUserCircle} from "@fortawesome/free-solid-svg-icons";
 
-import "./style.css";
+import "../App.css";
 
 
 function Header() {
@@ -66,7 +66,7 @@ function Footer() {
                     <div className="col-md-6">
                         <div className="footer-right">
                             <p>
-                                Developed by <a href="#">ServerWzds.</a>
+                                Developed by <a href="examsystem-app/src#">ServerWzds.</a>
                             </p>
                         </div>
                     </div>

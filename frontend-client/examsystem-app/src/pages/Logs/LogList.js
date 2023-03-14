@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {Link, useParams} from "react-router-dom";
-import TablePlatform from "./TablePlatform";
+import TablePlatform from "../../components/TablePlatform";
 import {Button, Table} from "react-bootstrap";
 import {TableCell, TableContainer, TableHead, TableRow} from "@material-ui/core";
 import {Sort} from "@material-ui/icons";

@@ -5,12 +5,12 @@ import 'popper.js/dist/popper.min.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'jquery/dist/jquery.min.js';
 import 'popper.js/dist/popper.min.js';
-import ExamList from "./ExamList";
-import ExamLogs from "./ExamLogs";
-import Navbar from "./Layout";
-import Layout from "./Layout";
-import LogList from "./LogList";
-import TablePlatform from "./TablePlatform";
+import ExamList from "./pages/Logs/ExamList";
+import ExamLogs from "./pages/Logs/ExamLogs";
+import Navbar from "./components/Layout";
+import Layout from "./components/Layout";
+import LogList from "./pages/Logs/LogList";
+import TablePlatform from "./components/TablePlatform";
 
 
 function App() {

@@ -1,6 +1,6 @@
 import React from "react";
-import {Navbar, Nav, Breadcrumb, BreadcrumbItem, Card, Table, Button} from "react-bootstrap";
-import "./style.css";
+import {Breadcrumb, BreadcrumbItem, Card} from "react-bootstrap";
+import "../App.css";
 
 
 

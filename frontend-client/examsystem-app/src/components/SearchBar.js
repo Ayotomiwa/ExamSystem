@@ -5,9 +5,7 @@ import { Search } from "@material-ui/icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { Input } from "@material-ui/core";
-import "./style.css";
-import ExamList from "./ExamList";
-import {hover} from "@testing-library/user-event/dist/hover";
+import "../App.css";
 
 
 
