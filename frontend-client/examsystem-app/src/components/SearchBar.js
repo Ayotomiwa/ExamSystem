@@ -33,6 +33,7 @@ const SearchBar = ({onSearch,onChange}) => {
 
 
     function handleSearch(event) {
+        console.log("searching");
         event.preventDefault();
         // setSearchTerm(event.target.value);
         onSearch(searchTerm);

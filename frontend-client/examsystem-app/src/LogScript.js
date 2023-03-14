@@ -46,29 +46,6 @@ headers.forEach(header => {
     });
 });
 
-loadMoreExamBtn.addEventListener('click', (event) => {
-    event.preventDefault();
-    isLoadingMore = true;
-    if (pageSize + 30 <= totalExams - 30) {
-        pageSize += 30;
-        currentPage++;
-    }
-    else if (pageSize === totalExams) {
-        loadMoreExamBtn.disable()
-        return;
-    }
-    else {
-        pageSize = totalExams;
-    }
-    getData(currentPage);
-});
-
-searchBtn.addEventListener('click', (event) => {
-    event.preventDefault();
-    isLoadingMore = false;
-    const searchTerm = searchInput.value;
-    getSearchData(searchTerm);
-});
 
 function getSearchData(searchTerm, column = "", sortState = "ASC", pageNumber = 0, pageSize = 30) {
     fetch(`http://localhost:8080/api/exams/search?query=${searchTerm}&sortBy=${column}&sort=${sortState}&page=${pageNumber}&size=${pageSize}`)
@@ -93,7 +70,6 @@ function getData(pageNumber, pageSize = 30) {
         })
         .catch(error => console.error(error))
         .finally(() => {
-
         });
 }
 

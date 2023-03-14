@@ -15,74 +15,135 @@ const ExamList = () => {
     const [page, setPage] = useState(0);
     const [numberOfExams, setNumberOfExams] = useState(0);
     const[totalExams, setTotalExams] = useState(0);
+    const [sortColumn, setSortColumn] = useState("examDay");
+    const [sortState, setSortState] = useState("DESC");
     const mounted = useRef(false);
+    const basicExamsUrl = "http://localhost:8080/api/exams";
+    const fetchExamsUrl= `size=30&page=${page}&sortBy=${sortColumn}&sort=${sortState}`;
+    const searchExamsUrl= basicExamsUrl + `/search?query=${searchTerm}` ;
 
 
     useEffect(() => {
-        console.log("IN Fetch Examsssssssssss");
-        const fetchExams = () => {
-            fetch(`http://localhost:8080/api/exams?size=30&page=${page}`)
-                .then(response => response.json())
-                .then(data => {
-                    setTotalExams(data.totalElements);
-                    setNumberOfExams(numberOfExams + data.numberOfElements)
-                    setExams(prevState => prevState.concat(data.content));
-                    // populateExamTable(data.content);
-                })
-                .catch(error => console.error(error));
-        };
-        if(searchOn===false || searchTerm === ""){
-            if (page === 0) {
-                setExams([]);
-            }
-            console.log("Fetching Examssssssssssssssssss");
-            fetchExams();
+        if (searchOn === false || searchTerm === "") {
+            console.log("fetching examssssss")
+            fetchExamsData();
         }
-
-    }, [page, searchOn === false]);
+    }, [page, searchOn === false, sortColumn, sortState]);
 
     useEffect(() => {
-
-        console.log("IN Searching Examsssssssssss");
-        const searchExams = () => {
-            fetch(`http://localhost:8080/api/exams/search?query=${searchTerm}&size=30&page=${page}`)
-                .then(response => response.json())
-                .then(data => {
-                    setTotalExams(data.totalElements);
-                    setNumberOfExams(numberOfExams + data.numberOfElements)
-                    setExams(prevState => prevState.concat(data.content));
-                    // populateExamTable(data.content);
-                })
-                .catch(error => console.error(error));
-        };
         if (searchOn === true && searchTerm !== "") {
-            if (page === 0) {
+            console.log("searching exams")
+            if(page === 0){
                 setExams([]);
             }
-            searchExams();
-            console.log("Searching Examsssss");
+            console.log(searchExamsUrl + fetchExamsUrl);
+            fetchSearchData();
         }
+    }, [page, searchTerm, searchOn, sortColumn, sortState]);
 
-        }, [searchTerm, page, searchOn]);
 
+
+    // useEffect(() => {
+    //     console.log("IN Fetch Examsssssssssss");
+    //     const fetchExams = () => {
+    //         fetch(`http://localhost:8080/api/exams?size=30&page=${page}`)
+    //             .then(response => response.json())
+    //             .then(data => {
+    //               processExamData(data);
+    //             })
+    //             .catch(error => console.error(error));
+    //     };
+    //     if(searchOn===false || searchTerm === ""){
+    //         if (page === 0) {
+    //             setExams([]);
+    //         }
+    //         console.log("Fetching Examssssssssssssssssss");
+    //         fetchExams();
+    //     }
+    //
+    // }, [page, searchOn === false]);
+    //
+    // useEffect(() => {
+    //
+    //     console.log("IN Searching Examsssssssssss");
+    //     const searchExams = () => {
+    //         fetch(`http://localhost:8080/api/exams/search?query=${searchTerm}&size=30&page=${page}`)
+    //             .then(response => response.json())
+    //             .then(data => { processExamData(data);
+    //             })
+    //             .catch(error => console.error(error));
+    //     };
+    //     if (searchOn === true && searchTerm !== "") {
+    //         if (page === 0) {
+    //             setExams([]);
+    //         }
+    //         searchExams();
+    //         console.log("Searching Examsssss");
+    //     }
+    //
+    //     }, [searchTerm, page, searchOn]);
+    //
+
+    const handleSort = (column) => {
+        if (column === sortColumn) {
+            if (sortState === "ASC") {
+                setSortState("DESC");
+            } else {
+                setSortState("ASC");
+            }
+        } else {
+            setSortColumn(column);
+            setSortState("ASC");
+        }
+        resetExamList(searchOn);
+        setExams([]);
+    }
+
+    const fetchExamsData = () => {
+        fetch(basicExamsUrl + "?"+ fetchExamsUrl)
+            .then(response => response.json())
+            .then(data => {
+                processExamData(data);
+            })
+            .catch(error => console.error(error));
+    }
+
+    const fetchSearchData = () => {
+        fetch(searchExamsUrl +"&"+ fetchExamsUrl)
+            .then(response => response.json())
+            .then(data => {
+                processExamData(data);
+            })
+            .catch(error => console.error(error));
+    }
+
+    const processExamData = (data) => {
+        console.log("size-  "+ data.numberOfElements + " heyyyyyy");
+        setTotalExams(data.totalElements);
+        setNumberOfExams(numberOfExams + data.numberOfElements)
+        setExams(prevState => prevState.concat(data.content));
+    }
+
+    const resetExamList = (value) => {
+        setNumberOfExams(0);
+        setSearchOn(value);
+        setPage(0);
+    }
 
     const handleSearch = (searchTerm) => {
+        console.log(searchTerm + " Handlesearch " + searchOn);
         if(searchTerm === ""){
             return;
         }
-        setNumberOfExams(0);
-        setSearchOn(true);
+        console.log("search button clicked");
+        resetExamList(true);
         setSearchTerm(searchTerm);
-        setPage(0);
 
     };
 
     const handleInputChange= (searchTerm) => {
-        console.log(searchTerm + " " + searchOn);
         if (searchTerm === ""){
-            setPage(0);
-            setNumberOfExams(0);
-            setSearchOn(false);
+            resetExamList(false);
             console.log(searchOn);
         }
 
@@ -103,25 +164,29 @@ const ExamList = () => {
                                 <TableRow>
                                     <TableCell>
                                         Module Code
-                                        <Button variant="link" className="sort-btn" data-sort="course.moduleCode">
+                                        <Button variant="link" className="sort-btn" data-sort="course.moduleCode"
+                                                onClick={()=>handleSort("course.moduleCode")}>
                                             <Sort />
                                         </Button>
                                     </TableCell>
                                     <TableCell>
                                         Module Name
-                                        <Button variant="link"  className="sort-btn" data-sort="course.moduleName">
+                                        <Button variant="link"  className="sort-btn" data-sort="course.moduleName"
+                                        onClick={()=>handleSort("course.moduleName")}>
                                             <Sort  />
                                         </Button>
                                     </TableCell>
                                     <TableCell>
                                         Module Leader
-                                        <Button variant="link"  className="sort-btn" data-sort="course.moduleLeader">
+                                        <Button variant="link"  className="sort-btn" data-sort="course.moduleLeader"
+                                        onClick={()=>handleSort("course.moduleLeader")}>
                                             <Sort />
                                         </Button>
                                     </TableCell>
                                     <TableCell>
                                         Exam Date
-                                        <Button variant="link" className="sort-btn" data-sort="day">
+                                        <Button variant="link" className="sort-btn" data-sort="examDay"
+                                                onClick={()=>handleSort("examDay")}>
                                             <Sort/>
                                         </Button>
                                     </TableCell>
@@ -139,7 +204,7 @@ const ExamList = () => {
                                         moduleCode={exam.course.moduleCode}
                                         moduleName={exam.course.moduleName}
                                         moduleLeader={exam.course.moduleLeader}
-                                        day={exam.day}
+                                        day={exam.examDay}
                                     />
                                     );
                                 })}
