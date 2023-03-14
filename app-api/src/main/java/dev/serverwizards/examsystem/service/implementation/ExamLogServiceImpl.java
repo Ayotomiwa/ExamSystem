@@ -48,6 +48,7 @@ public class ExamLogServiceImpl implements ExamLogService {
         if(courseRepo.existsByModuleCodeAndModuleName(moduleCode, moduleName)) {
             System.out.println("Course exists");
             course = courseRepo.findByModuleCodeAndModuleName(moduleCode, moduleName);
+            System.out.println("DATE: " + examLogsDto.getSubmittedDate());
             exam = examRepo.findByExamDayAndCourse_courseId(examLogsDto.getSubmittedDate(),
                     course.getCourseId()).orElseGet(() -> {
                     System.out.println("Exam does not exist");
