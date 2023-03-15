@@ -2,13 +2,16 @@ import React, { useState, useEffect } from "react";
 import {Link, useParams} from "react-router-dom";
 import TablePlatform from "../../components/TablePlatform";
 import {Button, Table} from "react-bootstrap";
-import {TableCell, TableContainer, TableHead, TableRow} from "@material-ui/core";
-import {Sort} from "@material-ui/icons";
+import {TableBody, TableCell, TableContainer, TableHead, TableRow} from "@material-ui/core";
+import {Sort} from "@mui/icons-material";
+import CollapsibleModal from "./LogModal";
 
 
 const LogList = () => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const [logs, setLogs] = useState([]);
     const { examId, moduleName } = useParams();
+
     console.log(examId+" numberrrrrrrrrrrr " + moduleName);
 
     useEffect(() => {
@@ -66,31 +69,31 @@ const LogList = () => {
                     </TableCell>
                 </TableRow>
                 </TableHead>
-                <tbody className="table-group-divider" id="content_body">
+                <TableBody className="table-group-divider" id="content_body">
                 {logs.map((log, index) => (
-                    <tr key={log.id}>
-                        <td>{index + 1}</td>
-                        <td>{log.venue}</td>
-                        <td>{log.type}</td>
-                        <td>{log.submittedDate}</td>
-                        <td>{log.studentsLogged}</td>
-                        <td>
-                            <Link
-                                to={`/`}
+                    <TableRow key={log.id}>
+                        <TableCell>{index + 1}</TableCell>
+                        <TableCell>{log.venue}</TableCell>
+                        <TableCell>{log.type}</TableCell>
+                        <TableCell>{log.submittedDate}</TableCell>
+                        <TableCell>{log.studentsLogged}</TableCell>
+                        <TableCell>
+                            <Button
                                 className="exam-link"
                                 data-exam-id={examId}
                                 data-module-name={moduleName}
                                 data-log-id={log.id}
+                                onClick={() => setIsModalOpen(true)}
                             >
-                                <span style={{ fontSize: "5rem" }}>📁</span> Click to view
-                                Logs
-                            </Link>
-                        </td>
-                    </tr>
+                                <span style={{ fontSize: "5rem" }}>📁</span> Click to view Logs
+                            </Button>
+                        </TableCell>
+                    </TableRow>
                 ))}
-                </tbody>
+                </TableBody>
         </Table>
                 </TableContainer>
+            <CollapsibleModal open={isModalOpen} handleClose={() => setIsModalOpen(false)} />
         </TablePlatform>
     );
 };

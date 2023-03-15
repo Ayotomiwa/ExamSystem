@@ -1,6 +1,6 @@
 import { Breadcrumb, BreadcrumbItem, Card, Table, Button } from "react-bootstrap";
 import { TableContainer, TableHead, TableRow, TableCell, TableBody } from "@material-ui/core";
-import { Sort } from "@material-ui/icons";
+import { Sort } from "@mui/icons-material";
 import "../../App.css";
 import SearchBar from "../../components/SearchBar";
 import {useEffect, useRef, useState} from "react";

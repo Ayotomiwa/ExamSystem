@@ -1,7 +1,6 @@
-import {useRef, useState} from "react";
+import {useState} from "react";
 import { Card, Form, Button } from "react-bootstrap";
 import { makeStyles } from "@material-ui/core/styles";
-import { Search } from "@material-ui/icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { Input } from "@material-ui/core";

@@ -11,17 +11,20 @@ import Navbar from "./components/Layout";
 import Layout from "./components/Layout";
 import LogList from "./pages/Logs/LogList";
 import TablePlatform from "./components/TablePlatform";
+import LogModal from "./pages/Logs/LogModal";
+import {useState} from "react";
+import CollapsibleModal from "./pages/Logs/LogModal";
 
 
 function App() {
-  return (
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    return (
 
         <Router>
             <Layout>
                 <Routes>
                         <Route path="/"  element={<ExamList />} />
-                        <Route path="/logs/:examId/:moduleName" element={<LogList />} />
-                        <Route path="/timer" element={<ExamLogs />} />
+                        <Route path="/logs/:examId/:moduleName" element={<LogList/>} />
                 </Routes>
             </Layout>
         </Router>
