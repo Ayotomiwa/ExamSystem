@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import Form from './components/Cd_timer/Form';
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
-import Side_bar from './components/Cd_timer/Side_bar';
 import logo from './logo.png';
 
 dayjs.extend(duration);
@@ -28,8 +27,6 @@ function App() {
   return (
     <div className="App">
 
-      {/* eslint-disable-next-line react/jsx-pascal-case */}
-      <Side_bar />
       <Form /> 
     </div>
   );
