@@ -1,14 +1,10 @@
 package dev.serverwizards.examsystem.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import dev.serverwizards.examsystem.dto.CourseDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.NaturalId;
 
 
@@ -20,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "Course")
-public class Course {
+public class Module {
 
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,7 +30,7 @@ public class Course {
         
 
         @JsonIgnore
-        @OneToMany(mappedBy = "course", orphanRemoval = true, fetch = FetchType.LAZY)
+        @OneToMany(mappedBy = "module", orphanRemoval = true, fetch = FetchType.LAZY)
         private List<Exam> exams = new ArrayList<>();
 
 }

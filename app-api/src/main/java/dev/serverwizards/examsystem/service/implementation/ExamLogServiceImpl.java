@@ -1,13 +1,13 @@
 package dev.serverwizards.examsystem.service.implementation;
 
 import dev.serverwizards.examsystem.dto.ExamLogsDto;
-import dev.serverwizards.examsystem.dto.Mapper.CourseMapper;
+import dev.serverwizards.examsystem.dto.Mapper.ModuleMapper;
 import dev.serverwizards.examsystem.dto.Mapper.ExamLogMapper;
 import dev.serverwizards.examsystem.dto.Mapper.ExamMapper;
-import dev.serverwizards.examsystem.model.Course;
+import dev.serverwizards.examsystem.model.Module;
 import dev.serverwizards.examsystem.model.Exam;
 import dev.serverwizards.examsystem.model.ExamLogs;
-import dev.serverwizards.examsystem.repository.CourseRepository;
+import dev.serverwizards.examsystem.repository.ModuleRepository;
 import dev.serverwizards.examsystem.repository.ExamLogRepository;
 import dev.serverwizards.examsystem.repository.ExamRepository;
 import dev.serverwizards.examsystem.service.ExamLogService;
@@ -29,10 +29,10 @@ public class ExamLogServiceImpl implements ExamLogService {
 
     private final ExamLogRepository logRepo;
     private final ExamRepository examRepo;
-    private final CourseRepository courseRepo;
+    private final ModuleRepository moduleRepo;
     private final ExamLogMapper examLogMapper;
     private final ExamMapper examMapper;
-    private final CourseMapper courseMapper;
+    private final ModuleMapper moduleMapper;
 
     @Override
     public ExamLogsDto save(ExamLogsDto examLogsDto) {
@@ -42,32 +42,32 @@ public class ExamLogServiceImpl implements ExamLogService {
         String moduleName = examLogsDto.getModuleName();
         ExamLogs examLogs = examLogMapper.toEntity(examLogsDto);
 
-        Course course;
+        Module module;
         Exam exam;
 
-        if(courseRepo.existsByModuleCodeAndModuleName(moduleCode, moduleName)) {
+        if(moduleRepo.existsByModuleCodeAndModuleName(moduleCode, moduleName)) {
             System.out.println("Course exists");
-            course = courseRepo.findByModuleCodeAndModuleName(moduleCode, moduleName);
+            module = moduleRepo.findByModuleCodeAndModuleName(moduleCode, moduleName);
             System.out.println("DATE: " + examLogsDto.getSubmittedDate());
-            exam = examRepo.findByExamDayAndCourse_courseId(examLogsDto.getSubmittedDate(),
-                    course.getCourseId()).orElseGet(() -> {
+            exam = examRepo.findByExamDayAndModule_courseId(examLogsDto.getSubmittedDate(),
+                    module.getCourseId()).orElseGet(() -> {
                     System.out.println("Exam does not exist");
                         Exam newExam = new Exam();
-                        newExam.setCourse(course);
+                        newExam.setModule(module);
                         newExam.setExamDay(examLogsDto.getSubmittedDate());
                         return examRepo.save(newExam);
                     });
         }
         else{
             System.out.println("Course does not exist");
-            course = new Course();
-            course.setModuleCode(moduleCode);
-            course.setModuleName(moduleName);
-            courseRepo.save(course);
+            module = new Module();
+            module.setModuleCode(moduleCode);
+            module.setModuleName(moduleName);
+            moduleRepo.save(module);
             exam = new Exam();
-            exam.setCourse(course);
+            exam.setModule(module);
             exam.setExamDay(examLogsDto.getSubmittedDate());
-            exam.setCourse(course);
+            exam.setModule(module);
             examRepo.save(exam);
         }
 

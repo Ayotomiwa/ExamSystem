@@ -32,7 +32,7 @@ import java.util.List;
 
     @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name = "courseId", referencedColumnName = "courseId")
-    private Course course;
+    private Module module;
 
 
     @OneToMany(mappedBy = "exam", orphanRemoval = true, fetch = FetchType.LAZY)

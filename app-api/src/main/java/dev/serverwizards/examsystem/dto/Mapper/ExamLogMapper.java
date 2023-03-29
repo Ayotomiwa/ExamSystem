@@ -15,8 +15,8 @@ public interface ExamLogMapper {
 
 //    @Mapping(source = "exam.id", target = "exam.examId")
     @Mapping(target = "exam.day", qualifiedByName = "changeDateFormatToString")
-    @Mapping(source = "exam.course.moduleCode", target = "moduleCode")
-    @Mapping(source = "exam.course.moduleName", target = "moduleName")
+    @Mapping(source = "exam.module.moduleCode", target = "moduleCode")
+    @Mapping(source = "exam.module.moduleName", target = "moduleName")
     @Mapping( target = "exam", ignore = true)
     ExamLogsDto toDto(ExamLogs examLog);
 

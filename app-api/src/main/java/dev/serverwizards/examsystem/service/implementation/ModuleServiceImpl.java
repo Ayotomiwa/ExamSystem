@@ -1,11 +1,11 @@
 package dev.serverwizards.examsystem.service.implementation;
 
 
-import dev.serverwizards.examsystem.dto.CourseDto;
-import dev.serverwizards.examsystem.dto.Mapper.CourseMapper;
-import dev.serverwizards.examsystem.model.Course;
-import dev.serverwizards.examsystem.repository.CourseRepository;
-import dev.serverwizards.examsystem.service.CourseService;
+import dev.serverwizards.examsystem.dto.ModuleDto;
+import dev.serverwizards.examsystem.dto.Mapper.ModuleMapper;
+import dev.serverwizards.examsystem.model.Module;
+import dev.serverwizards.examsystem.repository.ModuleRepository;
+import dev.serverwizards.examsystem.service.ModuleService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,23 +18,23 @@ import java.util.stream.Collectors;
 @Transactional
 @Slf4j
 @Service
-public class CourseServiceImpl implements CourseService {
+public class ModuleServiceImpl implements ModuleService {
 
-    private final CourseRepository repo;
-    private final CourseMapper mapper;
+    private final ModuleRepository repo;
+    private final ModuleMapper mapper;
 
 
     @Override
-    public CourseDto save(CourseDto courseDto) {
-        Course course = mapper.toEntity(courseDto);
-        course = this.repo.save(course);
-        return mapper.toDto(course);
+    public ModuleDto save(ModuleDto moduleDto) {
+        Module module = mapper.toEntity(moduleDto);
+        module = this.repo.save(module);
+        return mapper.toDto(module);
     }
 
     @Override
-    public List<CourseDto> findAllCourses() {
-        List<Course> courses = this.repo.findAll();
-        return courses.stream().map(mapper::toDto).collect(Collectors.toList());
+    public List<ModuleDto> findAllCourses() {
+        List<Module> cours = this.repo.findAll();
+        return cours.stream().map(mapper::toDto).collect(Collectors.toList());
     }
 
     @Override
@@ -47,9 +47,9 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public CourseDto findById(long id) {
-        Course course = this.repo.getReferenceById(id);
-        return mapper.toDto(course);
+    public ModuleDto findById(long id) {
+        Module module = this.repo.getReferenceById(id);
+        return mapper.toDto(module);
     }
 
     @Override

@@ -1,7 +1,6 @@
 package dev.serverwizards.examsystem.service;
 
 import dev.serverwizards.examsystem.dto.ExamDto;
-import dev.serverwizards.examsystem.model.Exam;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
@@ -21,4 +20,6 @@ public interface ExamService {
     Page<ExamDto> getExamBySearchAndPage(String name, PageRequest page);
 
     Long findExamId(ExamDto examDto);
+
+    List<ExamDto> getDailyExam();
 }

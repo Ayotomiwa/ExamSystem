@@ -1,32 +1,32 @@
 package dev.serverwizards.examsystem.controller;
 
-import dev.serverwizards.examsystem.model.Course;
+import dev.serverwizards.examsystem.model.Module;
 import dev.serverwizards.examsystem.model.Exam;
-import dev.serverwizards.examsystem.repository.CourseRepository;
+import dev.serverwizards.examsystem.repository.ModuleRepository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/modules")
-public class CourseController {
+public class ModuleController {
 
 
-    private final CourseRepository repository;
+    private final ModuleRepository repository;
 
-    public CourseController(CourseRepository repository) {
+    public ModuleController(ModuleRepository repository) {
         this.repository = repository;
     }
 
     @GetMapping("")
-    public List<Course> exams() {
+    public List<Module> exams() {
         return repository.findAll();
     }
 
     @PostMapping("/add")
-    public Course addModule(@RequestBody Course course) {
-        course.setModuleCode(course.getModuleCode());
-        return repository.save(course);
+    public Module addModule(@RequestBody Module module) {
+        module.setModuleCode(module.getModuleCode());
+        return repository.save(module);
     }
 
 //    @GetMapping ("/module/{id}")

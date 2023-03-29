@@ -4,7 +4,6 @@ import dev.serverwizards.examsystem.dto.ExamDto;
 import dev.serverwizards.examsystem.model.types.ExamType;
 import dev.serverwizards.examsystem.model.Exam;
 import org.mapstruct.*;
-import org.springframework.format.datetime.DateFormatter;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -12,7 +11,7 @@ import java.time.format.DateTimeFormatter;
 
 
 @Component
-@Mapper(componentModel = "spring", uses = { CourseMapper.class, ExamLogMapper.class})
+@Mapper(componentModel = "spring", uses = { ModuleMapper.class, ExamLogMapper.class})
 public interface ExamMapper {
 
 

@@ -40,11 +40,10 @@ public class ExamController {
        return service.save(exam);
     }
 
-//
-//    @GetMapping("/search")
-//    public List<ExamDto> searchExams(@RequestParam(required = false) String query) {
-//        return service.getExamBySearch(query);
-//    }
+    @GetMapping("/daily")
+    public List<ExamDto> getDailyExam() {
+        return service.getDailyExam();
+    }
 
     @GetMapping("/search")
     public Page<ExamDto> searchExams(

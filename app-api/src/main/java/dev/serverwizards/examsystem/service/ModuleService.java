@@ -1,19 +1,18 @@
 package dev.serverwizards.examsystem.service;
 
 
-import dev.serverwizards.examsystem.dto.CourseDto;
-import dev.serverwizards.examsystem.model.Course;
+import dev.serverwizards.examsystem.dto.ModuleDto;
 
 import java.util.List;
 
-public interface CourseService {
+public interface ModuleService {
 
 
-    CourseDto save(CourseDto courseDto);
+    ModuleDto save(ModuleDto moduleDto);
 
-    List<CourseDto> findAllCourses();
+    List<ModuleDto> findAllCourses();
     Boolean delete(long id);
-    CourseDto findById(long id);
+    ModuleDto findById(long id);
 
     Long findByModuleCode(String moduleCode);
 }

@@ -18,5 +18,5 @@ public class ExamDto {
     private String year;
     private String type;
 //    private List<ExamLogsDto> examLogs;
-    private CourseDto course;
+    private ModuleDto module;
 }

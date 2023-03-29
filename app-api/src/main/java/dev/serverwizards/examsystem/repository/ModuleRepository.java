@@ -4,18 +4,16 @@
 package dev.serverwizards.examsystem.repository;
 
 
-import dev.serverwizards.examsystem.model.Course;
+import dev.serverwizards.examsystem.model.Module;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.Optional;
-
-public interface CourseRepository extends JpaRepository<Course, Long> {
+public interface ModuleRepository extends JpaRepository<Module, Long> {
 
     Long findByModuleCode(String moduleCode);
 
 //    Optional<Course> findByModuleCodeAndModuleName(String moduleCode, String moduleName);
 
-    Course findByModuleCodeAndModuleName(String moduleCode, String moduleName);
+    Module findByModuleCodeAndModuleName(String moduleCode, String moduleName);
 
     boolean existsByModuleCodeAndModuleName(String moduleCode, String moduleName);
 }

@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -86,6 +87,13 @@ public class ExamServiceImpl implements ExamService {
         Example<Exam> example = Example.of(exam);
         Optional<Exam> result = repo.findOne(example);
         return result.map(Exam::getId).orElse(null);
+    }
+
+    @Override
+    public List<ExamDto> getDailyExam() {
+        LocalDate today = LocalDate.parse("2023-03-07");
+        List<Exam> exams = repo.findByExamDay(today);
+        return exams.stream().map(examMapper::toDto).collect(Collectors.toList());
     }
 }
 

@@ -1,0 +1,191 @@
+@startuml
+class dev.serverwizards.examsystem.model.Module {
+- Long courseId
+- String moduleCode
+- String moduleName
+- String moduleLeader
+- int registeredStudents
+- List<Exam> exams
+}
+interface dev.serverwizards.examsystem.repository.ModuleRepository {
+~ Long findByModuleCode(String)
+~ Module findByModuleCodeAndModuleName(String,String)
+~ boolean existsByModuleCodeAndModuleName(String,String)
+}
+interface dev.serverwizards.examsystem.repository.ExamRepository {
+~ Long getOneIdByExam(ExamType,String,LocalDate)
+~ List<Exam> findByCourseFieldsContainingIgnoreCase(String)
+~ Optional<Exam> findByTypeAndYearAndExamDay(ExamType,String,LocalDate)
+~ Page<Exam> findByCourseFieldsContainingIgnoreCase(String,PageRequest)
+~ Optional<Exam> findByExamDayAndModule_courseId(LocalDate,long)
+~ List<Exam> findByExamDay(LocalDate)
+}
+class dev.serverwizards.examsystem.dto.ExamLogsDto {
+- Long id
+- String venue
+- String message
+- LocalTime startTime
+- LocalTime endTime
+- LocalDate submittedDate
+- int studentsLogged
+- String moduleName
+- String moduleCode
+}
+enum dev.serverwizards.examsystem.model.types.ExamType {
++  RESIT
++  NORMAL
+- String type
++ String getType()
+}
+interface dev.serverwizards.examsystem.service.ModuleService {
+~ ModuleDto save(ModuleDto)
+~ List<ModuleDto> findAllCourses()
+~ Boolean delete(long)
+~ ModuleDto findById(long)
+~ Long findByModuleCode(String)
+}
+class dev.serverwizards.examsystem.controller.ExamLogController {
+- ExamLogServiceImpl service
++ Page<ExamLogsDto> examLogs(Optional<Integer>,Optional<String>,Optional<Long>,Long)
++ ExamLogsDto addExamLog(ExamLogsDto)
++ ExamLogsDto findExamLogById(long)
++ Boolean deleteExamLog(long)
+}
+interface dev.serverwizards.examsystem.service.ExamLogService {
+~ ExamLogsDto save(ExamLogsDto)
+~ Page<ExamLogsDto> listExamLogsByExamId(PageRequest,long)
+~ Boolean delete(long)
+~ ExamLogsDto getById(long)
+~ List<ExamLogsDto> findALL()
+}
+class dev.serverwizards.examsystem.config.CorsConfiguration {
++ void addCorsMappings(CorsRegistry)
+}
+class dev.serverwizards.examsystem.dto.ExamDto {
+- Long examId
+- String examDay
+- LocalTime startTime
+- LocalTime endTime
+- String year
+- String type
+- ModuleDto module
+}
+class dev.serverwizards.examsystem.service.implementation.ModuleServiceImpl {
+- ModuleRepository repo
+- ModuleMapper mapper
++ ModuleDto save(ModuleDto)
++ List<ModuleDto> findAllCourses()
++ Boolean delete(long)
++ ModuleDto findById(long)
++ Long findByModuleCode(String)
+}
+interface dev.serverwizards.examsystem.dto.Mapper.ExamMapper {
+~ ExamType mapStringToExamType(String)
+~ String mapExamTypeToString(ExamType)
+~ String changeDateFormat(LocalDate)
+~ LocalDate changeStringFormatToDate(String)
+~ ExamDto toDto(Exam)
+~ Exam toEntity(ExamDto)
+}
+interface dev.serverwizards.examsystem.repository.ExamLogRepository {
+~ Page<ExamLogs> findByExam_id(PageRequest,long)
+}
+class dev.serverwizards.examsystem.service.implementation.ExamLogServiceImpl {
+- ExamLogRepository logRepo
+- ExamRepository examRepo
+- ModuleRepository moduleRepo
+- ExamLogMapper examLogMapper
+- ExamMapper examMapper
+- ModuleMapper moduleMapper
++ ExamLogsDto save(ExamLogsDto)
++ Page<ExamLogsDto> listExamLogsByExamId(PageRequest,long)
++ ExamLogsDto getById(long)
++ List<ExamLogsDto> findALL()
++ Boolean delete(long)
+}
+interface dev.serverwizards.examsystem.dto.Mapper.ModuleMapper {
+~ ModuleDto toDto(Module)
+~ Module toEntity(ModuleDto)
+}
+class dev.serverwizards.examsystem.dto.ModuleDto {
+- Long courseId
+- String moduleName
+- String moduleCode
+- Long registeredStudents
+- String moduleLeader
+- List<ExamDto> exams
+}
+interface dev.serverwizards.examsystem.service.ExamService {
+~ ExamDto save(ExamDto)
+~ Page<ExamDto> listExams(PageRequest)
+~ Boolean delete(long)
+~ ExamDto getById(Long)
+~ List<ExamDto> getExamBySearch(String)
+~ Page<ExamDto> getExamBySearchAndPage(String,PageRequest)
+~ Long findExamId(ExamDto)
+~ List<ExamDto> getDailyExam()
+}
+class dev.serverwizards.examsystem.model.Exam {
+- Long id
+- LocalDate examDay
+- LocalTime startTime
+- LocalTime endTime
+- String year
+- ExamType type
+- Module module
+- List<ExamLogs> examLogs
+}
+class dev.serverwizards.examsystem.model.ExamLogs {
+- Long id
+- String venue
+- String message
+- LocalTime startTime
+- LocalTime endTime
+- LocalDate submittedDate
+- Long studentsLogged
+- Exam exam
+}
+class dev.serverwizards.examsystem.ExamSystemApplication {
++ {static} void main(String[])
+}
+class dev.serverwizards.examsystem.controller.ModuleController {
+- ModuleRepository repository
++ List<Module> exams()
++ Module addModule(Module)
++ Exam deleteExam(long)
+}
+interface dev.serverwizards.examsystem.dto.Mapper.ExamLogMapper {
+~ ExamLogsDto toDto(ExamLogs)
+~ ExamLogs toEntity(ExamLogsDto)
+}
+class dev.serverwizards.examsystem.controller.ExamController {
+- ExamServiceImpl service
++ Page<ExamDto> exam(Optional<Integer>,Optional<String>,Optional<String>,Optional<Long>)
++ ExamDto addExam(ExamDto)
++ List<ExamDto> getDailyExam()
++ Page<ExamDto> searchExams(Optional<Integer>,Optional<String>,Optional<String>,Optional<Long>,String)
++ ExamDto findExamById(Long)
++ Boolean deleteExam(long)
+}
+class dev.serverwizards.examsystem.service.implementation.ExamServiceImpl {
+- ExamRepository repo
+- ExamMapper examMapper
++ ExamDto save(ExamDto)
++ Page<ExamDto> listExams(PageRequest)
++ Boolean delete(long)
++ ExamDto getById(Long)
++ List<ExamDto> getExamBySearch(String)
++ Page<ExamDto> getExamBySearchAndPage(String,PageRequest)
++ Long findExamId(ExamDto)
++ List<ExamDto> getDailyExam()
+}
+
+
+org.springframework.data.jpa.repository.JpaRepository <|-- dev.serverwizards.examsystem.repository.ModuleRepository
+org.springframework.data.jpa.repository.JpaRepository <|-- dev.serverwizards.examsystem.repository.ExamRepository
+org.springframework.web.servlet.config.annotation.WebMvcConfigurer <|.. dev.serverwizards.examsystem.config.CorsConfiguration
+dev.serverwizards.examsystem.service.ModuleService <|.. dev.serverwizards.examsystem.service.implementation.ModuleServiceImpl
+org.springframework.data.jpa.repository.JpaRepository <|-- dev.serverwizards.examsystem.repository.ExamLogRepository
+dev.serverwizards.examsystem.service.ExamLogService <|.. dev.serverwizards.examsystem.service.implementation.ExamLogServiceImpl
+dev.serverwizards.examsystem.service.ExamService <|.. dev.serverwizards.examsystem.service.implementation.ExamServiceImpl
+@enduml
