@@ -33,7 +33,7 @@ public class Course {
         private int registeredStudents;
         
 
-
+        @JsonIgnore
         @OneToMany(mappedBy = "course", orphanRemoval = true, fetch = FetchType.LAZY)
         private List<Exam> exams = new ArrayList<>();
 

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/module")
+@RequestMapping("/api/modules")
 public class CourseController {
 
 
@@ -18,8 +18,8 @@ public class CourseController {
         this.repository = repository;
     }
 
-    @GetMapping("/{limit}")
-    public List<Course> exams(@PathVariable int limit) {
+    @GetMapping("")
+    public List<Course> exams() {
         return repository.findAll();
     }
 
