@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -14,6 +15,7 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
+@PreAuthorize("hasRole('ADMIN') or hasRole('AUTH_USER')")
 @RequestMapping("/api/exam-logs")
 public class ExamLogController {
 
@@ -35,6 +37,7 @@ public class ExamLogController {
     }
 
 
+
     @PostMapping("")
     public ExamLogsDto addExamLog(@RequestBody ExamLogsDto examLog) {
            examLog.setSubmittedDate(LocalDate.parse("2023-03-07"));
@@ -43,10 +46,12 @@ public class ExamLogController {
           return service.save(examLog);
     }
 
+
     @GetMapping("/log/{id}")
     public ExamLogsDto findExamLogById(@PathVariable long id) {
         return service.getById(id);
     }
+
 
     @DeleteMapping("/exam-logs/{id}")
     public Boolean deleteExamLog(@PathVariable long id){

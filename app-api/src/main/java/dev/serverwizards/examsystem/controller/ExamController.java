@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public class ExamController {
 
     private final ExamServiceImpl service;
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('AUTH_USER')")
     @GetMapping("")
     public Page<ExamDto> exam(
             @RequestParam Optional<Integer> page,
@@ -35,6 +37,7 @@ public class ExamController {
                         size.orElse(30L).intValue(), Sort.Direction.valueOf(sort.orElse("ASC")), sortBy.orElse("id")));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/create")
     public ExamDto addExam(@RequestBody ExamDto exam) {
        return service.save(exam);
@@ -45,6 +48,7 @@ public class ExamController {
         return service.getDailyExam();
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('AUTH_USER')")
     @GetMapping("/search")
     public Page<ExamDto> searchExams(
             @RequestParam Optional<Integer> page,
@@ -62,11 +66,13 @@ public class ExamController {
                         size.orElse(10L).intValue(), Sort.Direction.valueOf(sort.orElse("ASC")), sortBy.orElse("id")));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('AUTH_USER')")
     @GetMapping ("/exam/{id}")
     public ExamDto findExamById(@PathVariable Long id) {
         return service.getById(id);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/exam/{id}")
     public Boolean deleteExam(@PathVariable long id){
        return service.delete(id);

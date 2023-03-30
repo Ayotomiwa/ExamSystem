@@ -3,11 +3,13 @@ package dev.serverwizards.examsystem.controller;
 import dev.serverwizards.examsystem.model.Module;
 import dev.serverwizards.examsystem.model.Exam;
 import dev.serverwizards.examsystem.repository.ModuleRepository;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@PreAuthorize("hasRole('ADMIN')")
 @RequestMapping("/api/modules")
 public class ModuleController {
 
@@ -28,11 +30,6 @@ public class ModuleController {
         module.setModuleCode(module.getModuleCode());
         return repository.save(module);
     }
-
-//    @GetMapping ("/module/{id}")
-//    public Optional<Module> findExamById(@PathVariable String id) {
-//        return repository.findById(id);
-//    }
 
     @DeleteMapping("/{id}")
     public Exam deleteExam(@PathVariable long id){
