@@ -3,34 +3,33 @@ import { Navbar, Nav } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {fas, faUserCircle} from "@fortawesome/free-solid-svg-icons";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import Lsbu from "../assets/Lsbu.svg";
+import "./layout.css";
 
-import "../App.css";
 
-
+library.add(fas, faUserCircle);
 function Header() {
     return (
-        <Navbar// bg="dark"
-            expand="lg"
-        >
-            <Navbar.Brand as={Link} to="/">LSBU </Navbar.Brand>
-            <Navbar.Toggle aria-controls="navbar-nav"  />
-            <Navbar.Collapse id="navbar-nav" bg="dark">
-                <Nav className="mr-auto">
-                    <Nav.Link as={Link} to="/" >
+        <Navbar expand="lg" variant="dark">
+            <Navbar.Brand as={Link} to="/">
+                <img src={Lsbu} alt="LSBU Logo" />
+            </Navbar.Brand>
+            <Navbar.Toggle aria-controls="navbar-nav" />
+            <Navbar.Collapse id="navbar-nav">
+                <Nav className= "ms-3">
+                    <Nav.Link as={Link} to="/">
                         Home
                     </Nav.Link>
-                    <Nav.Link as={Link} to="/timer" >
+                    <Nav.Link as={Link} to="/new-exam">
                         Timer
                     </Nav.Link>
-                    <Nav.Link as={Link} to="/newexam">
+                    <Nav.Link as={Link} to="/exams">
                         Logs
                     </Nav.Link>
                 </Nav>
-                <Nav className="options ms-auto" >
-                    <Nav.Link href="#" >
-                        <span>Settings</span>
-                    </Nav.Link>
-                    <Nav.Link href="#" >
+                <Nav>
+                    <Nav.Link href="#">
                         <FontAwesomeIcon icon={faUserCircle} className="my-icon" />
                     </Nav.Link>
                 </Nav>
@@ -57,18 +56,17 @@ function Footer() {
     return (
         <footer className="footer">
             <div className="container-fluid">
-                <div className="row my-sm-0">
-                    <div className="col-md-6">
-                        <div className="footer-left">
-                            <p>LSBUex. © 2023</p>
-                        </div>
+                <div className="row justify-content-between align-items-center">
+                    <div className="col-md-6 text-center text-md-start">
+                        <p>LSBUex. © 2023</p>
                     </div>
-                    <div className="col-md-6">
-                        <div className="footer-right">
-                            <p>
-                                Developed by <a href="examsystem-app/src#">ServerWzds.</a>
-                            </p>
-                        </div>
+                    <div className="col-md-6 text-center text-md-end">
+                        <p>
+                            Developed by{" "}
+                            <a href="examsystem-app/src#" className="text-decoration-none">
+                                ServerWzds.
+                            </a>
+                        </p>
                     </div>
                 </div>
             </div>
@@ -76,9 +74,10 @@ function Footer() {
     );
 }
 
+
 function Layout(props) {
     return (
-        <div>
+        <div id="layout">
             <Header />
             <main className="flex-fill">{props.children}</main>
             <BackToTop />

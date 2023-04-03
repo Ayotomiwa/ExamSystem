@@ -1,5 +1,5 @@
 import { Breadcrumb, BreadcrumbItem, Card, Table, Button } from "react-bootstrap";
-import { TableContainer, TableHead, TableRow, TableCell, TableBody } from "@material-ui/core";
+import { TableContainer, TableHead, TableRow, TableCell, TableBody } from "@mui/material";
 import { Sort } from "@mui/icons-material";
 import "../../App.css";
 import SearchBar from "../../components/SearchBar";
@@ -42,47 +42,6 @@ const ExamList = () => {
     }, [page, searchTerm, searchOn, sortColumn, sortState]);
 
 
-
-    // useEffect(() => {
-    //     console.log("IN Fetch Examsssssssssss");
-    //     const fetchExams = () => {
-    //         fetch(`http://localhost:8080/api/exams?size=30&page=${page}`)
-    //             .then(response => response.json())
-    //             .then(data => {
-    //               processExamData(data);
-    //             })
-    //             .catch(error => console.error(error));
-    //     };
-    //     if(searchOn===false || searchTerm === ""){
-    //         if (page === 0) {
-    //             setExams([]);
-    //         }
-    //         console.log("Fetching Examssssssssssssssssss");
-    //         fetchExams();
-    //     }
-    //
-    // }, [page, searchOn === false]);
-    //
-    // useEffect(() => {
-    //
-    //     console.log("IN Searching Examsssssssssss");
-    //     const searchExams = () => {
-    //         fetch(`http://localhost:8080/api/exams/search?query=${searchTerm}&size=30&page=${page}`)
-    //             .then(response => response.json())
-    //             .then(data => { processExamData(data);
-    //             })
-    //             .catch(error => console.error(error));
-    //     };
-    //     if (searchOn === true && searchTerm !== "") {
-    //         if (page === 0) {
-    //             setExams([]);
-    //         }
-    //         searchExams();
-    //         console.log("Searching Examsssss");
-    //     }
-    //
-    //     }, [searchTerm, page, searchOn]);
-    //
 
     const handleSort = (column) => {
         if (column === sortColumn) {
@@ -165,21 +124,21 @@ const ExamList = () => {
                                     <TableCell>
                                         Module Code
                                         <Button variant="link" className="sort-btn" data-sort="course.moduleCode"
-                                                onClick={()=>handleSort("course.moduleCode")}>
+                                                onClick={()=>handleSort("module.moduleCode")}>
                                             <Sort />
                                         </Button>
                                     </TableCell>
                                     <TableCell>
                                         Module Name
                                         <Button variant="link"  className="sort-btn" data-sort="course.moduleName"
-                                        onClick={()=>handleSort("course.moduleName")}>
+                                        onClick={()=>handleSort("module.moduleName")}>
                                             <Sort  />
                                         </Button>
                                     </TableCell>
                                     <TableCell>
                                         Module Leader
                                         <Button variant="link"  className="sort-btn" data-sort="course.moduleLeader"
-                                        onClick={()=>handleSort("course.moduleLeader")}>
+                                        onClick={()=>handleSort("module.moduleLeader")}>
                                             <Sort />
                                         </Button>
                                     </TableCell>
@@ -201,9 +160,9 @@ const ExamList = () => {
                                     <ExamTableRow
                                         key={exam.examId}
                                         examId={exam.examId}
-                                        moduleCode={exam.course.moduleCode}
-                                        moduleName={exam.course.moduleName}
-                                        moduleLeader={exam.course.moduleLeader}
+                                        moduleCode={exam.module.moduleCode}
+                                        moduleName={exam.module.moduleName}
+                                        moduleLeader={exam.module.moduleLeader}
                                         day={exam.examDay}
                                     />
                                     );

@@ -1,5 +1,5 @@
 import React from "react";
-import { TableRow, TableCell, IconButton } from "@material-ui/core";
+import { TableRow, TableCell, IconButton } from "@mui/material";
 import {Folder} from "@mui/icons-material";
 import { Link } from "react-router-dom";
 

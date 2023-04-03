@@ -1,7 +1,10 @@
 import { useState } from 'react';
-import { Typography, Button } from '@mui/material';
+import { Button, Typography, Box, useTheme } from '@mui/material';
 import { Carousel as MuiCarousel } from 'react-responsive-carousel';
+import 'react-responsive-carousel/lib/styles/carousel.css';
 import styled from '@mui/material/styles/styled';
+import Logo from '../../components/Logo';
+import Login from '../Login/login-form';
 
 const StyledSlide = styled('div')(({ theme, backgroundColor }) => ({
     backgroundColor,
@@ -13,16 +16,32 @@ const StyledSlide = styled('div')(({ theme, backgroundColor }) => ({
     alignItems: 'center',
 }));
 
-const Carousel = () => {
+const LogoTitle = () => (
+    <Box display="flex" alignItems="center">
+        <Logo />
+    </Box>
+);
+
+const WelcomeCarousel = ({login}) => {
     const [carouselIndex, setCarouselIndex] = useState(0);
+    const theme = useTheme();
+
+    const handleSignIn = () => {
+        login();
+    }
+
+    const handleStartExam = () => {
+        window.location.href = '/new-exam';
+    };
 
     const carouselItems = [
         {
-            title: 'Welcome to LSBU Exams',
-            description: 'Access exam schedules, logs, and more!',
-            backgroundColor: '#584595',
+            title: <LogoTitle />,
+            description: 'Manage exams, access exam logs and more!',
+            backgroundColor: "#584595",
+            color: "#fff",
             action: (
-                <Button variant="contained" color="secondary">
+                <Button variant="contained" color="secondary" onClick={handleStartExam}>
                     Start Exam
                 </Button>
             ),
@@ -30,9 +49,10 @@ const Carousel = () => {
         {
             title: 'Sign in to access exam logs',
             description: 'Keep track of your exams and stay organized',
-            backgroundColor: '#e75480',
+            backgroundColor: "#e75480",
+            color: "#fff",
             action: (
-                <Button variant="contained" color="secondary">
+                <Button variant="contained" color="secondary" onClick={handleSignIn}>
                     Sign in
                 </Button>
             ),
@@ -40,7 +60,8 @@ const Carousel = () => {
         {
             title: 'Stay updated with exam news',
             description: 'Never miss important announcements',
-            backgroundColor: '#f1c40f',
+            backgroundColor: "yellow",
+            color:"black"
         },
     ];
 
@@ -49,29 +70,41 @@ const Carousel = () => {
     };
 
     return (
-        <MuiCarousel
-            showThumbs={false}
-            showStatus={false}
-            showIndicators={false}
-            selectedItem={carouselIndex}
-            onChange={handleCarouselChange}
-            interval={5000}
-            infiniteLoop={true}
-        >
-            {carouselItems.map((item, index) => (
-                <StyledSlide key={index} backgroundColor={item.backgroundColor}>
-                    <Typography variant="h2" component="h2" sx={{ color: '#fff' }} gutterBottom>
-                        {item.title}
-                    </Typography>
-                    <Typography variant="h5" sx={{ color: '#fff', textAlign: 'center' }} gutterBottom>
-                        {item.description}
-                    </Typography>
-                    {item.action}
-                </StyledSlide>
-            ))}
-        </MuiCarousel>
+            <MuiCarousel
+                showThumbs={false}
+                showStatus={false}
+                showIndicators
+                selectedItem={carouselIndex}
+                onChange={handleCarouselChange}
+                interval={500}
+                infiniteLoop
+            >
+                {carouselItems.map((item, index) => (
+                    <StyledSlide key={index} backgroundColor={item.backgroundColor}>
+                        <Typography
+                            variant="h2"
+                            component="h2"
+                            sx={{ color: item.color }}
+                            gutterBottom
+                        >
+                            {item.title}
+                        </Typography>
+                        <Typography
+                            variant="h5"
+                            sx={{ color: item.color, textAlign: 'center' }}
+                            gutterBottom
+                        >
+                            {item.description}
+                        </Typography>
+                        {item.action}
+                    </StyledSlide>
+                ))}
+            </MuiCarousel>
+
     );
 };
 
-export default Carousel;
+export default WelcomeCarousel;
+
+
 

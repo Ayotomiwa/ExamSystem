@@ -1,78 +1,74 @@
-import { useState } from "react";
-import {Box, Button, Collapse, Dialog, DialogActions, DialogContent,
-    DialogTitle, Typography, IconButton, Paper} from "@mui/material";
-import { makeStyles } from "@material-ui/core/styles";
-import { Print, Close } from "@mui/icons-material";
+import React, { useState } from 'react';
+import {Box, Button, Collapse, Dialog, DialogActions, DialogContent, DialogTitle, IconButton,
+    Paper, Typography,
+} from '@mui/material';
+import { Close, Print } from '@mui/icons-material';
+import { styled } from '@mui/system';
 
-
-const useStyles = makeStyles((theme) => ({
-    modal: {
+const StyledDialog = styled(Dialog)(({ theme }) => ({
+    '& .MuiDialog-paper': {
         width: '50%',
         maxWidth: '50%',
         margin: 'auto',
         backgroundColor: '#ffffff',
-        boxShadow: theme.shadows[5],
         borderRadius: '5px',
     },
-    title: {
-        backgroundColor: '#584595',
-        color: '#ffffff',
-        alignItems: 'center',
-    },
-    closeButton: {
-        color: '#ffffff',
-    },
-    content: {
-        padding: theme.spacing(2),
-    },
-    section: {
-        marginBottom: theme.spacing(2),
-    },
-    sectionTitle: {
-        color: '#e75480',
-        fontWeight: 'bold',
-    },
-    sectionContent: {
-        // color: '#584595',
-    },
-    actions: {
-        backgroundColor: 'yellow',
-        padding: theme.spacing(1),
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-    },
-    printButton: {
-        // color: '#584595',
-    },
-    submitterInfo: {
-        color: '#584595',
-        fontStyle: 'italic',
-    }
 }));
 
-const CollapsibleSection = ({ title, children, classes }) => {
+const StyledDialogTitle = styled(DialogTitle)({
+    backgroundColor: '#584595',
+    color: '#ffffff',
+    alignItems: 'center',
+});
+
+const StyledIconButton = styled(IconButton)({
+    color: '#ffffff',
+});
+
+const StyledDialogContent = styled(DialogContent)(({ theme }) => ({
+    padding: theme.spacing(2),
+}));
+
+const StyledDialogActions = styled(DialogActions)(({ theme }) => ({
+    backgroundColor: 'yellow',
+    padding: theme.spacing(1),
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+}));
+
+const StyledButton = styled(Button)({
+    color: '#584595',
+});
+
+const StyledTypography = styled(Typography)({
+    color: '#584595',
+    fontStyle: 'italic',
+});
+
+// ... (Rest of the code remains unchanged)
+
+
+const CollapsibleSection = ({ title, children }) => {
     const [isOpen, setIsOpen] = useState(true);
 
     return (
-        <Box marginBottom={2} className={classes.root}>
+        <Box marginBottom={2}>
             <Button
                 variant="text"
                 onClick={() => setIsOpen(!isOpen)}
                 fullWidth
-                className={classes.title}
             >
-              <Typography variant="h6" className={classes.title}>{title}</Typography>
+                <Typography variant="h6">{title}</Typography>
             </Button>
-            <Collapse in={isOpen} className={classes.content}>
+            <Collapse in={isOpen} >
                 {children}
-        </Collapse>
+            </Collapse>
         </Box>
     );
 };
 
 const CollapsibleModal = ({ open, handleClose }) => {
-    const classes = useStyles();
     const printModal = () => {
         const printWindow = window.open("", "_blank");
         printWindow.document.write('<html lang="en"><head><title>Print Modal</title>');
@@ -110,29 +106,22 @@ const CollapsibleModal = ({ open, handleClose }) => {
 
 
     return (
-        <Dialog
+        <StyledDialog
             open={open}
             onClose={handleClose}
-            classes={{ paper: classes.modal }}
             fullWidth
             maxWidth="md"
         >
-            <DialogTitle className={classes.title}>
+            <StyledDialogTitle>
                 <Box display="flex" alignItems="center" justifyContent="space-between">
                     Modal Title
-                    <IconButton edge="end" color="inherit" onClick={handleClose} className={classes.closeButton}>
+                    <StyledIconButton edge="end" color="inherit" onClick={handleClose} >
                         <Close />
-                    </IconButton>
+                    </StyledIconButton>
                 </Box>
-            </DialogTitle>
-            <DialogContent id="collapsible-modal-content" className={classes.content}>
-                <CollapsibleSection title="Module Information"
-                                    classes={{
-                                        root: classes.section,
-                                        title: classes.sectionTitle,
-                                        content: classes.sectionContent,
-                                    }}
-                >
+            </StyledDialogTitle>
+            <StyledDialogContent id="collapsible-modal-content" >
+                <CollapsibleSection title="Module Information">
                     <Typography>
                         <strong>Module Name:</strong> Example Module Name
                     </Typography>
@@ -144,13 +133,7 @@ const CollapsibleModal = ({ open, handleClose }) => {
                     </Typography>
                 </CollapsibleSection>
 
-                <CollapsibleSection title="Attendance Information"
-                                    classes={{
-                                        root: classes.section,
-                                        title: classes.sectionTitle,
-                                        content: classes.sectionContent,
-                                    }}
-                >
+                <CollapsibleSection title="Attendance Information">
                     <Typography>
                         <strong>Students in Venue:</strong> 30
                     </Typography>
@@ -162,13 +145,7 @@ const CollapsibleModal = ({ open, handleClose }) => {
                     </Typography>
                 </CollapsibleSection>
 
-                <CollapsibleSection title="Exam Information"
-                                    classes={{
-                                        root: classes.section,
-                                        title: classes.sectionTitle,
-                                        content: classes.sectionContent
-                                    }}
-                >
+                <CollapsibleSection title="Exam Information">
                     <Typography>
                         <strong>Predicted Start Time:</strong> 10:00 AM
                     </Typography>
@@ -192,7 +169,7 @@ const CollapsibleModal = ({ open, handleClose }) => {
                         padding={1}
                         marginTop={1}
                     >
-                            <Typography>
+                            <StyledTypography>
                                 This is a scrollable message section
                                 <br /> This is a scrollable message section
                                 <br /> This is a scrollable message section
@@ -207,19 +184,19 @@ const CollapsibleModal = ({ open, handleClose }) => {
                                 <br /> is this the end?
                                 <br /> I hope not
                                 <br /> Hahahaha
-                            </Typography>
+                            </StyledTypography>
                     </Box>
                 </CollapsibleSection>
-            </DialogContent>
-            <DialogActions className={classes.actions}>
-                <Button color="primary" onClick={printModal} startIcon={<Print />} className={classes.printButton}>
+            </StyledDialogContent>
+            <StyledDialogActions>
+                <StyledButton color="primary" onClick={printModal} startIcon={<Print />}>
                     Print
-                </Button>
-                <Typography variant="caption" sx={{ flexGrow: 1, textAlign: "right" }} className={classes.submitterInfo}>
+                </StyledButton>
+                <StyledTypography variant="caption" sx={{ flexGrow: 1, textAlign: "right" }}>
                     Submitted by: Guest
-                </Typography>
-            </DialogActions>
-        </Dialog>
+                </StyledTypography>
+            </StyledDialogActions>
+        </StyledDialog>
     );
 };
 

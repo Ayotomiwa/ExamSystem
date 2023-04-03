@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import {useEffect, useRef} from "react";
 import "./Logo.css";
 
 const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -6,6 +6,12 @@ const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const Logo = () => {
     const h1Ref = useRef(null);
     let interval = null;
+
+
+    useEffect(()=>{
+     handleMouseOver()
+    },[])
+
 
     const handleMouseOver = () => {
         let iteration = 0;

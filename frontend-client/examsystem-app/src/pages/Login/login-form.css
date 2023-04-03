@@ -1,79 +1,68 @@
-.modal-content {
-    border: none;
-    border-radius: 10px;
-    background-color: #fff;
-    box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.1);
-    max-width: 400px;
+.login-modal {
+    font-family: 'Roboto', sans-serif;
+}
+
+
+.modal-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .modal-header {
+    background-color: #584595;
+    color: #fff;
     border-bottom: none;
-    padding: 24px;
 }
 
 .modal-title {
-    font-size: 24px;
-    font-weight: bold;
-    color: #584595;
+    font-size: 1.5rem;
+    font-weight: 500;
 }
 
-.modal-body {
-    padding: 24px;
+.login-modal .modal-body {
+    padding: 2rem;
 }
 
 .input-field {
-    margin-top: 16px;
-    margin-bottom: 16px;
-    font-size: 16px;
-}
-
-.forgot-password {
-    margin-top: 16px;
-    font-size: 14px;
-    text-align: right;
-}
-
-.forgot-password a {
     color: #584595;
-    text-decoration: none;
-}
-
-.forgot-password a:hover {
-    text-decoration: underline;
 }
 
 .login-button {
-    margin-top: 24px;
-    margin-bottom: 16px;
-    background-color: #584595;
-    color: #fff;
-    border: none;
-    border-radius: 50px;
-    font-size: 16px;
-    font-weight: bold;
-    padding: 12px 24px;
-    text-transform: uppercase;
-    transition: all 0.2s;
+    background-color: transparent;
+    margin-bottom: 1rem;
+    font-weight: 500;
+    font-size: 1rem;
+    letter-spacing: 1px;
 }
 
 .login-button:hover {
-    background-color: #4b3774;
+    color: white;
+    background-color: #584595;
 }
 
 .signup-button {
-    margin-bottom: 16px;
-    background-color: #fff;
-    color: #e75480;
-    border: 2px solid #e75480;
-    border-radius: 50px;
-    font-size: 16px;
-    font-weight: bold;
-    padding: 12px 24px;
-    text-transform: uppercase;
-    transition: all 0.2s;
+    background-color: transparent;
+    margin-bottom: 1rem;
+    font-weight: 500;
+    font-size: 1rem;
+    letter-spacing: 1px;
 }
 
 .signup-button:hover {
+    color: white;
     background-color: #e75480;
-    color: #fff;
+}
+
+.forgot-password {
+    border: none;
+    font-weight: 500;
+    font-size: 1rem;
+    letter-spacing: 1px;
+}
+
+.forgot-password:hover {
+    text-decoration: underline;
+    text-decoration-color: #e75480;
 }

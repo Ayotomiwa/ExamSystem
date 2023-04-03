@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import {Link, useParams} from "react-router-dom";
 import TablePlatform from "../../components/TablePlatform";
 import {Button, Table} from "react-bootstrap";
-import {TableBody, TableCell, TableContainer, TableHead, TableRow} from "@material-ui/core";
+import {TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
 import {Sort} from "@mui/icons-material";
 import CollapsibleModal from "./LogModal";
 
@@ -56,12 +56,6 @@ const LogList = () => {
                         </Button>
                     </TableCell>
                     <TableCell>
-                        No. of Students
-                        <Button variant="link" className="sort-btn" data-sort="students">
-                            <Sort/>
-                        </Button>
-                    </TableCell>
-                    <TableCell>
                         Logs
                         <Button variant="link" className="sort-btn" data-sort="Logs">
                             <Sort/>
@@ -76,7 +70,6 @@ const LogList = () => {
                         <TableCell>{log.venue}</TableCell>
                         <TableCell>{log.type}</TableCell>
                         <TableCell>{log.submittedDate}</TableCell>
-                        <TableCell>{log.studentsLogged}</TableCell>
                         <TableCell>
                             <Button
                                 className="exam-link"

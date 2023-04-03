@@ -3,6 +3,7 @@ import { Modal, Form, Button } from "react-bootstrap";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import TextField from "@mui/material/TextField";
 import { FaEnvelope, FaLock, FaSignInAlt, FaUserPlus } from "react-icons/fa";
+import "./login-form.css";
 
 const Login = ({ show, handleClose }) => {
     const [email, setEmail] = useState("");
@@ -26,8 +27,14 @@ const Login = ({ show, handleClose }) => {
     };
 
     const handleSignUp = () => {
-        console.log("Signup clicked!");
+        handleClose();
+        console.log("Sign Up");
     };
+
+    const closeLogin = () => {
+        handleClose();
+        console.log("Close Login");
+    }
 
     const theme = createTheme({
         palette: {
@@ -42,7 +49,7 @@ const Login = ({ show, handleClose }) => {
 
     return (
         <ThemeProvider theme={theme}>
-            <Modal show={show} onHide={handleClose} className="login-modal">
+            <Modal show={show} onHide={closeLogin} className="login-modal">
                 <Modal.Header closeButton>
                     <Modal.Title>Login</Modal.Title>
                 </Modal.Header>
@@ -76,11 +83,16 @@ const Login = ({ show, handleClose }) => {
                             }}
                             sx={{ mb: 2 }}
                         />
+                        <div className="d-flex justify-content-between">
                         <Button variant="contained" type="submit" fullWidth className="login-button">
                             <FaSignInAlt /> Login
                         </Button>
                         <Button variant="outlined" color="secondary" fullWidth onClick={handleSignUp} className="signup-button">
                             <FaUserPlus /> Sign Up
+                        </Button>
+                        </div>
+                        <Button variant="outlined" color="secondary" fullWidth onClick={handleSignUp} className="forgot-password">
+                            Forgot password?
                         </Button>
                     </Form>
                 </Modal.Body>

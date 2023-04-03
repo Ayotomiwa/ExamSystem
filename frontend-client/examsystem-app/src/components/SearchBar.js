@@ -1,33 +1,30 @@
 import {useState} from "react";
 import { Card, Form, Button } from "react-bootstrap";
-import { makeStyles } from "@material-ui/core/styles";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import { Input } from "@material-ui/core";
+import { Input } from "@mui/material";
 import "../App.css";
+import TextField from "@mui/material/TextField";
+import {styled} from "@mui/system";
 
 
 
-const useStyles = makeStyles((theme) => ({
-    searchInput: {
-        marginRight: theme.spacing(1),
+const StyledInput = styled(TextField)(({ theme }) => ({
+    fontSize: 20,
+    marginRight: theme.spacing(1),
+    '& .MuiInput-root:before': {
+        borderBottomColor: '#e75480',
     },
-    underline: {
-        "&:before": {
-            borderBottomColor: "#584595",
-        },
-        "&:hover:before": {
-            borderBottomColor: "#584595",
-            transitionDelay: "20s"
-        },
-        "&:after": {
-            borderBottomColor: "#e75480",
-        }
-    }
+    '& .MuiInput-root:hover:not(.Mui-disabled):before': {
+        borderBottomColor: '#e75480',
+        transitionDelay: '20s',
+    },
+    '& .MuiInput-root:after': {
+        borderBottomColor: '#e75480',
+    },
 }));
 
 const SearchBar = ({onSearch,onChange}) => {
-    const classes = useStyles();
     const [searchTerm, setSearchTerm] = useState("");
 
 
@@ -45,27 +42,21 @@ const SearchBar = ({onSearch,onChange}) => {
         onChange(newSearchTerm);
     }
 
+
     return (
         <Card>
             <Card.Body className="mt-0">
                 <div className="d-flex justify-content-center">
-                    <Form className="d-flex" onSubmit={handleSearch} >
+                    <Form className="d-flex" onSubmit={handleSearch}>
                         <Input
                             aria-label="Search"
-                            className={classes.searchInput}
                             id="search_input"
                             placeholder="Search for Exams or Module Code"
                             type="search"
                             value={searchTerm}
                             onChange={handleInputChange}
-                            style={{fontSize: 20}}
-                            classes={{ underline: classes.underline }}
                         />
-                        <Button
-                            variant="outline-secondary"
-                            id="search_btn"
-                            type="submit"
-                        >
+                        <Button variant="outline-secondary" id="search_btn" type="submit">
                             <FontAwesomeIcon icon={faSearch} />
                         </Button>
                     </Form>
