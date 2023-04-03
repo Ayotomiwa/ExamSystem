@@ -6,9 +6,6 @@ dayjs.extend(duration);
 export function getRemainingTimeUntilMsTimestamp(timestampMs){
     const timestampDayjs = dayjs(timestampMs);
     const nowDayjs = dayjs();
-    //const nowMs = nowDayjs.valueOf(); // get the value of nowDayjs in milliseconds
-    //console.log(nowMs)
-    //console.log(nowDayjs.add(1, 'day').format())
     if(timestampDayjs === null){
         return 0;
     }

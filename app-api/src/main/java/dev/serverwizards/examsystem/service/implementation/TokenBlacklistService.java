@@ -1,2 +1,22 @@
-package dev.serverwizards.examsystem.service.implementation;public class TokenBlacklistService {
+package dev.serverwizards.examsystem.service.implementation;
+
+import lombok.Data;
+import org.springframework.stereotype.Service;
+
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+
+@Service
+@Data
+public class TokenBlacklistService {
+    private final Set<String> blacklistedTokens = Collections.synchronizedSet(new HashSet<>());
+
+    public void blacklistToken(String token) {
+        blacklistedTokens.add(token);
+    }
+
+    public boolean isBlacklisted(String token) {
+        return blacklistedTokens.contains(token);
+    }
 }

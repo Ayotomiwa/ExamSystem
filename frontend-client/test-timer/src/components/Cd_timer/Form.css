@@ -4,7 +4,8 @@
   background-image: url("./simple.svg");
   background-repeat: no-repeat;
   background-size: cover;
-  background-position: center;}
+  background-position: center;
+}
 .form {
   position: fixed;
   width: 300px;

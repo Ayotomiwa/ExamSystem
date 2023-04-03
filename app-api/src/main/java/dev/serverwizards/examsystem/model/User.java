@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 
 @Data
 @Entity
-@Table(name = "user")
+@Table(name = "auth_user")
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {

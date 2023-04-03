@@ -1,7 +1,7 @@
 package dev.serverwizards.examsystem.config.Security;
 
 import dev.serverwizards.examsystem.service.implementation.CustomUserDetailsService;
-import org.springframework.beans.factory.annotation.Autowired;
+import dev.serverwizards.examsystem.service.implementation.TokenBlacklistService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,13 +20,15 @@ public class SecurityConfiguration {
 
     private final JwtTokenProvider tokenProvider;
     private final CustomUserDetailsService customUserDetailsService;
+    private final TokenBlacklistService tokenBlacklistService;
 
 
 
     public SecurityConfiguration(JwtTokenProvider tokenProvider
-            , CustomUserDetailsService customUserDetailsService) {
+            , CustomUserDetailsService customUserDetailsService, TokenBlacklistService tokenBlacklistService) {
         this.tokenProvider = tokenProvider;
         this.customUserDetailsService = customUserDetailsService;
+        this.tokenBlacklistService = tokenBlacklistService;
     }
 
     @Bean
@@ -40,19 +42,19 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(tokenProvider, customUserDetailsService);
-
-        http
-                .csrf().disable()
-                .authorizeHttpRequests(requests -> requests
-                        .requestMatchers("/api/exam-logs/**").hasAnyRole("ADMIN", "AUTH_USER")
-                        .requestMatchers("/api/exam/**").hasAnyRole("ADMIN", "AUTH_USER")
-                        .requestMatchers("/api/module/**").hasAnyRole("ADMIN")
-                        .requestMatchers("/api/exam/daily").permitAll()
-                        .requestMatchers("/api/sign-up").permitAll()
-                        .anyRequest().authenticated()
-                )
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(tokenProvider, customUserDetailsService, tokenBlacklistService);
+//
+//        http
+//                .csrf().disable()
+//                .authorizeHttpRequests(requests -> requests
+//                        .requestMatchers("/api/exam-logs/**").hasAnyRole("ADMIN", "AUTH_USER")
+//                        .requestMatchers("/api/exam/**").hasAnyRole("ADMIN", "AUTH_USER")
+//                        .requestMatchers("/api/module/**").hasAnyRole("ADMIN")
+//                        .requestMatchers("/api/exam/daily").permitAll()
+//                        .requestMatchers("/api/sign-up").permitAll()
+//                        .anyRequest().authenticated()
+//                )
+//                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
