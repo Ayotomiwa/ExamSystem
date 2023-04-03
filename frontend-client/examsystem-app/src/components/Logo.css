@@ -1,0 +1,10 @@
+.page{
+    background-color: transparent;
+}
+.heading{
+    color: white;
+    font-size: 40px;
+    font-family: "Space Mono", monospace;
+    border: 10px solid;
+    text-align: center;
+}
