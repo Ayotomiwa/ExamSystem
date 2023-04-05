@@ -1,0 +1,151 @@
+
+.exam-link {
+    text-decoration: none;
+    color: #e75480;
+}
+
+.exam-link:hover {
+    text-decoration: underline;
+}
+
+
+
+.table-container {
+    max-width: 100%;
+    min-height: 100vh;
+    margin: 0 auto;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.table-container thead {
+    background-color: #e75480;
+}
+
+.table-container thead th {
+    margin-right: auto;
+    color: #fff;
+    font-weight: 500;
+    font-size: 1.2em;
+    padding: 15px;
+}
+
+.table-container tbody td {
+    text-align: left;
+    font-size: 15px;
+    padding: 15px;
+
+}
+
+.sort-btn {
+    padding: 0;
+    border: none;
+    background: none;
+    color: yellow;
+    cursor: pointer;
+    font-size: 1.2em;
+}
+
+/* Load More */
+#load-more {
+    margin: 30px 0;
+    border: none;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 100px;
+    position: relative;
+
+}
+
+#page-info {
+    margin-bottom: 10px;
+}
+
+#load-more-btn {
+    border-color: #999;
+    color: #e75480;
+
+}
+
+#load-more-btn:hover {
+    background-color: #e75480;
+    color: #fff;
+}
+
+
+#no-data {
+    text-align: center;
+    padding: 30px 0;
+    color: #999;
+    font-style: italic;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-size: 3rem;
+}
+
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(180deg);
+    }
+}
+
+.sort-btn[data-sort-state="ASC"] {
+    animation: rotation 0.2s linear;
+}
+
+@media (max-width: 1200px) {
+    .table-container {
+        margin: 0 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .table-container {
+        max-width: 100%;
+    }
+
+    .table {
+        table-layout: fixed;
+        width: 100%;
+    }
+
+    .table thead th {
+        white-space: nowrap;
+    }
+
+    .table tbody td {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .search-bar {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+.view-log-btn {
+    background-color: white;
+    border: 1px solid #e75480;;
+    color: #e75480;
+}
+
+.view-log-btn:hover,
+.view-log-btn:after,
+.view-log-btn:active:focus{
+    border: 1px solid #e75480;
+    background-color: #e75480;
+    color: #ffffff;
+}
+

@@ -4,16 +4,19 @@ import { Link } from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {fas, faUserCircle} from "@fortawesome/free-solid-svg-icons";
 import { library } from "@fortawesome/fontawesome-svg-core";
+import{useLocation} from "react-router-dom";
 import Lsbu from "../assets/Lsbu.svg";
 import "./layout.css";
 
 
 library.add(fas, faUserCircle);
+
+
 function Header() {
     return (
         <Navbar expand="lg" variant="dark">
             <Navbar.Brand as={Link} to="/">
-                <img src={Lsbu} alt="LSBU Logo" />
+                <img src={Lsbu} alt="LSBU LsbuLogo" />
             </Navbar.Brand>
             <Navbar.Toggle aria-controls="navbar-nav" />
             <Navbar.Collapse id="navbar-nav">
@@ -76,11 +79,12 @@ function Footer() {
 
 
 function Layout(props) {
+    const location = useLocation().pathname;
     return (
         <div id="layout">
             <Header />
             <main className="flex-fill">{props.children}</main>
-            <BackToTop />
+            {location !== "/timer" && <BackToTop />}
             <Footer />
         </div>
     );

@@ -1,12 +1,13 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import ExamList from "./pages/Logs/ExamList";
 import Layout from "./components/Layout";
-import LogList from "./pages/Logs/LogList";
+import ExamLogList from "./pages/Logs/ExamLogList";
 import {useEffect, useState} from "react";
 import WelcomePage from "./pages/Home/WelcomePage";
-import Login from "./pages/Login/login-form";
+import Login from "./pages/Login/LoginForm";
 import ExamForm from "./pages/Timer/ExamForm";
-import Timer from "./pages/Timer/Timer";
+import TimerPage from "./pages/Timer/TimerPage";
+import ExamFormPage from "./pages/Timer/ExamFormPage";
 
 
 function App() {
@@ -55,9 +56,9 @@ function App() {
                 <Routes>
                         <Route path="/"  element={<WelcomePage  handleLogin={showLoginModal}/>} />
                      <    Route path="/exams"  element={<ExamList/>} />
-                      <    Route path="/new-exam"  element={<ExamForm form={formData} setForm={setFormData} />} />
-                      <Route path="/timer"  element={<Timer form={formData} setForm={setFormData}/>} />
-                        <Route path="/logs/:examId/:moduleName" element={<LogList/>} />
+                      <    Route path="/new-exam"  element={<TimerPage form={formData} setForm={setFormData} />} />
+                      <Route path="/timer"  element={<TimerPage form={formData} setForm={setFormData}/>} />
+                        <Route path="/logs/:examId/:moduleName" element={<ExamLogList/>} />
                 </Routes>
                 <Login show={login} handleClose={handleLoginClose} />
             </Layout>

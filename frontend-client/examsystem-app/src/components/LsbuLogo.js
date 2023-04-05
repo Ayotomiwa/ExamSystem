@@ -1,9 +1,9 @@
 import {useEffect, useRef} from "react";
-import "./Logo.css";
+import "./lsbuLogo.css";
 
 const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-const Logo = () => {
+const LsbuLogo = () => {
     const h1Ref = useRef(null);
     let interval = null;
 
@@ -57,4 +57,4 @@ const Logo = () => {
     );
 };
 
-export default Logo;
+export default LsbuLogo;

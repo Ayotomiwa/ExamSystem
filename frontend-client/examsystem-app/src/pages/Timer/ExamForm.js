@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {Box, Button, FormControl, Grid, MenuItem, TextField, Tooltip, Typography} from "@mui/material";
 import {styled} from "@mui/system";
 import Autocomplete from '@mui/material/Autocomplete';
-import "./ExamForm.css";
+import "./ExamFormPage.css";
 
 
 const StyledBox = styled(Box)({
@@ -99,13 +99,11 @@ const ExamForm = ({form, setForm}) => {
 
 
     return (
-
-        <div id="exam-form">
-            <StyledBox>
+            <StyledBox sx={{width:"100%"}}>
                 <StyledTitle variant="h4">Exam Form</StyledTitle>
                 <FormControl>
                     <form onSubmit={handleSubmit}>
-                        <Grid container spacing={5} sx={{height: "100%"}}>
+                        <Grid container spacing={5}>
                             <Grid item xs={12} sm={12}>
                                 <Autocomplete
                                     options={modules}
@@ -254,7 +252,6 @@ const ExamForm = ({form, setForm}) => {
                     </form>
                 </FormControl>
             </StyledBox>
-        </div>
     );
 };
 export default ExamForm;

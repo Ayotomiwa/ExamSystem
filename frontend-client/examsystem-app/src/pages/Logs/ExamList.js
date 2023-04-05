@@ -4,14 +4,15 @@ import { Sort } from "@mui/icons-material";
 import "../../App.css";
 import SearchBar from "../../components/SearchBar";
 import {useEffect, useRef, useState} from "react";
-import ExamTableRow from "./ExamTableRow";
+import ExamListRow from "./ExamListRow";
 import TablePlatform from "../../components/TablePlatform";
+import "./table.css";
 
 const ExamList = () => {
 
     const [exams, setExams] = useState([]);
     const [searchTerm,setSearchTerm] = useState("");
-    const [searchOn, setSearchOn] = useState(false);
+    const [search, setSearch] = useState(false);
     const [page, setPage] = useState(0);
     const [numberOfExams, setNumberOfExams] = useState(0);
     const[totalExams, setTotalExams] = useState(0);
@@ -24,14 +25,14 @@ const ExamList = () => {
 
 
     useEffect(() => {
-        if (searchOn === false || searchTerm === "") {
+        if (search === false || searchTerm === "") {
             console.log("fetching examssssss")
             fetchExamsData();
         }
-    }, [page, searchOn === false, sortColumn, sortState]);
+    }, [page, search === false, sortColumn, sortState]);
 
     useEffect(() => {
-        if (searchOn === true && searchTerm !== "") {
+        if (search === true && searchTerm !== "") {
             console.log("searching exams")
             if(page === 0){
                 setExams([]);
@@ -39,7 +40,7 @@ const ExamList = () => {
             console.log(searchExamsUrl + fetchExamsUrl);
             fetchSearchData();
         }
-    }, [page, searchTerm, searchOn, sortColumn, sortState]);
+    }, [page, searchTerm, search, sortColumn, sortState]);
 
 
 
@@ -54,7 +55,7 @@ const ExamList = () => {
             setSortColumn(column);
             setSortState("ASC");
         }
-        resetExamList(searchOn);
+        resetExamList(search);
         setExams([]);
     }
 
@@ -85,12 +86,12 @@ const ExamList = () => {
 
     const resetExamList = (value) => {
         setNumberOfExams(0);
-        setSearchOn(value);
         setPage(0);
+        setSearch(value);
     }
 
     const handleSearch = (searchTerm) => {
-        console.log(searchTerm + " Handlesearch " + searchOn);
+        console.log(searchTerm + " Handlesearch " + search);
         if(searchTerm === ""){
             return;
         }
@@ -102,8 +103,9 @@ const ExamList = () => {
 
     const handleInputChange= (searchTerm) => {
         if (searchTerm === ""){
+            setExams([]);
             resetExamList(false);
-            console.log(searchOn);
+            console.log(search);
         }
 
     };
@@ -117,34 +119,38 @@ const ExamList = () => {
         <div>
             <SearchBar onSearch={handleSearch} onChange={handleInputChange}/>
             <TablePlatform  breadcrumbs={[{ label: "Exams List", url: "/" }]}>
-                    <TableContainer id="table-container">
+                    <TableContainer className="table-container">
                         <Table  size="small" aria-label="a dense table" >
                             <TableHead>
                                 <TableRow>
                                     <TableCell>
                                         Module Code
-                                        <Button variant="link" className="sort-btn" data-sort="course.moduleCode"
+                                        <Button variant="link" className="sort-btn" data-sort="module.moduleCode"
+                                                data-sort-state={sortColumn === "module.moduleCode" ? sortState : ""}
                                                 onClick={()=>handleSort("module.moduleCode")}>
                                             <Sort />
                                         </Button>
                                     </TableCell>
                                     <TableCell>
                                         Module Name
-                                        <Button variant="link"  className="sort-btn" data-sort="course.moduleName"
-                                        onClick={()=>handleSort("module.moduleName")}>
+                                        <Button variant="link"  className="sort-btn" data-sort="module.moduleName"
+                                                data-sort-state={sortColumn === "module.moduleName" ? sortState : ""}
+                                                onClick={()=>handleSort("module.moduleName")}>
                                             <Sort  />
                                         </Button>
                                     </TableCell>
                                     <TableCell>
                                         Module Leader
-                                        <Button variant="link"  className="sort-btn" data-sort="course.moduleLeader"
-                                        onClick={()=>handleSort("module.moduleLeader")}>
+                                        <Button variant="link"  className="sort-btn" data-sort="module.moduleLeader"
+                                                data-sort-state={sortColumn === "module.moduleLeader" ? sortState : ""}
+                                                onClick={()=>handleSort("module.moduleLeader")}>
                                             <Sort />
                                         </Button>
                                     </TableCell>
                                     <TableCell>
                                         Exam Date
                                         <Button variant="link" className="sort-btn" data-sort="examDay"
+                                                data-sort-state={sortColumn === "examDay" ? sortState : ""}
                                                 onClick={()=>handleSort("examDay")}>
                                             <Sort/>
                                         </Button>
@@ -157,7 +163,7 @@ const ExamList = () => {
                                         : exams.map((exam) => {
                                         console.log("Helloooo" + exam);
                                         return (
-                                    <ExamTableRow
+                                    <ExamListRow
                                         key={exam.examId}
                                         examId={exam.examId}
                                         moduleCode={exam.module.moduleCode}
@@ -175,7 +181,7 @@ const ExamList = () => {
             {/*</Card>*/}
             <div className="text-center" id="load-more">
                 <p id="page-info">
-                    Showing {numberOfExams} of {searchOn ? totalExams+ " search results "  : totalExams+ " total"}
+                    Showing {numberOfExams} of {search ? totalExams+ " search results "  : totalExams+ " total"}
                 </p>
                 <Button variant="outline-secondary" id="load-more-btn" onClick={loadMoreExams}>
                     Load More Exams

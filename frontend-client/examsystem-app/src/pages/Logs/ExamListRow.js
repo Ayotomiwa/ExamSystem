@@ -2,9 +2,10 @@ import React from "react";
 import { TableRow, TableCell, IconButton } from "@mui/material";
 import {Folder} from "@mui/icons-material";
 import { Link } from "react-router-dom";
+import "./table.css";
 
 
-const ExamTableRow = ({ examId, moduleCode, moduleName, moduleLeader, day }) => {
+const ExamListRow = ({ examId, moduleCode, moduleName, moduleLeader, day }) => {
     return (
         <TableRow>
             <TableCell>
@@ -24,4 +25,4 @@ const ExamTableRow = ({ examId, moduleCode, moduleName, moduleLeader, day }) => 
     );
 };
 
-export default ExamTableRow;
+export default ExamListRow;

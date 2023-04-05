@@ -3,8 +3,8 @@ import { Button, Typography, Box, useTheme } from '@mui/material';
 import { Carousel as MuiCarousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.css';
 import styled from '@mui/material/styles/styled';
-import Logo from '../../components/Logo';
-import Login from '../Login/login-form';
+import LsbuLogo from '../../components/LsbuLogo';
+import Login from '../Login/LoginForm';
 
 const StyledSlide = styled('div')(({ theme, backgroundColor }) => ({
     backgroundColor,
@@ -18,7 +18,7 @@ const StyledSlide = styled('div')(({ theme, backgroundColor }) => ({
 
 const LogoTitle = () => (
     <Box display="flex" alignItems="center">
-        <Logo />
+        <LsbuLogo />
     </Box>
 );
 

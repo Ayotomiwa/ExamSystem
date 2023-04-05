@@ -2,17 +2,21 @@ import React, { useState, useEffect } from "react";
 import {Link, useParams} from "react-router-dom";
 import TablePlatform from "../../components/TablePlatform";
 import {Button, Table} from "react-bootstrap";
-import {TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
-import {Sort} from "@mui/icons-material";
-import CollapsibleModal from "./LogModal";
+import {TableBody, TableCell, TableContainer, TableHead, TableRow, Typography} from "@mui/material";
+import {Description, Sort} from "@mui/icons-material";
+import LogModal from "./LogModal";
+import "./table.css";
 
 
-const LogList = () => {
+const ExamLogList = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [logs, setLogs] = useState([]);
+    const [sortColumn, setSortColumn] = useState("id");
+    const [sortState, setSortState] = useState("ASC");
     const { examId, moduleName } = useParams();
+    const [selectedLog, setSelectedLog] = useState(null);
 
-    console.log(examId+" numberrrrrrrrrrrr " + moduleName);
+
 
     useEffect(() => {
         window.scrollTo({
@@ -26,11 +30,17 @@ const LogList = () => {
     }, [examId]);
 
 
+    const handleLogClick = (logId) => {
+       setSelectedLog(logId);
+       console.log("LogId in Log list:   ", logId);
+       setIsModalOpen(true);
+    }
+
     return (
         <TablePlatform title={moduleName}
-                       breadcrumbs={[    { label: "Exam List", url: "/" },    { label: moduleName },  ]}>
-            <TableContainer id="table-container">
-        <Table className="table-borderless" id="table">
+                       breadcrumbs={[    { label: "Exam List", url: "/exams" },    { label: moduleName },  ]}>
+            <TableContainer className="table-container">
+        <Table size="small" aria-label="a dense table" >
                 <TableHead>
                 <TableRow>
                     <TableCell>Id
@@ -63,7 +73,7 @@ const LogList = () => {
                     </TableCell>
                 </TableRow>
                 </TableHead>
-                <TableBody className="table-group-divider" id="content_body">
+                <TableBody id="content_body">
                 {logs.map((log, index) => (
                     <TableRow key={log.id}>
                         <TableCell>{index + 1}</TableCell>
@@ -72,13 +82,12 @@ const LogList = () => {
                         <TableCell>{log.submittedDate}</TableCell>
                         <TableCell>
                             <Button
-                                className="exam-link"
-                                data-exam-id={examId}
-                                data-module-name={moduleName}
-                                data-log-id={log.id}
-                                onClick={() => setIsModalOpen(true)}
+                                className="view-log-btn"
+                                onClick={() => handleLogClick(log.id)}
+                                sx={{textTransform: "none", outline: "none"}}
                             >
-                                <span style={{ fontSize: "5rem" }}>📁</span> Click to view Logs
+                                <Description fontSize="medium"  />
+                                    View Logs
                             </Button>
                         </TableCell>
                     </TableRow>
@@ -86,9 +95,9 @@ const LogList = () => {
                 </TableBody>
         </Table>
                 </TableContainer>
-            <CollapsibleModal open={isModalOpen} handleClose={() => setIsModalOpen(false)} />
+            <LogModal open={isModalOpen} logId={selectedLog} handleClose={() => setIsModalOpen(false)} />
         </TablePlatform>
     );
 };
 
-export default LogList;
+export default ExamLogList;

@@ -3,7 +3,7 @@ import { Modal, Form, Button } from "react-bootstrap";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import TextField from "@mui/material/TextField";
 import { FaEnvelope, FaLock, FaSignInAlt, FaUserPlus } from "react-icons/fa";
-import "./login-form.css";
+import "./loginForm.css";
 
 const Login = ({ show, handleClose }) => {
     const [email, setEmail] = useState("");

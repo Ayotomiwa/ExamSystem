@@ -1,0 +1,23 @@
+.timer-page {
+    /*background-image: url('../../assets/simple.svg');*/
+    min-height: 100vh;
+    background-repeat: space;
+    background-size: auto;
+    background-position: center;
+}
+
+/*.Box {*/
+/*    position: relative;*/
+/*    top: 0;*/
+/*    right: -300px;*/
+/*    width: 300px;*/
+/*    height: 100%;*/
+/*    background-color: #ffffff;*/
+/*    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);*/
+/*    transition: right 0.3s ease-in-out;*/
+/*}*/
+
+.exam-form-container {
+    flex-grow: 1;
+    margin-left: 20px;
+}

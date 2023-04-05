@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {Box, Button, Collapse, Dialog, DialogActions, DialogContent, DialogTitle, IconButton,
     Paper, Typography,
 } from '@mui/material';
 import { Close, Print } from '@mui/icons-material';
 import { styled } from '@mui/system';
+
 
 const StyledDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialog-paper': {
@@ -46,8 +47,6 @@ const StyledTypography = styled(Typography)({
     fontStyle: 'italic',
 });
 
-// ... (Rest of the code remains unchanged)
-
 
 const CollapsibleSection = ({ title, children }) => {
     const [isOpen, setIsOpen] = useState(true);
@@ -68,12 +67,59 @@ const CollapsibleSection = ({ title, children }) => {
     );
 };
 
-const CollapsibleModal = ({ open, handleClose }) => {
+const LogModal = ({ open, logId, handleClose }) => {
+    const [logs, setLogs] = useState([]);
+    const [exam, setExam] = useState([]);
+    const [examId, setExamId] = useState(null);
+
+    useEffect(() => {
+        fetch(`http://localhost:8080/api/exam-logs/log/${logId}`)
+            .then(response => response.json())
+            .then(data => {
+                setLogs(data);
+                setExamId(data.examId);
+            })
+            .catch(error => console.log(error));
+    }, [open, logId]);
+
+    useEffect(() => {
+        console.log('examId in modal:  ', examId);
+        if (examId === null) {
+            return;
+        }
+        fetch(`http://localhost:8080/api/exams/exam/${examId}`)
+            .then(response => response.json())
+            .then(data => {
+                setExam(data);
+                console.log('exam in modallll:  ', data.module);
+            })
+            .catch(error => console.log(error));
+    }, [examId]);
+
+
+    const examLogs = useMemo(() => {
+        if (!logs || !exam || !exam.module) return {};
+
+        return {
+            startTime: logs.startTime,
+            venue: logs.venue,
+            endTime: logs.endTime,
+            notes: logs.message,
+            studentsInVenue: logs.studentsLogged,
+            submittedDate: logs.submittedDate,
+            moduleName: exam.module.moduleName,
+            moduleCode: exam.module.moduleCode,
+            predictedStartTime: exam.startTime,
+            totalStudents: exam.module.registeredStudents,
+            moduleLeader: exam.module.moduleLeader
+        };
+    }, [logs, exam]);
+
     const printModal = () => {
         const printWindow = window.open("", "_blank");
         printWindow.document.write('<html lang="en"><head><title>Print Modal</title>');
-        printWindow.document.write('</head><body className={classes.title}>');
-        printWindow.document.write("<h1>Modal Title</h1>");
+        printWindow.document.write('</head><body>');
+        printWindow.document.write("<h1>Exam Logs</h1>");
 
 
         const contentToPrint = document.getElementById("collapsible-modal-content");
@@ -114,7 +160,7 @@ const CollapsibleModal = ({ open, handleClose }) => {
         >
             <StyledDialogTitle>
                 <Box display="flex" alignItems="center" justifyContent="space-between">
-                    Modal Title
+                    Exam Logs
                     <StyledIconButton edge="end" color="inherit" onClick={handleClose} >
                         <Close />
                     </StyledIconButton>
@@ -123,40 +169,43 @@ const CollapsibleModal = ({ open, handleClose }) => {
             <StyledDialogContent id="collapsible-modal-content" >
                 <CollapsibleSection title="Module Information">
                     <Typography>
-                        <strong>Module Name:</strong> Example Module Name
+                        <strong>Module Name:</strong> {examLogs.moduleName}
                     </Typography>
                     <Typography>
-                        <strong>Module Code:</strong> EXM123
+                        <strong>Module Code:</strong> {examLogs.moduleCode}
                     </Typography>
                     <Typography>
-                        <strong>Module Leader:</strong> Mickey
+                        <strong>Module Leader:</strong> {examLogs.moduleLeader}
                     </Typography>
                 </CollapsibleSection>
 
                 <CollapsibleSection title="Attendance Information">
                     <Typography>
-                        <strong>Students in Venue:</strong> 30
+                        <strong>Students in Venue:</strong> {examLogs.studentsInVenue}
                     </Typography>
                     <Typography>
-                        <strong>Total Students in Exam:</strong> 35
+                        <strong>Total Students in Exam:</strong>{examLogs.totalStudents}
                     </Typography>
                     <Typography>
-                        <strong>Exam Attendance Rate:</strong> 85%
+                        <strong>% in Venue:</strong> {examLogs.studentsInVenue / examLogs.totalStudents * 100}%
                     </Typography>
                 </CollapsibleSection>
 
                 <CollapsibleSection title="Exam Information">
                     <Typography>
-                        <strong>Predicted Start Time:</strong> 10:00 AM
+                        <strong>Predicted Start Time:</strong> {examLogs.predictedStartTime}
                     </Typography>
                     <Typography>
-                        <strong>Start Time:</strong> 10:05 AM
+                        <strong>Start Time:</strong> {examLogs.startTime}
                     </Typography>
                     <Typography>
-                        <strong>End Time:</strong> 12:05 PM
+                        <strong>End Time:</strong> {examLogs.endTime}
                     </Typography>
                     <Typography>
-                        <strong>Duration:</strong> 2 hours
+                        <strong>Duration:</strong> {examLogs.startTime} - {examLogs.endTime};
+                    </Typography>
+                    <Typography>
+                        <strong>Venue:</strong> {examLogs.venue}
                     </Typography>
                     <Typography>
                         <strong>Issues Log:</strong>
@@ -170,24 +219,12 @@ const CollapsibleModal = ({ open, handleClose }) => {
                         marginTop={1}
                     >
                             <StyledTypography>
-                                This is a scrollable message section
-                                <br /> This is a scrollable message section
-                                <br /> This is a scrollable message section
-                                <br /> This is a scrollable message section
-                                <br /> This is a scrollable message section
-                                <br /> This is a scrollable message section
-                                <br /> This is a scrollable message section
-                                <br /> This is a scrollable message section
-                                <br /> This is a scrollable message section
-                                <br /> This is a scrollable message section
-                                <br /> This is a scrollable message section
-                                <br /> is this the end?
-                                <br /> I hope not
-                                <br /> Hahahaha
+                                {examLogs.notes}
                             </StyledTypography>
                     </Box>
                 </CollapsibleSection>
             </StyledDialogContent>
+
             <StyledDialogActions>
                 <StyledButton color="primary" onClick={printModal} startIcon={<Print />}>
                     Print
@@ -200,4 +237,4 @@ const CollapsibleModal = ({ open, handleClose }) => {
     );
 };
 
-export default CollapsibleModal;
+export default LogModal;
