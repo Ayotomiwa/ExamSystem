@@ -25,5 +25,5 @@ public class ExamLogsDto {
     private int studentsLogged;
     private String moduleName;
     private String moduleCode;
-//    private ExamDto exam;
+    private long examId;
 }
