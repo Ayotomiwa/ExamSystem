@@ -24,6 +24,13 @@ public class UserController {
 
     @PostMapping("/sign-up")
     public ResponseEntity<User>signUp(@RequestBody User user) {
+        if(user.getEmail() == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        if (user.getUsername() == null) {
+           user.setUsername(user.getEmail().substring(0, user.getEmail().indexOf("@")));
+        }
+        System.out.println("User: " + user.getUsername() + " " + user.getEmail());
         if (customUserDetailsService.existsByUsernameOrEmail(user.getUsername(), user.getEmail())) {
             return ResponseEntity.badRequest().build();
         }

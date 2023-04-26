@@ -4,6 +4,7 @@ import dev.serverwizards.examsystem.service.implementation.CustomUserDetailsServ
 import dev.serverwizards.examsystem.service.implementation.TokenBlacklistService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -43,20 +44,17 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(tokenProvider, customUserDetailsService, tokenBlacklistService);
-//
-//        http
-//                .csrf().disable()
-//                .authorizeHttpRequests(requests -> requests
-//                        .requestMatchers("/api/exam-logs/**").hasAnyRole("ADMIN", "AUTH_USER")
-//                        .requestMatchers("/api/exam/**").hasAnyRole("ADMIN", "AUTH_USER")
-//                        .requestMatchers("/api/module/**").hasAnyRole("ADMIN")
-//                        .requestMatchers("/api/exam/daily").permitAll()
-//                        .requestMatchers("/api/sign-up").permitAll()
-//                        .anyRequest().authenticated()
-//                )
-//                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
-        return http.build();
+       return http
+                .csrf(csrf -> csrf.disable())
+                .authorizeRequests(requests -> requests
+                        .requestMatchers(HttpMethod.POST, "/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/**").permitAll()
+                        .requestMatchers("/api/*").permitAll()
+                        .anyRequest().authenticated()
+                )
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .build();
     }
 
 
