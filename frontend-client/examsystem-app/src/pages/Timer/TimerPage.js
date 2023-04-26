@@ -270,55 +270,6 @@ const TimerPage = ({form, setForm, timerMode, setTimerMode, tempForm, setTempFor
                             </IconButton>
                         </Tooltip>
 
-                        <Collapse in={showButtons}>
-                            <Box sx={{
-                                position: 'relative',
-                                // right: 24,
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignItems: 'center',
-                                gap: 3,
-                            }}>
-
-                                <Button
-                                    variant={showRules ? "contained" : "outlined"}
-                                    style={{
-                                        color: showRules ? "white" : "#e75480",
-                                        borderColor: "#e75480",
-                                        backgroundColor: showRules ? "#e75480" : "transparent"
-                                    }}
-                                    startIcon={<ListAlt/>}
-                                    onClick={() => setShowRules(!showRules)}
-                                >
-                                    Rules
-                                </Button>
-                                <Button
-                                    variant="outlined"
-                                    style={{
-                                        color: showLogs ? "white" : "#e75480",
-                                        borderColor: "#e75480",
-                                        backgroundColor: showLogs ? "#e75480" : "transparent"
-                                    }}
-                                    startIcon={<Description/>}
-                                    onClick={(event) => handleTimerButtons(event)}
-                                    id="Logs">
-                                    Logs
-                                </Button>
-                                <Button
-                                    variant="outlined"
-                                    style={{
-                                        color: showForm ? "white" : "#e75480",
-                                        borderColor: "#e75480",
-                                        backgroundColor: showForm ? "#e75480" : "transparent"
-                                    }}
-                                    startIcon={<Edit/>}
-                                    onClick={(event) => handleTimerButtons(event)}
-                                    id="Edit Form"
-                                >
-                                    Edit Form
-                                </Button>
-                            </Box>
-                        </Collapse>
                     </Box>
                     </Box>
                         <Box sx={{
