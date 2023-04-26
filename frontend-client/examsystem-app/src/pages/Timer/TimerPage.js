@@ -273,10 +273,11 @@ const TimerPage = ({form, setForm, timerMode, setTimerMode, tempForm, setTempFor
                             mt:"150px",
                             display: 'flex',
                             flexDirection: 'row',
-                            justifyContent: 'center',
+                            justifyContent: 'content',
+                            border: "1px solid blue",
                             alignItems: 'start',
-                        gap:20}}>
-                            <Typography variant="h4">
+                        }}>
+                            <Typography variant="h4" sx={{mr:"30px"}}>
                                         Start Time:<strong>{startTime.format("HH:mm")}</strong>
                                     </Typography>
 
