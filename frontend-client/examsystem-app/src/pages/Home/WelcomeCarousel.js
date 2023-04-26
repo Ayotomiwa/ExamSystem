@@ -4,7 +4,7 @@ import { Carousel as MuiCarousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.css';
 import styled from '@mui/material/styles/styled';
 import LsbuLogo from '../../components/LsbuLogo';
-import Login from '../Login/LoginForm';
+import LoginForm from '../Login/LoginForm';
 
 const StyledSlide = styled('div')(({ theme, backgroundColor }) => ({
     backgroundColor,
@@ -22,12 +22,12 @@ const LogoTitle = () => (
     </Box>
 );
 
-const WelcomeCarousel = ({login}) => {
+const WelcomeCarousel = ({setLogin}) => {
     const [carouselIndex, setCarouselIndex] = useState(0);
     const theme = useTheme();
 
     const handleSignIn = () => {
-        login();
+        setLogin(true);
     }
 
     const handleStartExam = () => {

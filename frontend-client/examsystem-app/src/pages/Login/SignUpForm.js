@@ -2,9 +2,9 @@ import { useState } from "react";
 import { Modal, Form, Button } from "react-bootstrap";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import TextField from "@mui/material/TextField";
-import { FaEnvelope, FaLock, FaUserPlus } from "react-icons/fa";
+import {FaEnvelope, FaLock, FaSignInAlt, FaUserPlus} from "react-icons/fa";
 
-const SignUp = ({ show, handleClose }) => {
+const SignUp = ({ show, setLogin, setSignUp }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -21,6 +21,12 @@ const SignUp = ({ show, handleClose }) => {
         setConfirmPassword(event.target.value);
     };
 
+    const handleLogin = () => {
+        setSignUp(false);
+        setLogin(true);
+        console.log("Login");
+    }
+
     const handleSubmit = (event) => {
         event.preventDefault();
         if (password !== confirmPassword) {
@@ -28,7 +34,26 @@ const SignUp = ({ show, handleClose }) => {
         } else {
             console.log("Signup Successful!");
         }
+        createUser();
     };
+
+    const createUser = () => {
+        fetch("http://localhost:8080/api/user/sign-up", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                email: email,
+                password: password,
+            })
+        }).then(r => r.json())
+        .then(data => {
+            console.log(data);
+        }).catch(err => {
+            console.log(err);
+        })
+    }
 
     const theme = createTheme({
         palette: {
@@ -41,9 +66,14 @@ const SignUp = ({ show, handleClose }) => {
         },
     });
 
+    function closeSignUp() {
+        setSignUp(false);
+        console.log("Close Sign Up");
+    }
+
     return (
         <ThemeProvider theme={theme}>
-            <Modal show={show} onHide={handleClose} className="signup-modal">
+            <Modal show={show} onHide={closeSignUp} className="signup-modal">
                 <Modal.Header closeButton>
                     <Modal.Title>Sign Up</Modal.Title>
                 </Modal.Header>
@@ -91,9 +121,14 @@ const SignUp = ({ show, handleClose }) => {
                             }}
                             sx={{ mb: 2 }}
                         />
+                        <div className="d-flex justify-content-between">
+                        <Button variant="contained" onClick={handleLogin} fullWidth className="login-button">
+                            <FaSignInAlt /> Back To Login
+                        </Button>
                         <Button variant="contained" type="submit" fullWidth className="signup-button">
                             <FaUserPlus /> Sign Up
                         </Button>
+                        </div>
                     </Form>
                 </Modal.Body>
             </Modal>

@@ -1,25 +1,24 @@
 import React, {useEffect, useState} from "react";
 import {Box, Button, FormControl, Grid, MenuItem, TextField, Tooltip, Typography} from "@mui/material";
 import {styled} from "@mui/system";
+import {default as customStyle} from 'styled-components';
 import Autocomplete from '@mui/material/Autocomplete';
 import "./ExamFormPage.css";
 
 
 const StyledBox = styled(Box)({
     backgroundColor: "#ffffff",
+    position:"relative",
     padding: "30px",
     borderRadius: "8px",
     boxShadow: `0 3px 5px 2px rgba(0, 0, 0, 0.3)`,
-    width: "45%",
-    maxWidth: "1000px",
-    margin: "auto",
+    minWidth: "100%",
 });
 
 
 const StyledButton = styled(Button)({
     borderRadius: "25px",
     border: "2px solid #584595",
-    marginTop: "20px",
     width: "100%",
     backgroundColor: "transparent",
     color: "#584595",
@@ -54,18 +53,71 @@ const StyledTitle = styled(Typography)({
 });
 
 
-const ExamForm = ({form, setForm}) => {
+
+const StyledFlexbox = customStyle.div`
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: space-between;
+`;
+const StyledSmallFlexbox = customStyle.div`
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    justify-content: start;
+`;
+
+const StyledFlexItem = customStyle.div`
+    flex-basis: calc(50% - 0.5rem);
+    margin-bottom: 1rem;
+`;
+
+const StyledFlexRow = customStyle.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    width: 100%;
+`;
+
+const StyledFlexRowItem = customStyle.div`
+    flex-basis: calc(50% - 0.5rem);
+`;
+
+const StyledFullWidthFlexItem = customStyle(StyledFlexItem)`
+    flex-basis: 100%;
+`;
+
+const StyledSmallFlexItem = customStyle(StyledFlexItem)`
+    flex-basis: calc(33% - 0.5rem);
+   
+`;
+
+
+
+
+const ExamForm = ({form, setForm, setShowForm, setShowRules, setIsStarted, tempForm, setTempForm}) => {
 
 
     const [modules, setModules] = useState([]);
+    // const [tempForm, setTempForm] = useState({
+    //     durationHrs: form.durationHrs,
+    //     durationMins: form.durationMins,
+    //     startTime: form.startTime,
+    //     restrictedMinutes: form.restrictedMinutes,
+    // });
 
     useEffect(() => {
-        // Fetch the list of available modules from your REST API
+
         const fetchModules = async () => {
             try {
                 const response = await fetch("http://localhost:8080/api/modules");
                 const data = await response.json();
-                setModules(data);
+                const uniqueData = Array.from(new Set(data.map(module => module.moduleName))).map(moduleName => {
+                    return data.find(module => module.moduleName === moduleName);
+                });
+                setModules(uniqueData);
             } catch (error) {
                 console.error("Error fetching modules:", error);
             }
@@ -78,180 +130,206 @@ const ExamForm = ({form, setForm}) => {
         setForm({...form, [event.target.name]: event.target.value});
     };
 
+    const handleTempChange = (event) => {
+        setTempForm({ ...tempForm, [event.target.name]: event.target.value });
+    };
+
     const handleSubmit = (event) => {
         event.preventDefault();
-        window.location.href = "/timer";
+        setForm({
+            ...form,
+            durationHrs: tempForm.durationHrs,
+            durationMins: tempForm.durationMins,
+            startTime: tempForm.startTime,
+            restrictedMinutes: tempForm.restrictedMinutes,
+        });
+        setIsStarted(true);
+        setShowForm(false);
     };
 
     const handleAutocompleteChange = (name, value) => {
         if (value) {
-            setForm({
-                ...form,
+            setForm((prevForm) => ({
+                ...prevForm,
                 [name]: value[name],
-            });
-        } else {
-            setForm({
-                ...form,
-                [name]: "",
-            });
+            }));
+        }
+        else{
+            setForm((prevForm) => ({
+                ...prevForm,
+                ["moduleName"]: form.moduleName,
+                ["moduleCode"]: form.moduleCode,
+            }));
         }
     };
 
 
+    const getModuleByModuleName = (moduleName) => {
+        return modules.find(module => module.moduleName === moduleName);
+    };
+
+    const getModuleByModuleCode = (moduleCode) => {
+        return modules.find(module => module.moduleCode === moduleCode);
+    };
+
+    function handleNext() {
+        setShowForm(false);
+        setShowRules(true);
+    }
+
     return (
-            <StyledBox sx={{width:"100%"}}>
-                <StyledTitle variant="h4">Exam Form</StyledTitle>
-                <FormControl>
-                    <form onSubmit={handleSubmit}>
-                        <Grid container spacing={5}>
-                            <Grid item xs={12} sm={12}>
-                                <Autocomplete
-                                    options={modules}
-                                    getOptionLabel={(option) => option.moduleName}
-                                    onChange={(event, value) => handleAutocompleteChange('moduleName', value)}
-                                    fullWidth
-                                    renderInput={(params) => (
-                                        <StyledTextField
-                                            {...params}
-                                            name="moduleName"
-                                            label="Module Name"
-                                            margin="normal"
-                                            variant="standard"
-                                            required
-                                        />
-                                    )}
-                                />
-                            </Grid>
-                            <Grid item xs={12} sm={12}>
-                                <Autocomplete
-                                    options={modules}
-                                    getOptionLabel={(option) => option.moduleCode}
-                                    onChange={(event, value) => handleAutocompleteChange('moduleCode', value)}
-                                    fullWidth
-                                    renderInput={(params) => (
-                                        <StyledTextField
-                                            {...params}
-                                            name="moduleCode"
-                                            label="Module Code"
-                                            margin="normal"
-                                            variant="standard"
-                                            required
-                                        />
-                                    )}
-                                />
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <StyledTextField
-                                    label="Venue"
-                                    name="venue"
-                                    variant="standard"
-                                    value={form.venue}
-                                    onChange={handleChange}
-                                    fullWidth
-                                    required
-                                />
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <StyledTextField
-                                    type="number"
-                                    label="No. of Students"
-                                    name="noOfStudents"
-                                    variant="standard"
-                                    value={form.noOfStudents}
-                                    onChange={handleChange}
-                                    fullWidth
-                                    required
-                                />
-                            </Grid>
-                            <Grid container item xs={12} sm={12} alignItems="center" justifyContent="space-between">
-                                <Typography variant="h6" component="p" gutterBottom>
-                                    Duration:
-                                </Typography>
-                                <Grid item xs={12} sm={10}>
-                                    <Grid container justifyContent="center">
-                                    <Grid item xs={12} sm={4}>
-                                        <StyledTextField
-                                            type="number"
-                                            label="Hrs"
-                                            name="durationHrs"
-                                            variant="standard"
-                                            value={form.durationHrs}
-                                            onChange={handleChange}
-                                            fullWidth
-                                            required
-                                            inputProps={{min: 0, onKeyPress: (e) => e.preventDefault()}}
-                                        />
-                                    </Grid>
-
-                                    <Grid item xs={12} sm={4}>
-                                        <StyledTextField
-                                            type="number"
-                                            label="Mins"
-                                            variant="standard"
-                                            name="durationMins"
-                                            value={form.durationMins}
-                                            onChange={handleChange}
-                                            fullWidth
-                                            required
-                                            inputProps={{min: 0, max: 59, onKeyPress: (e) => e.preventDefault()}}
-                                        />
-                                    </Grid>
-                                </Grid>
-                            </Grid>
-                            </Grid>
-
-                            <Grid item xs={12} sm={4}>
-                                <StyledTextField
-                                    label="Exam Type"
-                                    name="examType"
-                                    value={form.examType}
-                                    onChange={handleChange}
-                                    select
-                                    fullWidth
-                                    required
-                                >
-                                    <MenuItem value="NORMAL">Normal</MenuItem>
-                                    <MenuItem value="RESIT">Resit</MenuItem>
-                                </StyledTextField>
-                            </Grid>
-                            <Grid item xs={12} sm={4}>
-                                <StyledTextField
-                                    label="Start Time"
-                                    type="time"
-                                    name="startTime"
-                                    value={form.startTime}
-                                    onChange={handleChange}
-                                    fullWidth
-                                    required
-                                    InputLabelProps={{
-                                        shrink: true,
-                                    }}
-                                />
-                            </Grid>
-
-                            <Grid item xs={12} sm={4}>
+        <StyledBox>
+            <FormControl>
+                <form onSubmit={handleSubmit}>
+                    <StyledFlexbox>
+                        <StyledFullWidthFlexItem>
+                            <Autocomplete
+                                options={modules}
+                                getOptionLabel={(option) => option.moduleName}
+                                onChange={(event, value) => handleAutocompleteChange('moduleName', value)}
+                                value={getModuleByModuleName(form.moduleName) || null}
+                                fullWidth
+                                renderInput={(params) => (
+                                    <StyledTextField
+                                        {...params}
+                                        name="moduleName"
+                                        label="Module Name"
+                                        margin="normal"
+                                        variant="standard"
+                                        onChange={handleChange}
+                                        required
+                                    />
+                                )}
+                            />
+                        </StyledFullWidthFlexItem>
+                        <StyledFullWidthFlexItem>
+                            <Autocomplete
+                                options={modules}
+                                getOptionLabel={(option) => option.moduleCode}
+                                onChange={(event, value) => handleAutocompleteChange('moduleCode', value)}
+                                fullWidth
+                                value={getModuleByModuleCode(form.moduleCode) || null}
+                                renderInput={(params) => (
+                                    <StyledTextField
+                                        {...params}
+                                        name="moduleCode"
+                                        label="Module Code"
+                                        margin="normal"
+                                        value={form.moduleCode}
+                                        variant="standard"
+                                        required
+                                    />
+                                )}
+                            />
+                        </StyledFullWidthFlexItem>
+                        <StyledFlexItem>
+                            <StyledTextField
+                                label="Venue"
+                                name="venue"
+                                variant="standard"
+                                onChange={handleChange}
+                                value={form.venue}
+                                fullWidth
+                                required
+                            />
+                        </StyledFlexItem>
+                        <StyledFlexItem>
+                            <StyledTextField
+                                type="number"
+                                label="No. of Students"
+                                name="noOfStudents"
+                                variant="standard"
+                                value={form.noOfStudents}
+                                onChange={handleChange}
+                                fullWidth
+                                required
+                            />
+                        </StyledFlexItem>
+                        <StyledFlexRow>
+                            <Typography variant="h6" component="p" gutterBottom color={"black"}>
+                                Duration:
+                            </Typography>
+                            <StyledFlexRowItem>
                                 <StyledTextField
                                     type="number"
-                                    label="Restricted Minutes"
-                                    name="restrictedMinutes"
-                                    value={form.restrictedMinutes}
-                                    onChange={handleChange}
+                                    label="Hrs"
+                                    name="durationHrs"
+                                    variant="standard"
+                                    value={tempForm.durationHrs}
+                                    onChange={handleTempChange}
                                     fullWidth
                                     required
-                                    InputLabelProps={{
-                                        shrink: true,
-                                    }}
+                                    inputProps={{ min: 0, max:6 }}
                                 />
-                                <Tooltip
-                                    title="Students are not allowed to leave the room during the restricted minutes (e.g., first 30 mins and last 30 mins)">
-                                    <span>(?)</span>
-                                </Tooltip>
-                            </Grid>
-                        </Grid>
-                        <StyledButton type="submit">START EXAM</StyledButton>
-                    </form>
-                </FormControl>
-            </StyledBox>
+                            </StyledFlexRowItem>
+                            <StyledFlexRowItem>
+                                <StyledTextField
+                                    type="number"
+                                    label="Mins"
+                                    variant="standard"
+                                    name="durationMins"
+                                    value={tempForm.durationMins}
+                                    onChange={handleTempChange}
+                                    fullWidth
+                                    required
+                                    inputProps={{ min: 0, max: 59}}
+                                />
+                            </StyledFlexRowItem>
+                        </StyledFlexRow>
+                    </StyledFlexbox>
+                    <StyledSmallFlexbox>
+                        <StyledSmallFlexItem>
+                            <StyledTextField
+                                label="Exam Type"
+                                name="examType"
+                                value={form.examType}
+                                onChange={handleChange}
+                                select
+                                fullWidth
+                                required
+                            >
+                                <MenuItem value="NORMAL">Normal</MenuItem>
+                                <MenuItem value="RESIT">Resit</MenuItem>
+                            </StyledTextField>
+                        </StyledSmallFlexItem>
+                        <StyledSmallFlexItem>
+                            <StyledTextField
+                                label="Start Time"
+                                type="time"
+                                name="startTime"
+                                value={tempForm.startTime}
+                                onChange={handleTempChange}
+                                fullWidth
+                                required
+                                InputLabelProps={{
+                                    shrink: true
+                                }}
+                            />
+                        </StyledSmallFlexItem>
+                        <StyledSmallFlexItem>
+                            <StyledTextField
+                                type="number"
+                                label="Restricted Minutes"
+                                name="restrictedMinutes"
+                                value={tempForm.restrictedMinutes}
+                                onChange={handleTempChange}
+                                fullWidth
+                                required
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                                inputProps={{ min: 0, max: 60}}
+                            />
+                            <Tooltip
+                                title="Students are not allowed to leave the room during the restricted minutes (e.g., first 30 mins and last 30 mins)">
+                                <span>(?)</span>
+                            </Tooltip>
+                        </StyledSmallFlexItem>
+                    </StyledSmallFlexbox>
+                    <StyledButton type="submit">START</StyledButton>
+                </form>
+            </FormControl>
+        </StyledBox>
     );
 };
 export default ExamForm;

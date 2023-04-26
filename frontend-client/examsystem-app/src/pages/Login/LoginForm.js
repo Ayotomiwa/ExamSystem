@@ -5,7 +5,7 @@ import TextField from "@mui/material/TextField";
 import { FaEnvelope, FaLock, FaSignInAlt, FaUserPlus } from "react-icons/fa";
 import "./loginForm.css";
 
-const Login = ({ show, handleClose }) => {
+const LoginForm = ({ show, setLogin, setSignUp }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
@@ -27,12 +27,13 @@ const Login = ({ show, handleClose }) => {
     };
 
     const handleSignUp = () => {
-        handleClose();
+        setLogin(false);
+        setSignUp(true);
         console.log("Sign Up");
     };
 
     const closeLogin = () => {
-        handleClose();
+        setLogin(false);
         console.log("Close Login");
     }
 
@@ -101,5 +102,5 @@ const Login = ({ show, handleClose }) => {
     );
 };
 
-export default Login;
+export default LoginForm;
 

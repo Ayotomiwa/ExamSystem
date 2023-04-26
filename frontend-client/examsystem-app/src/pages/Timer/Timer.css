@@ -1,9 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700&display=swap');
+
+
 .timer-page {
     /*background-image: url('../../assets/simple.svg');*/
-    min-height: 100vh;
     background-repeat: space;
     background-size: auto;
     background-position: center;
+}
+
+#timer{
+    font-family: 'Orbitron', sans-serif;
 }
 
 /*.Box {*/

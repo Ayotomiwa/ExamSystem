@@ -7,7 +7,7 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import {Carousel} from "react-responsive-carousel";
 
 
-const WelcomePage = ({handleLogin}) => {
+const WelcomePage = ({setLogin}) => {
     const [isFeaturedExamsOpen, setIsFeaturedExamsOpen] = useState(true);
 
     const toggleFeaturedExams = () => {
@@ -21,7 +21,7 @@ const WelcomePage = ({handleLogin}) => {
         <Box sx={{ display: "flex", flexDirection: "column" }}>
             <Box sx={{ display: "flex", flexDirection: "column", flex: 1 }}>
                     <Box sx={{ Width: "100%"}}>
-                        <WelcomeCarousel login={handleLogin}/>
+                        <WelcomeCarousel setLogin={setLogin}/>
                     </Box>
                 <Box sx={{ display:"flex", flexDirection: "row"}}>
                 {!isFeaturedExamsOpen && (

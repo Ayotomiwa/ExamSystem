@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { Navbar, Nav } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -13,6 +13,8 @@ library.add(fas, faUserCircle);
 
 
 function Header() {
+
+
     return (
         <Navbar expand="lg" variant="dark">
             <Navbar.Brand as={Link} to="/">
@@ -67,7 +69,7 @@ function Footer() {
                         <p>
                             Developed by{" "}
                             <a href="examsystem-app/src#" className="text-decoration-none">
-                                ServerWzds.
+                                ServerWzd.
                             </a>
                         </p>
                     </div>
@@ -78,14 +80,14 @@ function Footer() {
 }
 
 
-function Layout(props) {
+function Layout({children, timerMode, setTimerMode}) {
     const location = useLocation().pathname;
     return (
         <div id="layout">
-            <Header />
-            <main className="flex-fill">{props.children}</main>
-            {location !== "/timer" && <BackToTop />}
-            <Footer />
+            {timerMode && <Header />}
+            <main className="flex-fill">{children}</main>
+            {(location !== "/timer" && location !=="/new-exam") && <BackToTop />}
+            {timerMode && <Footer />}
         </div>
     );
 }

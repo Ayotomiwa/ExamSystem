@@ -5,7 +5,9 @@ const ExamFormPage = ({form, setForm}) => {
 
     return (
         <div id="exam-form-page">
-            <ExamForm form={form} setForm={setForm} />
+            <div style={{minWidth:"45%"}}>
+                <ExamForm form={form} setForm={setForm} />
+            </div>
         </div>
     )
 };
