@@ -72,10 +72,7 @@ const TimerPage = ({form, setForm, timerMode, setTimerMode, tempForm, setTempFor
         }
     }
 
-   // useEffect(() => {
-   //     setShowLayoutComponents(false);
-   // },[]);
-
+ 
 
     function togglePause() {
         if (dayjs().isBefore(startTime)) {
@@ -126,7 +123,7 @@ const TimerPage = ({form, setForm, timerMode, setTimerMode, tempForm, setTempFor
         <Box className="timer-page-container" sx={{
             display: "flex",
             flexDirection: "row",
-            // border: "1px solid #e75480"
+        
         }}>
             <Box className="timer-page" sx={{display:"flex", flexDirection:"column", flex:1}}>
                 <Box sx={{p: 3}}>
@@ -173,7 +170,7 @@ const TimerPage = ({form, setForm, timerMode, setTimerMode, tempForm, setTempFor
                             style={{color:"black", borderColor:"black"}}
                         >
                             <Replay/>
-                            {/*Clear*/}
+                        
                         </Button>
                         <Button
                             variant={play ? "outlined": "contained" }
@@ -185,7 +182,7 @@ const TimerPage = ({form, setForm, timerMode, setTimerMode, tempForm, setTempFor
                             }}
                         >
                             {play ? <Pause/> : <PlayArrow/>}
-                            {/*{play ? 'Pause' : 'Play'}*/}
+                        
                         </Button>
                         <Button
                             variant={`outlined`}
