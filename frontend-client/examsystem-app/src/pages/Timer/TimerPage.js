@@ -12,6 +12,7 @@ import SideBar from "../../components/SideBar";
 import ExamInfo from "./ExamInfo";
 import useFullScreen from "../../hooks/useFullScreen";
 import {Link} from "react-router-dom";
+import "./TimerPage.css"
 
 
 
@@ -37,6 +38,7 @@ const TimerPage = ({form, setForm, timerMode, setTimerMode, tempForm, setTempFor
         const [isFullScreen, toggleFullScreen] = useFullScreen();
         const fullScreenContainerRef = useRef(null);
         const [adjustedEndTime, setAdjustedEndTime] = useState(endTime);
+        const [isRotated, setIsRotated] = useState(false);
 
 
 
@@ -115,7 +117,15 @@ const TimerPage = ({form, setForm, timerMode, setTimerMode, tempForm, setTempFor
         setIsStarted(false);
         setPlay(true);
         setLastPauseTime(null);
+
     }
+    const handleMouseDown = () => {
+        setIsRotated(true);
+      };
+    
+      const handleMouseUp = () => {
+        setIsRotated(false);
+      };
 
 
     return (
@@ -164,12 +174,24 @@ const TimerPage = ({form, setForm, timerMode, setTimerMode, tempForm, setTempFor
                         }}
                     >
 
-                        <Button
-                            variant={`outlined`}
-                            onClick={() => resetTimerPage()}
-                            style={{color:"black", borderColor:"black"}}
-                        >
-                            <Replay/>
+                            <Button
+                                variant={`outlined`}
+                                onClick={() => resetTimerPage()}
+                                style={{ color: 'black', borderColor: 'black', height: "35px"}}
+                                onMouseDown={handleMouseDown}
+                                onMouseUp={handleMouseUp}
+                            >
+                            <Replay
+                                style={{
+                                transition: 'transform 0.3s ease-in-out',
+                                transform: `rotate(${isRotated ? '-360deg' : '0'})`,
+                                position: 'absolute',
+                                top: '50%',
+                                left: '50%',
+                                transformOrigin: 'center',
+                                margin: '-12px 0 0 -12px',
+                            }}
+                            />
                         
                         </Button>
                         <Button
