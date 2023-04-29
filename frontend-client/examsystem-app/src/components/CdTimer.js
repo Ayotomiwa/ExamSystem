@@ -24,11 +24,10 @@ const CdTimer = ({ startTime, endTime, isPaused, totalPausedDuration, isStarted}
                 return;
             }
             const currentTime = dayjs();
-            const adjustedEndTime = endTime.clone().add(totalPausedDuration, 'milliseconds');
             if (currentTime.isBefore(startTime)) {
                 setTimeLeft(dayjs.duration(startTime.diff(currentTime)));
-            } else if (currentTime.isAfter(startTime) && currentTime.isBefore(adjustedEndTime)) {
-                setTimeLeft(dayjs.duration(adjustedEndTime.diff(currentTime)));
+            } else if (currentTime.isAfter(startTime) && currentTime.isBefore(endTime)) {
+                setTimeLeft(dayjs.duration(endTime.diff(currentTime)));
             } else {
                 clearInterval(interval);
             }
@@ -36,19 +35,14 @@ const CdTimer = ({ startTime, endTime, isPaused, totalPausedDuration, isStarted}
         }, 1000);
 
         return () => clearInterval(interval);
-    }, [startTime, endTime, isPaused, totalPausedDuration, isStarted]);
+    }, [startTime, endTime, isPaused, isStarted]);
 
-    let fontSize= "7rem";
 
     if (!initialized) {
         return (
             <Typography
-                id="timer"
-                variant="h2"
-                sx={{
-                    fontSize,
-                    letterSpacing: '1rem',
-                }}
+                className="timer-text"
+                sx={{ fontSize: "7rem", fontFamily: "'Orbitron', sans-serif" }}
             >
                 00:00:00
             </Typography>
@@ -60,18 +54,17 @@ const CdTimer = ({ startTime, endTime, isPaused, totalPausedDuration, isStarted}
         : 'Time up';
 
     const waiting = isWaiting? 'Waiting.. ' : '';
-    fontSize = isWaiting ? '4rem' : '7rem';
+
 
     return (
         <Typography
-            id="timer"
-            variant="h2" sx={{ fontSize, letterSpacing: '1rem'}}
+            className={`timer-text${isWaiting ? ' timer-text-waiting' : ''}`}
+            sx={{ fontSize: isWaiting ? "4rem" : "9rem", fontFamily: "'Orbitron', sans-serif" }}
         >
             {waiting}
             {formattedTimeLeft}
         </Typography>
     );
 };
-
 export default CdTimer;
 

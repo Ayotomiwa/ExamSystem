@@ -8,12 +8,24 @@
     background-position: center;
 }
 
-#timer{
-    font-family: 'Orbitron', sans-serif;
+.timer-text {
+    letter-spacing: 1rem;
 }
 
+.timer-text-waiting {
+    color: purple;
+}
 
-.exam-form-container {
-    flex-grow: 1;
-    margin-left: 20px;
+@media (min-width: 1500px) {
+    .timer-text {
+        font-size: 10rem !important;
+        color: #e75480;
+    }
+}
+
+@media (max-width: 768px) {
+    .timer-text {
+        font-size: 3rem !important;
+        color: blue;
+    }
 }

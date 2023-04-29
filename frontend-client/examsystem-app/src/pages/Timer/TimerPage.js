@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import localizedFormat from "dayjs/plugin/localizedFormat";
 import utc from 'dayjs-plugin-utc';
-import {Box, Button, Collapse, IconButton, Tooltip, Typography} from "@mui/material";
+import {Box, Button, Collapse, Zoom, Grow, IconButton, Tooltip, Typography} from "@mui/material";
 import {Close, Description, Edit, ListAlt, More, Pause, PlayArrow, Replay} from "@mui/icons-material";
 import CdTimer from "../../components/CdTimer";
 import ExamForm from "./ExamForm";
@@ -37,6 +37,7 @@ const TimerPage = ({form, setForm, timerMode, setTimerMode, tempForm, setTempFor
         const [isFullScreen, toggleFullScreen] = useFullScreen();
         const fullScreenContainerRef = useRef(null);
         const [adjustedEndTime, setAdjustedEndTime] = useState(endTime);
+        const [sideBarOpen, setSideBarOpen] = useState(false);
 
 
 
@@ -45,11 +46,10 @@ const TimerPage = ({form, setForm, timerMode, setTimerMode, tempForm, setTempFor
     }
 
     const fullScreenContainerStyle = {
-        display: isFullScreen ? 'grid' : 'unset',
-        placeItems: isFullScreen ? 'stretch' : 'unset',
-        flex:1,
+        minHeight: "100vh",
+        minWidth: "70vw",
         backgroundColor: "white",
-
+        border:"1px solid red",
     };
 
 
@@ -58,18 +58,42 @@ const TimerPage = ({form, setForm, timerMode, setTimerMode, tempForm, setTempFor
         setAdjustedEndTime(newAdjustedEndTime);
     }, [totalPausedDuration, form]);
 
+
+    useEffect(() =>{
+
+
+
+
+    },[showRules, showLogs, showForm])
+
+
+
+
     function handleTimerButtons(event) {
         if (event.currentTarget.id === "Logs") {
             if (showForm) {
                 setShowForm(false);
             }
             setShowLogs(!showLogs);
+            return;
         } else if (event.currentTarget.id === "Edit Form") {
             if (showLogs) {
                 setShowLogs(false);
             }
             setShowForm(!showForm);
+            return;
         }
+        else if (event.currentTarget.id === "Edit Form") {
+            if (showLogs) {
+                setShowLogs(false);
+            }
+            else if (showForm){
+                setShowForm(false);
+            }
+            setShowForm(!showForm);
+            return;
+        }
+
     }
 
  
@@ -123,6 +147,8 @@ const TimerPage = ({form, setForm, timerMode, setTimerMode, tempForm, setTempFor
         <Box className="timer-page-container" sx={{
             display: "flex",
             flexDirection: "row",
+            border:"1px solid green",
+            minHeight:"100vh",
         
         }}>
             <Box className="timer-page" sx={{display:"flex", flexDirection:"column", flex:1}}>
@@ -135,13 +161,18 @@ const TimerPage = ({form, setForm, timerMode, setTimerMode, tempForm, setTempFor
                     </Typography>
                 </Box>
                 <ExamInfo startTime={startTime} endTime={adjustedEndTime} restrictedMinutes={30}/>
-                <Box sx={{display:"grid", placeItems:"center", mt:"40px",height:"100%"}}>
+                <Box sx={{display:"grid", placeItems:"center", mt:"40px", ml:"10px", height:"100%"}}>
                         <Box
                             sx={{
+                                mt:"50px",
+                                display: 'flex',
+                                justifyContent:"center",
+                                alignItems:"center",
                                 backgroundColor:"white",
                                 border: "10px solid black",
                                 boxSizing: "border-box",
-                                p:"30px"
+                                p:"30px",
+                                minWidth:"60vw"
                             }}
                         >
                             <CdTimer startTime={startTime}
@@ -160,7 +191,7 @@ const TimerPage = ({form, setForm, timerMode, setTimerMode, tempForm, setTempFor
                             alignItems: 'center',
                             mt:"20px",
                             gap: 3,
-                            // border: "1px solid #e75480"
+                            border: "1px solid #e75480"
                         }}
                     >
 
@@ -197,13 +228,13 @@ const TimerPage = ({form, setForm, timerMode, setTimerMode, tempForm, setTempFor
                             {/*Edit*/}
                         </Button>
                     </Box>
-                    <Collapse in={showButtons}>
+                    <Zoom in={showButtons}>
                         <Box sx={{
                             position: 'static',
                             display: 'flex',
                             flexDirection: 'row',
                             alignItems: 'center',
-                            mt:"50px",
+                            mt:"20px",
                             gap: 3,
                         }}>
 
@@ -242,40 +273,17 @@ const TimerPage = ({form, setForm, timerMode, setTimerMode, tempForm, setTempFor
                                 onClick={(event) => handleTimerButtons(event)}
                                 id="Edit Form"
                             >
-                                Edit Form
+                                Form
                             </Button>
                         </Box>
-                    </Collapse>
-
-                    <Box sx={{position:"absolute", left:"50px", mt:"50px"}}>
-                    <Box sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        border: "1px solid #e75480"
-                    }}>
-                        <Tooltip title="Additional actions">
-                            <IconButton
-                                onClick={() => setShowButtons(!showButtons)}
-                                variant="contained"
-                                sx={{
-                                    color: "#e75480",
-                                    borderColor: "#e75480",
-                                    borderRadius: "100px",
-                                }}>
-                                {showButtons ? <Close/> : <Edit/>}
-                            </IconButton>
-                        </Tooltip>
-
-                    </Box>
-                    </Box>
+                    </Zoom>
                         <Box sx={{
-                            mt:"150px",
+                            mt:"100px",
                             display: 'flex',
                             flexDirection: 'row',
                             justifyContent: 'content',
                             border: "1px solid blue",
-                            alignItems: 'start',
+                            alignItems: 'center',
                         }}>
                             <Typography variant="h4" sx={{mr:"30px"}}>
                                         Start Time:<strong>{startTime.format("HH:mm")}</strong>
