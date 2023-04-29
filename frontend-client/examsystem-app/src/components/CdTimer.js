@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
-import {css, Typography} from '@mui/material';
+import {Box, css, Typography} from '@mui/material';
 dayjs.extend(duration);
 dayjs.extend(utc);
-import "../../src/pages/Timer/Timer.css";
+import "../pages/Timer/CDTimer.css";
 import utc from "dayjs-plugin-utc";
 
 
@@ -12,6 +12,9 @@ const CdTimer = ({ startTime, endTime, isPaused, totalPausedDuration, isStarted}
     const [timeLeft, setTimeLeft] = useState(null);
     const [initialized, setInitialized] = useState(false);
 
+    const formatUnit = (value) => {
+        return value.toString().padStart(2, '0');
+    };
 
     useEffect(() => {
 
@@ -50,21 +53,49 @@ const CdTimer = ({ startTime, endTime, isPaused, totalPausedDuration, isStarted}
     }
     const isWaiting = dayjs().isBefore(startTime);
     const formattedTimeLeft = timeLeft
-        ? dayjs().startOf('day').add(timeLeft.asMilliseconds(), 'milliseconds').format('HH:mm:ss')
+        ? dayjs().startOf('day')
+            .add(timeLeft.asMilliseconds(), 'milliseconds')
+            .format('HH:mm:ss')
         : 'Time up';
 
-    const waiting = isWaiting? 'Waiting.. ' : '';
+    const waiting = isWaiting? 'Waiting...' : '';
 
+    const [hours, minutes, seconds] = formattedTimeLeft.split(':');
+
+    const width = isWaiting ? 'auto' : '1.3em';
 
     return (
-        <Typography
+        <Box
+            display="flex"
+            justifyContent="center"
+            flexDirection="row"
+            alignItems="center"
+            wordWrap="break-word"
             className={`timer-text${isWaiting ? ' timer-text-waiting' : ''}`}
-            sx={{ fontSize: isWaiting ? "4rem" : "9rem", fontFamily: "'Orbitron', sans-serif" }}
+            sx={{
+                // fontFamily: "'Orbitron', sans-serif",
+                fontSize: isWaiting ? '6rem' : '9rem',
+                fontWeight:"bold",
+            }}
         >
+            <Box>
             {waiting}
-            {formattedTimeLeft}
-        </Typography>
+            </Box>
+                <Box width={width}>
+                    {hours}
+                </Box>
+                <span style={{ width:"0.5em", display:"flex", justifyContent:"center", alignItems:"center"}}>:</span>
+                <Box width={width}>
+                    {minutes}
+                </Box>
+                <span style={{ width:"0.5em", display:"flex", justifyContent:"center", alignItems:"center"}}>:</span>
+                <Box width={width}>
+                    {seconds}
+                </Box>
+        </Box>
     );
 };
+
 export default CdTimer;
+
 

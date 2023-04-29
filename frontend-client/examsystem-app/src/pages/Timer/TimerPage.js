@@ -39,6 +39,15 @@ const TimerPage = ({form, setForm, timerMode, setTimerMode, tempForm, setTempFor
         const [adjustedEndTime, setAdjustedEndTime] = useState(endTime);
         const [isRotated, setIsRotated] = useState(false);
         const [sideBarOpen, setSideBarOpen] = useState(false);
+    const [showSideBar, setShowSideBar] = useState(true);
+
+
+
+    useEffect(() => {
+        const newAdjustedEndTime = endTime.clone().add(totalPausedDuration, 'milliseconds');
+        setAdjustedEndTime(newAdjustedEndTime);
+    }, [totalPausedDuration, form]);
+
 
 
 
@@ -48,25 +57,21 @@ const TimerPage = ({form, setForm, timerMode, setTimerMode, tempForm, setTempFor
 
     const fullScreenContainerStyle = {
         minHeight: "100vh",
-        minWidth: "70vw",
-        backgroundColor: "white",
+        backgroundColor: isFullScreen ? "white" : "",
         border:"1px solid red",
     };
 
-
-    useEffect(() => {
-        const newAdjustedEndTime = endTime.clone().add(totalPausedDuration, 'milliseconds');
-        setAdjustedEndTime(newAdjustedEndTime);
-    }, [totalPausedDuration, form]);
-
-
-    useEffect(() =>{
+    const handleCancel = () => {
+        setShowSideBar(false);
+        closeSideBar()
+    };
 
 
-
-
-    },[showRules, showLogs, showForm])
-
+    const closeSideBar = () => {
+        setShowForm(false);
+        setShowLogs(false);
+        setShowRules(false);
+    }
 
 
 
@@ -173,15 +178,19 @@ const TimerPage = ({form, setForm, timerMode, setTimerMode, tempForm, setTempFor
                 <Box sx={{display:"grid", placeItems:"center", mt:"40px", ml:"10px", height:"100%"}}>
                         <Box
                             sx={{
-                                mt:"50px",
+                                mt:"30px",
                                 display: 'flex',
                                 justifyContent:"center",
                                 alignItems:"center",
                                 backgroundColor:"white",
                                 border: "10px solid black",
                                 boxSizing: "border-box",
-                                p:"30px",
-                                minWidth:"60vw"
+                                p:"20px",
+                                pb:"0px",
+                                pt:"0px",
+                                // minWidth:"20px",
+                                borderRadius:"25px"
+                                // minWidth:"60vw"
                             }}
                         >
                             <CdTimer startTime={startTime}
@@ -255,7 +264,7 @@ const TimerPage = ({form, setForm, timerMode, setTimerMode, tempForm, setTempFor
                             display: 'flex',
                             flexDirection: 'row',
                             alignItems: 'center',
-                            mt:"20px",
+                            mt:"10px",
                             gap: 3,
                         }}>
 
@@ -299,7 +308,7 @@ const TimerPage = ({form, setForm, timerMode, setTimerMode, tempForm, setTempFor
                         </Box>
                     </Zoom>
                         <Box sx={{
-                            mt:"100px",
+                            mt:"50px",
                             display: 'flex',
                             flexDirection: 'row',
                             justifyContent: 'content',
@@ -342,7 +351,7 @@ const TimerPage = ({form, setForm, timerMode, setTimerMode, tempForm, setTempFor
                     </Box>
             </Box>
                 {showForm && (
-                    <SideBar name="Form">
+                    <SideBar onCancel={handleCancel} name="Form">
                         <ExamForm form={form}
                                   setForm={setForm}
                                   setShowForm={setShowForm}
@@ -354,11 +363,11 @@ const TimerPage = ({form, setForm, timerMode, setTimerMode, tempForm, setTempFor
                     </SideBar>)}
 
                 {showLogs && (
-                    <SideBar name="Logs">
+                    <SideBar onCancel={handleCancel} name="Logs">
                         <Notes form={form} setForm={setForm}/>
                     </SideBar>)}
             {showRules && (
-                <SideBar name="Rules & Regulations">
+                <SideBar onCancel={handleCancel} name="Rules & Regulations">
                     <Notes form={form} setForm={setForm}/>
                 </SideBar>)}
         </Box>
