@@ -2,7 +2,6 @@ import React, {useEffect, useRef, useState} from "react";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import localizedFormat from "dayjs/plugin/localizedFormat";
-import utc from 'dayjs-plugin-utc';
 import {Box, Button, Collapse, Zoom, Grow, IconButton, Tooltip, Typography} from "@mui/material";
 import {Close, Description, Edit, ListAlt, More, Pause, PlayArrow, Replay} from "@mui/icons-material";
 import CdTimer from "../../components/CdTimer";
@@ -12,19 +11,20 @@ import SideBar from "../../components/SideBar";
 import ExamInfo from "./ExamInfo";
 import useFullScreen from "../../hooks/useFullScreen";
 import {Link} from "react-router-dom";
+import "./TimerPage.css"
 
 
 
 dayjs.extend(duration);
 dayjs.extend(localizedFormat);
-dayjs.extend(utc);
+
 
 
 const TimerPage = ({form, setForm, timerMode, setTimerMode, tempForm, setTempForm}) => {
 
         const [showLogs, setShowLogs] = useState(false);
         const [hour, minute] = form.startTime.split(":").map(Number);
-        const startTime = dayjs().set("hour", hour).set("minute", minute).utc().local();
+        const startTime = dayjs().set("hour", hour).set("minute", minute)
         const examDuration = dayjs.duration({hours: parseInt(form.durationHrs), minutes: parseInt(form.durationMins)});
         const endTime = startTime.clone().add(examDuration.asMilliseconds(), 'milliseconds');
         const [showForm, setShowForm] = useState(true);
@@ -37,6 +37,7 @@ const TimerPage = ({form, setForm, timerMode, setTimerMode, tempForm, setTempFor
         const [isFullScreen, toggleFullScreen] = useFullScreen();
         const fullScreenContainerRef = useRef(null);
         const [adjustedEndTime, setAdjustedEndTime] = useState(endTime);
+        const [isRotated, setIsRotated] = useState(false);
         const [sideBarOpen, setSideBarOpen] = useState(false);
 
 
@@ -139,7 +140,15 @@ const TimerPage = ({form, setForm, timerMode, setTimerMode, tempForm, setTempFor
         setIsStarted(false);
         setPlay(true);
         setLastPauseTime(null);
+
     }
+    const handleMouseDown = () => {
+        setIsRotated(true);
+      };
+    
+      const handleMouseUp = () => {
+        setIsRotated(false);
+      };
 
 
     return (
@@ -195,12 +204,24 @@ const TimerPage = ({form, setForm, timerMode, setTimerMode, tempForm, setTempFor
                         }}
                     >
 
-                        <Button
-                            variant={`outlined`}
-                            onClick={() => resetTimerPage()}
-                            style={{color:"black", borderColor:"black"}}
-                        >
-                            <Replay/>
+                            <Button
+                                variant={`outlined`}
+                                onClick={() => resetTimerPage()}
+                                style={{ color: 'black', borderColor: 'black', height: "35px"}}
+                                onMouseDown={handleMouseDown}
+                                onMouseUp={handleMouseUp}
+                            >
+                            <Replay
+                                style={{
+                                transition: 'transform 0.3s ease-in-out',
+                                transform: `rotate(${isRotated ? '-360deg' : '0'})`,
+                                position: 'absolute',
+                                top: '50%',
+                                left: '50%',
+                                transformOrigin: 'center',
+                                margin: '-12px 0 0 -12px',
+                            }}
+                            />
                         
                         </Button>
                         <Button
