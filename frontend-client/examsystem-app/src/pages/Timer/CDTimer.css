@@ -9,23 +9,32 @@
 }
 
 .timer-text {
-    letter-spacing: 1rem;
+    font-weight: bold;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 9rem;
 }
 
 .timer-text-waiting {
-    color: purple;
+    font-size: 6rem;
+    font-weight: bold;
+    font-family: 'Orbitron', sans-serif;
 }
 
 @media (min-width: 1500px) {
     .timer-text {
-        font-size: 10rem !important;
+        font-size: 15rem;
         color: #e75480;
     }
+    .timer-text-waiting {
+        font-size: 7rem;
+        color: #e75480;
+    }
+
 }
 
 @media (max-width: 768px) {
     .timer-text {
-        color: blue;
-        font-size: 5rem !important;
+        color: blue !important;
+        font-size: 4rem !important;
     }
 }

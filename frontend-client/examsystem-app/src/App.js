@@ -24,6 +24,7 @@ function App() {
         noOfStudents: "",
         examType: "NORMAL",
         startTime: "",
+        endTime: "",
         durationHrs: "",
         durationMins: "",
         notes:[],

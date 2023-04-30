@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import React, {useState} from "react";
+import {Table} from "react-bootstrap";
 
 const Notes = ({form, setForm}) => {
 
@@ -92,6 +93,7 @@ const Notes = ({form, setForm}) => {
                     width: '100%',
                 }}
             >
+                <Table>
                 <TableBody>
                     {form.notes && form.notes.map((note, index) => (
                         <TableRow key={index} sx={{
@@ -110,6 +112,7 @@ const Notes = ({form, setForm}) => {
                         </TableRow>
                     ))}
                 </TableBody>
+                    </Table>
             </Paper>
         </Box>
 );

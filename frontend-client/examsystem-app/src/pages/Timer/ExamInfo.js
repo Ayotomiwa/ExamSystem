@@ -23,6 +23,9 @@ const ExamInfo = ({ startTime, endTime, restrictedMinutes }) => {
             if(now > end){
                 setCurrentStatus("done");
             }
+            else if(now < start){
+                setCurrentStatus("waiting");
+            }
             else if (now >= restrictedStart && now <= end) {
                 setCurrentStatus("restrictedEnd");
             }
@@ -30,9 +33,6 @@ const ExamInfo = ({ startTime, endTime, restrictedMinutes }) => {
                 setCurrentStatus("restrictedStart");
             } else if (now > restrictedEnd && now < restrictedStart) {
                 setCurrentStatus("allowed");
-            }
-            else if(now < start){
-                setCurrentStatus("waiting");
             }
             else{
                 setCurrentStatus("start");
@@ -83,14 +83,29 @@ const ExamInfo = ({ startTime, endTime, restrictedMinutes }) => {
                 </Box>
             )}
             {currentStatus === "restrictedEnd" && (
-                <Paper>
-                    <Typography sx={{fontSize:"25px"}}>
-                        <AccessTimeIcon fontSize="large" />
-                        {" Students are not allowed to leave the room during the last "}
-                        {restrictedMinutes}{" "}
-                        {" minutes."}
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+                    <Typography sx={{ position: "relative", display: "inline-block", paddingRight:"40px" }}>
+                        <FontAwesomeIcon icon={faWalking} size="3x" />
+                        <FontAwesomeIcon
+                            icon={faBan}
+                            size="5x"
+                            style={{
+                                position: "absolute",
+                                top: "50%",
+                                left: "30%",
+                                transform: "translate(-50%, -50%)",
+                                color: "red",
+                            }}
+                        />
                     </Typography>
-                </Paper>
+                    <Paper>
+                        <Typography sx={{fontSize:"25px"}}>
+                            {" Students are not allowed to leave the room during the last "}
+                            {restrictedMinutes}
+                            {" minutes."}
+                        </Typography>
+                    </Paper>
+                </Box>
             )}
             {currentStatus === "done" && (
                 <Paper>

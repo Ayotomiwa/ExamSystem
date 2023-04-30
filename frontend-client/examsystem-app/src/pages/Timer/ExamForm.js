@@ -4,6 +4,11 @@ import {styled} from "@mui/system";
 import {default as customStyle} from 'styled-components';
 import Autocomplete from '@mui/material/Autocomplete';
 import "./ExamFormPage.css";
+import dayjs from "dayjs";
+import duration from "dayjs/plugin/duration";
+import localizedFormat from "dayjs/plugin/localizedFormat";
+dayjs.extend(duration);
+dayjs.extend(localizedFormat);
 
 
 const StyledBox = styled(Box)({
@@ -96,17 +101,10 @@ const StyledSmallFlexItem = customStyle(StyledFlexItem)`
 
 
 
-
 const ExamForm = ({form, setForm, setShowForm, setShowRules, setIsStarted, tempForm, setTempForm}) => {
 
 
     const [modules, setModules] = useState([]);
-    // const [tempForm, setTempForm] = useState({
-    //     durationHrs: form.durationHrs,
-    //     durationMins: form.durationMins,
-    //     startTime: form.startTime,
-    //     restrictedMinutes: form.restrictedMinutes,
-    // });
 
     useEffect(() => {
 
@@ -136,29 +134,36 @@ const ExamForm = ({form, setForm, setShowForm, setShowRules, setIsStarted, tempF
 
     const handleSubmit = (event) => {
         event.preventDefault();
+        const [hour, minute] = tempForm.startTime.split(":").map(Number);
+        const startTime = dayjs().set("hour", hour).set("minute", minute)
+        const examDuration = dayjs.duration({hours: parseInt(tempForm.durationHrs), minutes: parseInt(tempForm.durationMins)});
+        const endTime = startTime.clone().add(examDuration.asMilliseconds(), 'milliseconds');
+
         setForm({
             ...form,
             durationHrs: tempForm.durationHrs,
             durationMins: tempForm.durationMins,
             startTime: tempForm.startTime,
             restrictedMinutes: tempForm.restrictedMinutes,
+            endTime: endTime.format("HH:mm"),
         });
+
         setIsStarted(true);
         setShowForm(false);
     };
 
     const handleAutocompleteChange = (name, value) => {
-        if (value) {
+        if (name === 'moduleCode' && value) {
             setForm((prevForm) => ({
                 ...prevForm,
-                [name]: value[name],
+                moduleName: value.moduleName,
+                moduleCode: value.moduleCode,
             }));
-        }
-        else{
+        } else if (!value) {
             setForm((prevForm) => ({
                 ...prevForm,
-                ["moduleName"]: form.moduleName,
-                ["moduleCode"]: form.moduleCode,
+                moduleName: "",
+                moduleCode: "",
             }));
         }
     };
@@ -168,40 +173,17 @@ const ExamForm = ({form, setForm, setShowForm, setShowRules, setIsStarted, tempF
         return modules.find(module => module.moduleName === moduleName);
     };
 
+
     const getModuleByModuleCode = (moduleCode) => {
         return modules.find(module => module.moduleCode === moduleCode);
     };
 
-    function handleNext() {
-        setShowForm(false);
-        setShowRules(true);
-    }
 
     return (
         <StyledBox>
             <FormControl>
                 <form onSubmit={handleSubmit}>
                     <StyledFlexbox>
-                        <StyledFullWidthFlexItem>
-                            <Autocomplete
-                                options={modules}
-                                getOptionLabel={(option) => option.moduleName}
-                                onChange={(event, value) => handleAutocompleteChange('moduleName', value)}
-                                value={getModuleByModuleName(form.moduleName) || null}
-                                fullWidth
-                                renderInput={(params) => (
-                                    <StyledTextField
-                                        {...params}
-                                        name="moduleName"
-                                        label="Module Name"
-                                        margin="normal"
-                                        variant="standard"
-                                        onChange={handleChange}
-                                        required
-                                    />
-                                )}
-                            />
-                        </StyledFullWidthFlexItem>
                         <StyledFullWidthFlexItem>
                             <Autocomplete
                                 options={modules}
@@ -217,6 +199,26 @@ const ExamForm = ({form, setForm, setShowForm, setShowRules, setIsStarted, tempF
                                         margin="normal"
                                         value={form.moduleCode}
                                         variant="standard"
+                                        required
+                                    />
+                                )}
+                            />
+                        </StyledFullWidthFlexItem>
+                        <StyledFullWidthFlexItem>
+                            <Autocomplete
+                                options={modules}
+                                getOptionLabel={(option) => option.moduleName}
+                                onChange={(event, value) => handleAutocompleteChange('moduleName', value)}
+                                value={getModuleByModuleName(form.moduleName) || null}
+                                fullWidth
+                                renderInput={(params) => (
+                                    <StyledTextField
+                                        {...params}
+                                        name="moduleName"
+                                        label="Module Name"
+                                        margin="normal"
+                                        variant="standard"
+                                        onChange={handleChange}
                                         required
                                     />
                                 )}
