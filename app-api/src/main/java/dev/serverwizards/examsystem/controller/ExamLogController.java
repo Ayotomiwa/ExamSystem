@@ -38,11 +38,11 @@ public class ExamLogController {
 
 
 
-    @PostMapping("")
+    @PostMapping("/create")
     public ExamLogsDto addExamLog(@RequestBody ExamLogsDto examLog) {
+        System.out.println("Start Time: "+examLog.getStartTime());
+        System.out.println("Start Time: "+examLog.getEndTime());
            examLog.setSubmittedDate(LocalDate.parse("2023-03-07"));
-//           examLog.getExam().setYear("2023");
-//           examLog.getExam().setDay("2023-02-28");
           return service.save(examLog);
     }
 

@@ -1,9 +1,6 @@
 package dev.serverwizards.examsystem.model;
 
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,7 +23,7 @@ public class ExamLogs {
     private LocalTime startTime;
     private LocalTime endTime;
     private LocalDate submittedDate;
-    private Long studentsLogged;
+    private Long studentsNo;
 
 
     @ManyToOne( fetch = FetchType.LAZY)

@@ -1,11 +1,6 @@
 package dev.serverwizards.examsystem.dto;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 
@@ -22,7 +17,7 @@ public class ExamLogsDto {
     private LocalTime startTime;
     private LocalTime endTime;
     private LocalDate submittedDate;
-    private int studentsLogged;
+    private long studentsNo;
     private String moduleName;
     private String moduleCode;
     private long examId;

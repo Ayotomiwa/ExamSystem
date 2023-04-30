@@ -21,7 +21,6 @@ public class Module {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Long courseId;
-        @NaturalId
         @Column(length = 10)
         private String moduleCode;
         private String moduleName;
