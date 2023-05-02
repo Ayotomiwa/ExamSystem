@@ -1,13 +1,16 @@
-import { useState } from "react";
+import {useContext, useState} from "react";
 import { Modal, Form, Button } from "react-bootstrap";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import TextField from "@mui/material/TextField";
 import {FaEnvelope, FaLock, FaSignInAlt, FaUserPlus} from "react-icons/fa";
+import AuthHandler from "../../components/AuthHandler";
+import {Box, InputAdornment} from "@mui/material";
 
 const SignUp = ({ show, setLogin, setSignUp }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const { login } = useContext(AuthHandler);
 
     const handleEmailChange = (event) => {
         setEmail(event.target.value);
@@ -49,6 +52,7 @@ const SignUp = ({ show, setLogin, setSignUp }) => {
             })
         }).then(r => r.json())
         .then(data => {
+            login({ username: data.username, token: data.token })
             console.log(data);
         }).catch(err => {
             console.log(err);
@@ -85,10 +89,15 @@ const SignUp = ({ show, setLogin, setSignUp }) => {
                             type="email"
                             value={email}
                             onChange={handleEmailChange}
-                            fullWidth
+                            fullWidth = {true}
                             required
-                            InputProps={{
-                                startAdornment: <FaEnvelope />,
+                            InputProps={{ startAdornment: (
+                                    <InputAdornment position="start">
+                                        <Box>
+                                            <FaEnvelope />
+                                        </Box>
+                                    </InputAdornment>
+                                ),
                                 className: "input-field",
                             }}
                             sx={{ mb: 2 }}
@@ -99,10 +108,16 @@ const SignUp = ({ show, setLogin, setSignUp }) => {
                             type="password"
                             value={password}
                             onChange={handlePasswordChange}
-                            fullWidth
+                            fullWidth = {true}
                             required
                             InputProps={{
-                                startAdornment: <FaLock />,
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <Box>
+                                            <FaLock />
+                                        </Box>
+                                    </InputAdornment>
+                                ),
                                 className: "input-field",
                             }}
                             sx={{ mb: 2 }}
@@ -113,19 +128,25 @@ const SignUp = ({ show, setLogin, setSignUp }) => {
                             type="password"
                             value={confirmPassword}
                             onChange={handleConfirmPasswordChange}
-                            fullWidth
+                            fullWidth = {true}
                             required
                             InputProps={{
-                                startAdornment: <FaLock />,
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <Box>
+                                            <FaLock />
+                                        </Box>
+                                    </InputAdornment>
+                                ),
                                 className: "input-field",
                             }}
                             sx={{ mb: 2 }}
                         />
                         <div className="d-flex justify-content-between">
-                        <Button variant="contained" onClick={handleLogin} fullWidth className="login-button">
+                        <Button variant="contained" onClick={handleLogin} className="login-button">
                             <FaSignInAlt /> Back To Login
                         </Button>
-                        <Button variant="contained" type="submit" fullWidth className="signup-button">
+                        <Button variant="contained" type="submit"  className="signup-button">
                             <FaUserPlus /> Sign Up
                         </Button>
                         </div>

@@ -137,15 +137,15 @@
 
 .view-log-btn {
     background-color: white;
-    border: 1px solid #e75480;;
+    border: 1px solid white;;
     color: #e75480;
 }
 
 .view-log-btn:hover,
 .view-log-btn:after,
 .view-log-btn:active:focus{
-    border: 1px solid #e75480;
+    border: 1px solid #584595;
     background-color: #e75480;
-    color: #ffffff;
+    color: yellow;
 }
 

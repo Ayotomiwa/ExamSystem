@@ -61,12 +61,12 @@ const WelcomePage = ({setLogin}) => {
                 >
                     <Box
                         sx={{
-                            background: "linear-gradient(to right, yellow, #e75480, #584595)",
+                            background: "linear-gradient(to right, #e75480, #584595)",
                             display: "flex",
                             alignItems: "center",
                             justifyContent: "space-between",
                             p: 1,
-                            color: "black",
+                            color: "white",
                             borderBottom: "1px solid #ccc",
                         }}
                     >

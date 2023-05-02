@@ -1,19 +1,45 @@
-import React, { useState, useEffect } from "react";
-import {Box, Paper, Typography} from "@mui/material";
+import React, {useEffect, useState} from "react";
+import {Box, Grow, Paper, Typography} from "@mui/material";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import ScheduleIcon from "@mui/icons-material/Schedule";
-import StopIcon from "@mui/icons-material/Stop";
-import {ArrowCircleRightSharp, ArrowRight, ArrowRightSharp, Cancel} from "@mui/icons-material";
+import {ArrowCircleRightSharp} from "@mui/icons-material";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faBan, faWalking} from "@fortawesome/free-solid-svg-icons";
+import dayjs from "dayjs";
 
 
-const ExamInfo = ({ startTime, endTime, restrictedMinutes }) => {
+const ExamInfo = ({ startTime, endTime, restrictedMinutes, isPaused }) => {
     const [currentStatus, setCurrentStatus] = useState("");
+    const [slideIn, setSlideIn] = useState(true);
+    const[animationDone, setAnimationDone] = useState(false);
+    const[pauseTime, setPauseTime] = useState(null);
+    const[infoPaused, setInfoPaused] = useState(false);
+
+
+
+    useEffect(() => {
+        setSlideIn(false);
+        setAnimationDone(false);
+        setTimeout(() => {
+            setAnimationDone(true);
+            setSlideIn(true);
+        }, 500);
+    }, [currentStatus]);
+
 
     useEffect(() => {
         const checkStatus = () => {
+
+            if (isPaused) {
+                   setPauseTime(dayjs());
+                   setInfoPaused(true);
+                 return;
+            }
+            else if(infoPaused){
+                startTime = dayjs(startTime).add(dayjs().diff(pauseTime)).format("HH:mm");
+                setInfoPaused(false);
+            }
+
             const now = new Date();
             const start = new Date(startTime);
             const end = new Date(endTime);
@@ -44,8 +70,9 @@ const ExamInfo = ({ startTime, endTime, restrictedMinutes }) => {
     }, [startTime, endTime, restrictedMinutes]);
 
     return (
+        <Grow direction="left" in={slideIn} mountOnEnter unmountOnExit >
         <Box sx={{width:"50%", display: "flex", justifyContent: "center", alignItems: "center", mx:"auto"}}>
-            {currentStatus === "restrictedStart" && (
+            {currentStatus === "restrictedStart" && animationDone && (
                 <Box sx={{ display: "flex", alignItems: "center" }}>
                 <Typography sx={{ position: "relative", display: "inline-block", paddingRight:"40px" }}>
                     <FontAwesomeIcon icon={faWalking} size="3x" />
@@ -70,7 +97,7 @@ const ExamInfo = ({ startTime, endTime, restrictedMinutes }) => {
                 </Paper>
                 </Box>
             )}
-            {currentStatus === "allowed" && (
+            {currentStatus === "allowed" && animationDone && (
                 <Box sx={{ display: "flex", alignItems: "center" }}>
                 <Typography sx={{ position: "relative", display: "inline-block", pr:"10px"}}>
                     <FontAwesomeIcon icon={faWalking} size="4x" />
@@ -82,7 +109,7 @@ const ExamInfo = ({ startTime, endTime, restrictedMinutes }) => {
                 </Paper>
                 </Box>
             )}
-            {currentStatus === "restrictedEnd" && (
+            {currentStatus === "restrictedEnd" && animationDone && (
                 <Box sx={{ display: "flex", alignItems: "center" }}>
                     <Typography sx={{ position: "relative", display: "inline-block", paddingRight:"40px" }}>
                         <FontAwesomeIcon icon={faWalking} size="3x" />
@@ -107,7 +134,7 @@ const ExamInfo = ({ startTime, endTime, restrictedMinutes }) => {
                     </Paper>
                 </Box>
             )}
-            {currentStatus === "done" && (
+            {currentStatus === "done" && animationDone &&(
                 <Paper>
                     <Typography sx={{fontSize:"30px"}}>
                         <AccessTimeIcon sx={{fontSize:"5rem"}}  />
@@ -115,7 +142,7 @@ const ExamInfo = ({ startTime, endTime, restrictedMinutes }) => {
                     </Typography>
                 </Paper>
             )}
-            {currentStatus === "waiting" && (
+            {currentStatus === "waiting" && animationDone && (
                 <Paper>
                     <Typography sx={{fontSize:"40px"}}>
                         <ScheduleIcon sx={{fontSize:"5rem"}} />
@@ -123,7 +150,7 @@ const ExamInfo = ({ startTime, endTime, restrictedMinutes }) => {
                     </Typography>
                 </Paper>
             )}
-            {currentStatus === "start" && (
+            {currentStatus === "start" && animationDone && (
                 <Paper>
                     <Typography sx={{fontSize:"25px"}}>
                         {"Complete the form to start the exam"}
@@ -132,6 +159,7 @@ const ExamInfo = ({ startTime, endTime, restrictedMinutes }) => {
                 </Paper>
             )}
         </Box>
+        </Grow>
     );
 };
 

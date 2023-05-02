@@ -36,6 +36,7 @@ const TimerPage = ({form, setForm, timerMode, setTimerMode, tempForm, setTempFor
     const [isFullScreen, toggleFullScreen] = useFullScreen();
     const fullScreenContainerRef = useRef(null);
     const [adjustedEndTime, setAdjustedEndTime] = useState(endTime);
+    const [adjustedStartTime, setAdjustedStartTime] = useState(startTime);
     const [isRotated, setIsRotated] = useState(false);
     const [timeUp, setTimeUp] = useState(false);
     const [sideBarOpen, setSideBarOpen] = useState(false);
@@ -52,10 +53,13 @@ const TimerPage = ({form, setForm, timerMode, setTimerMode, tempForm, setTempFor
 
     useEffect(() => {
         setAdjustedEndTime(endTime);
+        setAdjustedStartTime(startTime);
+        console.log("useEffect + Timer page 1");
     }, [form.startTime, form.durationHrs, form.durationMins, isStarted]);
 
 
     useEffect(() => {
+        console.log("useEffect + Timer page 2");
         setForm({...form, endTime: adjustedEndTime.format("HH:mm")});
     }, [form.endTime]);
 
@@ -237,24 +241,26 @@ const TimerPage = ({form, setForm, timerMode, setTimerMode, tempForm, setTempFor
 
     return (
         <div ref={fullScreenContainerRef} style={fullScreenContainerStyle}>
-            <Box className="timer-page-container" sx={{
+            <Box sx={{
                 display: "flex",
                 flexDirection: "row",
                 border: "1px solid green",
                 minHeight: "100vh",
             }}>
-                <Box className="timer-page" sx={{display: "flex", flexDirection: "column", flex: 1}}>
+                <Box sx={{display: "flex", flexDirection: "column", flex: 1}}>
                     <Box sx={{p: 3}}>
-                        <Typography className="moduleName" variant="h4" component="h1" fontWeight="bold">
+                        <Typography className="moduleName" variant="h4" sx={{fontWeight:"bold"}} >
                             Module Name: {form.moduleName}
                         </Typography>
-                        <Typography className="moduleCode" variant="h4" component="h2" fontWeight="bold">
+                        <Typography className="moduleCode" variant="h4" sx={{fontWeight:"bold"}}>
                             Module Code: {form.moduleCode}
                         </Typography>
                     </Box>
-                    <ExamInfo startTime={startTime} endTime={adjustedEndTime}
-                              restrictedMinutes={form.restrictedMinutes}/>
-                    <Box sx={{display: "grid", placeItems: "center", mt: "40px", ml: "10px", height: "100%"}}>
+                    <Box sx={{display:"grid", placeItems:"center", minHeight:"120px", flex:1, p:"16px", overflowWrap: "break-word"}}>
+                        <ExamInfo startTime={startTime} endTime={adjustedEndTime}
+                                  restrictedMinutes={form.restrictedMinutes} isPaused={!play}/>
+                    </Box>
+                    <Box sx={{display: "grid", placeItems: "center", ml: "10px", height: "100%"}}>
                         <Box
                             sx={{
                                 mt: "30px",
@@ -269,7 +275,7 @@ const TimerPage = ({form, setForm, timerMode, setTimerMode, tempForm, setTempFor
                                 borderRadius: "25px"
                             }}
                         >
-                            <CdTimer startTime={startTime}
+                            <CdTimer startTime={adjustedStartTime}
                                      endTime={adjustedEndTime}
                                      setAdjustedEndTime={setAdjustedEndTime}
                                      isPaused={!play}

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import {Box, Button, FormControl, Grid, MenuItem, TextField, Tooltip, Typography} from "@mui/material";
 import {styled} from "@mui/system";
 import {default as customStyle} from 'styled-components';
@@ -47,17 +47,6 @@ const StyledTextField = styled(TextField)({
     },
 });
 
-const StyledTitle = styled(Typography)({
-    marginBottom: "20px",
-    padding: "10px",
-    fontWeight: "bold",
-    fontSize: "24px",
-    textAlign: "center",
-    color: "white",
-    backgroundColor: "#584595",
-});
-
-
 
 const StyledFlexbox = customStyle.div`
     display: flex;
@@ -102,12 +91,29 @@ const StyledSmallFlexItem = customStyle(StyledFlexItem)`
 
 
 const ExamForm = ({form, setForm, setShowForm, setShowRules, setIsStarted, tempForm, setTempForm}) => {
+    const[modules, setModules] = useState([]);
+    const [modulesMemo, setModulesMemo] = useState([]);
 
 
-    const [modules, setModules] = useState([]);
+    // useEffect(() => {
+    //
+    //     const fetchModules = async () => {
+    //         try {
+    //             const response = await fetch("http://localhost:8080/api/modules");
+    //             const data = await response.json();
+    //             const uniqueData = Array.from(new Set(data.map(module => module.moduleName))).map(moduleName => {
+    //                 return data.find(module => module.moduleName === moduleName);
+    //             });
+    //             setModules(uniqueData);
+    //         } catch (error) {
+    //             console.error("Error fetching modules:", error);
+    //         }
+    //     };
+    //
+    //     fetchModules().then(r => console.log("Modules fetched"));
+    // }, []);
 
     useEffect(() => {
-
         const fetchModules = async () => {
             try {
                 const response = await fetch("http://localhost:8080/api/modules");
@@ -123,6 +129,15 @@ const ExamForm = ({form, setForm, setShowForm, setShowRules, setIsStarted, tempF
 
         fetchModules().then(r => console.log("Modules fetched"));
     }, []);
+
+    useMemo(() => {
+        if (modules.length > 0) {
+            setModulesMemo(modules);
+        } else {
+            setModulesMemo([]);
+        }
+    }, [modules]);
+
 
     const handleChange = (event) => {
         setForm({...form, [event.target.name]: event.target.value});
@@ -170,12 +185,12 @@ const ExamForm = ({form, setForm, setShowForm, setShowRules, setIsStarted, tempF
 
 
     const getModuleByModuleName = (moduleName) => {
-        return modules.find(module => module.moduleName === moduleName);
+        return modulesMemo.find(module => module.moduleName === moduleName);
     };
 
 
     const getModuleByModuleCode = (moduleCode) => {
-        return modules.find(module => module.moduleCode === moduleCode);
+        return modulesMemo.find(module => module.moduleCode === moduleCode);
     };
 
 
@@ -186,7 +201,7 @@ const ExamForm = ({form, setForm, setShowForm, setShowRules, setIsStarted, tempF
                     <StyledFlexbox>
                         <StyledFullWidthFlexItem>
                             <Autocomplete
-                                options={modules}
+                                options={modulesMemo}
                                 getOptionLabel={(option) => option.moduleCode}
                                 onChange={(event, value) => handleAutocompleteChange('moduleCode', value)}
                                 fullWidth
@@ -206,7 +221,7 @@ const ExamForm = ({form, setForm, setShowForm, setShowRules, setIsStarted, tempF
                         </StyledFullWidthFlexItem>
                         <StyledFullWidthFlexItem>
                             <Autocomplete
-                                options={modules}
+                                options={modulesMemo}
                                 getOptionLabel={(option) => option.moduleName}
                                 onChange={(event, value) => handleAutocompleteChange('moduleName', value)}
                                 value={getModuleByModuleName(form.moduleName) || null}

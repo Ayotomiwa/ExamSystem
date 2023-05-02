@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect, useContext} from "react";
 import {Link, useParams} from "react-router-dom";
 import TablePlatform from "../../components/TablePlatform";
 import {Button, Table} from "react-bootstrap";
@@ -6,37 +6,63 @@ import {TableBody, TableCell, TableContainer, TableHead, TableRow, Typography} f
 import {Description, Sort} from "@mui/icons-material";
 import LogModal from "./LogModal";
 import "./table.css";
+import AuthHandler from "../../components/AuthHandler";
+import PrivateWrapper from "../../components/PrivateWrapper";
 
 
-const ExamLogList = () => {
+const ExamLogList = ({setLogin, setNextPage}) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [logs, setLogs] = useState([]);
-    const [sortColumn, setSortColumn] = useState("id");
-    const [sortState, setSortState] = useState("ASC");
     const { examId, moduleName } = useParams();
     const [selectedLog, setSelectedLog] = useState(null);
+    const { user } = useContext(AuthHandler);
 
+    const addAuthHeader = (headers) => {
+
+        if (user){
+            if (user.token) {
+                headers["Authorization"] = `Bearer ${user.token}`;
+                console.log("headers: ", headers);
+                console.log("user.token: ", user.token);
+            }
+        else{
+            console.log("No user.token");
+        }
+        console.log("2nd headers: ", headers);
+        console.log("2nd user.token: ", user.token);
+        }
+        return headers;
+    };
 
 
     useEffect(() => {
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth"
-        });
-        fetch(`http://localhost:8080/api/exam-logs/${examId}`)
-            .then(res => res.json())
-            .then(data => setLogs(data.content))
-            .catch(error => console.error(error));
+        if(user) {
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+            fetch(`http://localhost:8080/api/exam-logs/${examId}`, {
+                headers: addAuthHeader({"Content-Type": "application/json"})
+            })
+                .then(res => res.json())
+                .then(data => {
+                    console.log("data: ", data);
+                    setLogs(data)
+                })
+                .catch(error => console.error(error));
+        }
     }, [examId]);
 
 
     const handleLogClick = (logId) => {
        setSelectedLog(logId);
+       console.log("user log:", user);
        console.log("LogId in Log list:   ", logId);
        setIsModalOpen(true);
     }
 
     return (
+        <PrivateWrapper setLogin={setLogin} setNextPage={setNextPage}>
         <TablePlatform title={moduleName}
                        breadcrumbs={[    { label: "Exam List", url: "/exams" },    { label: moduleName },  ]}>
             <TableContainer className="table-container">
@@ -44,32 +70,17 @@ const ExamLogList = () => {
                 <TableHead>
                 <TableRow>
                     <TableCell>Id
-                        <Button variant="link" className="sort-btn" data-sort="id">
-                            <Sort />
-                        </Button>
                     </TableCell>
                     <TableCell>Venue
-                        <Button variant="link" className="sort-btn" data-sort="venue">
-                            <Sort />
-                        </Button>
                     </TableCell>
                     <TableCell>
                         Exam Type
-                        <Button variant="link" className="sort-btn" data-sort="course.moduleName">
-                            <Sort />
-                        </Button>
                     </TableCell>
                     <TableCell>
                         Date
-                        <Button variant="link" className="sort-btn" data-sort="date">
-                            <Sort />
-                        </Button>
                     </TableCell>
                     <TableCell>
                         Logs
-                        <Button variant="link" className="sort-btn" data-sort="Logs">
-                            <Sort/>
-                        </Button>
                     </TableCell>
                 </TableRow>
                 </TableHead>
@@ -87,7 +98,6 @@ const ExamLogList = () => {
                                 sx={{textTransform: "none", outline: "none"}}
                             >
                                 <Description fontSize="medium"  />
-                                    View Logs
                             </Button>
                         </TableCell>
                     </TableRow>
@@ -95,8 +105,9 @@ const ExamLogList = () => {
                 </TableBody>
         </Table>
                 </TableContainer>
-            <LogModal open={isModalOpen} logId={selectedLog} handleClose={() => setIsModalOpen(false)} />
+            <LogModal open={isModalOpen} user={user} logId={selectedLog} handleClose={() => setIsModalOpen(false)} />
         </TablePlatform>
+        </PrivateWrapper>
     );
 };
 

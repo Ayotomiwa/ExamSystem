@@ -5,6 +5,7 @@ import 'react-responsive-carousel/lib/styles/carousel.css';
 import styled from '@mui/material/styles/styled';
 import LsbuLogo from '../../components/LsbuLogo';
 import LoginForm from '../Login/LoginForm';
+import librrary from '../../assets/library.jpg';
 
 const StyledSlide = styled('div')(({ theme, backgroundColor }) => ({
     backgroundColor,
@@ -39,6 +40,7 @@ const WelcomeCarousel = ({setLogin}) => {
             title: <LogoTitle />,
             description: 'Manage exams, access exam logs and more!',
             backgroundColor: "#584595",
+            // backgroundImage: "url(../../assets/library.jpg)",
             color: "#fff",
             action: (
                 <Button variant="contained" color="secondary" onClick={handleStartExam}>

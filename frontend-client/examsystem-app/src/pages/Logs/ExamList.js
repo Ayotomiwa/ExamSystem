@@ -8,7 +8,7 @@ import ExamListRow from "./ExamListRow";
 import TablePlatform from "../../components/TablePlatform";
 import "./table.css";
 
-const ExamList = () => {
+const ExamList = ({setLoginModal, setNextPage}) => {
 
     const [exams, setExams] = useState([]);
     const [searchTerm,setSearchTerm] = useState("");
@@ -170,6 +170,8 @@ const ExamList = () => {
                                         moduleName={exam.module.moduleName}
                                         moduleLeader={exam.module.moduleLeader}
                                         day={exam.examDay}
+                                        setLoginModal={setLoginModal}
+                                        setNextPage={setNextPage}
                                     />
                                     );
                                 })}

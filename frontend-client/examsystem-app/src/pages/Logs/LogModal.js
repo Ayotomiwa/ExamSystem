@@ -67,13 +67,33 @@ const CollapsibleSection = ({ title, children }) => {
     );
 };
 
-const LogModal = ({ open, logId, handleClose }) => {
+const LogModal = ({ open, user, logId, handleClose }) => {
     const [logs, setLogs] = useState([]);
     const [exam, setExam] = useState([]);
     const [examId, setExamId] = useState(null);
 
+
+
+
+    const addAuthHeader = (headers) => {
+        if (user.token) {
+            headers["Authorization"] = `Bearer ${user.token}`;
+        }
+        return headers;
+    };
+
+
+
     useEffect(() => {
-        fetch(`http://localhost:8080/api/exam-logs/log/${logId}`)
+
+        if(!user){
+            handleClose();
+            return;
+        }
+
+        fetch(`http://localhost:8080/api/exam-logs/log/${logId}`,{
+            headers: addAuthHeader({ "Content-Type": "application/json" })
+        })
             .then(response => response.json())
             .then(data => {
                 setLogs(data);
@@ -81,6 +101,7 @@ const LogModal = ({ open, logId, handleClose }) => {
             })
             .catch(error => console.log(error));
     }, [open, logId]);
+
 
     useEffect(() => {
         console.log('examId in modal:  ', examId);

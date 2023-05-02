@@ -12,7 +12,7 @@ const CdTimer = React.memo(function CdTimer ({startTime, endTime, setAdjustedEnd
     const [initialized, setInitialized] = useState(false);
     const [pausedRemainingTime, setPausedRemainingTime] = useState(null);
     const [waiting, setWaiting] = useState(false);
-    const [hasWaited, setHasWaited] = useState(false);
+
 
 
     const tick = useCallback(() => {
@@ -44,12 +44,16 @@ const CdTimer = React.memo(function CdTimer ({startTime, endTime, setAdjustedEnd
             }
         } else if (currentTime.isAfter(startTime) && currentTime.isBefore(endTime)) {
             setTimeLeft(dayjs.duration(endTime.diff(currentTime)));
+            if(waiting){
+                setWaiting(false);
+            }
         } else {
             setTimeLeft(dayjs.duration(0));
             setTimeUp(true);
         }
 
         setInitialized(true);
+
     }, [
         startTime,
         endTime,
@@ -64,7 +68,7 @@ const CdTimer = React.memo(function CdTimer ({startTime, endTime, setAdjustedEnd
     useEffect(() => {
         const timerId = setInterval(() => {
             tick();
-        }, 10);
+        }, 100);
 
         return () => {
             clearInterval(timerId);
