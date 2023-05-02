@@ -19,9 +19,9 @@ export default function useFullScreen() {
 
         if (element.requestFullscreen) {
             element.requestFullscreen();
-        } else if (element.webkitRequestFullscreen) { // Safari
+        } else if (element.webkitRequestFullscreen) {
             element.webkitRequestFullscreen();
-        } else if (element.msRequestFullscreen) { // IE11
+        } else if (element.msRequestFullscreen) {
             element.msRequestFullscreen();
         }
     };
@@ -29,9 +29,9 @@ export default function useFullScreen() {
     const exitFullScreen = () => {
         if (document.exitFullscreen) {
             document.exitFullscreen();
-        } else if (document.webkitExitFullscreen) { // Safari
+        } else if (document.webkitExitFullscreen) {
             document.webkitExitFullscreen();
-        } else if (document.msExitFullscreen) { // IE11
+        } else if (document.msExitFullscreen) {
             document.msExitFullscreen();
         }
     };

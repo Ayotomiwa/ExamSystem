@@ -14,7 +14,7 @@ body{
     /*background-color: red;*/
     /*background-image: linear-gradient(to bottom right, #fff, #f7f7f7, #fff); */
     /*background-image: linear-gradient(to bottom right, #f5f5f5, #e0e0e0, #d5d5d5);*/
-    background-image: linear-gradient(to bottom right, #fff, #f5f5f5, #e0e0e0);
+    background-image: linear-gradient(to bottom right, #fff, #f5f5f5, #d5d5d5);
     width:100%;
     overflow-x: hidden;
 }
@@ -37,7 +37,6 @@ body .MuiTypography-root{
     text-align: center;
     width: 600px;
     min-width: 100px
-
 }
 
 #search_btn {

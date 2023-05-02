@@ -4,25 +4,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { Input } from "@mui/material";
 import "../App.css";
-import TextField from "@mui/material/TextField";
-import {styled} from "@mui/system";
 
 
 
-const StyledInput = styled(TextField)(({ theme }) => ({
-    fontSize: 20,
-    marginRight: theme.spacing(1),
-    '& .MuiInput-root:before': {
-        borderBottomColor: '#e75480',
-    },
-    '& .MuiInput-root:hover:not(.Mui-disabled):before': {
-        borderBottomColor: '#e75480',
-        transitionDelay: '20s',
-    },
-    '& .MuiInput-root:after': {
-        borderBottomColor: '#e75480',
-    },
-}));
+
 
 const SearchBar = ({onSearch,onChange}) => {
     const [searchTerm, setSearchTerm] = useState("");
@@ -53,10 +38,11 @@ const SearchBar = ({onSearch,onChange}) => {
                             id="search_input"
                             placeholder="Search for Exams or Module Code"
                             type="search"
+                            fullWidth={true}
                             value={searchTerm}
                             onChange={handleInputChange}
                         />
-                        <Button variant="outline-secondary" id="search_btn" type="submit">
+                        <Button variant="contained-primary" id="search_btn" type="submit">
                             <FontAwesomeIcon icon={faSearch} />
                         </Button>
                     </Form>

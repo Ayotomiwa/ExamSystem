@@ -5,9 +5,12 @@ import 'react-responsive-carousel/lib/styles/carousel.css';
 import styled from '@mui/material/styles/styled';
 import LsbuLogo from '../../components/LsbuLogo';
 import LoginForm from '../Login/LoginForm';
-import librrary from '../../assets/library.jpg';
+import WelcomeToLsbu from '../../assets/WelcomeToLsbu.jpg';
 
-const StyledSlide = styled('div')(({ theme, backgroundColor }) => ({
+const StyledSlide = styled('div')(({ theme, backgroundColor,backgroundImage }) => ({
+    backgroundImage,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
     backgroundColor,
     padding: theme.spacing(4),
     minHeight: '30rem',
@@ -61,9 +64,9 @@ const WelcomeCarousel = ({setLogin}) => {
         },
         {
             title: 'Stay updated with exam news',
+            backgroundImage: `url(${WelcomeToLsbu})`,
             description: 'Never miss important announcements',
-            backgroundColor: "yellow",
-            color:"black"
+            color:"#fff",
         },
     ];
 
@@ -78,26 +81,30 @@ const WelcomeCarousel = ({setLogin}) => {
                 showIndicators
                 selectedItem={carouselIndex}
                 onChange={handleCarouselChange}
-                interval={500}
+                interval={5000}
                 infiniteLoop
+                autoPlay
             >
                 {carouselItems.map((item, index) => (
-                    <StyledSlide key={index} backgroundColor={item.backgroundColor}>
-                        <Typography
-                            variant="h2"
-                            component="h2"
-                            sx={{ color: item.color }}
-                            gutterBottom
-                        >
-                            {item.title}
-                        </Typography>
-                        <Typography
-                            variant="h5"
-                            sx={{ color: item.color, textAlign: 'center' }}
-                            gutterBottom
-                        >
-                            {item.description}
-                        </Typography>
+                    <StyledSlide key={index} backgroundColor={item.backgroundColor} backgroundImage={ item.backgroundColor ? "none" : item.backgroundImage}>
+
+                        <Box sx={{backgroundColor: item.backgroundColor ? "none" : "rgba(231, 84, 128, 0.8)", p:item.backgroundImage ? "16px" : "",}}>
+                            <Typography
+                                variant="h2"
+                                component="h2"
+                                sx={{ color: item.color, display: "flex", justifyContent: "center", alignItems: "center" }}
+                                gutterBottom
+                            >
+                                {item.title}
+                            </Typography>
+                            <Typography
+                                variant="h5"
+                                sx={{ color: item.color, textAlign: 'center' }}
+                                gutterBottom
+                            >
+                                {item.description}
+                            </Typography>
+                        </Box>
                         {item.action}
                     </StyledSlide>
                 ))}
