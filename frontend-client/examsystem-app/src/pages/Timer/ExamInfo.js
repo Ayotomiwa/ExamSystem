@@ -30,15 +30,15 @@ const ExamInfo = ({ startTime, endTime, restrictedMinutes, isPaused }) => {
     useEffect(() => {
         const checkStatus = () => {
 
-            if (isPaused) {
-                   setPauseTime(dayjs());
-                   setInfoPaused(true);
-                 return;
-            }
-            else if(infoPaused){
-                startTime = dayjs(startTime).add(dayjs().diff(pauseTime)).format("HH:mm");
-                setInfoPaused(false);
-            }
+            // if (isPaused) {
+            //        setPauseTime(dayjs());
+            //        setInfoPaused(true);
+            //      return;
+            // }
+            // else if(infoPaused){
+            //     startTime = dayjs(startTime).add(dayjs().diff(pauseTime)).format("HH:mm");
+            //     setInfoPaused(false);
+            // }
 
             const now = new Date();
             const start = new Date(startTime);
@@ -104,7 +104,7 @@ const ExamInfo = ({ startTime, endTime, restrictedMinutes, isPaused }) => {
                 </Typography>
                 <Paper>
                     <Typography sx={{fontSize:"25px"}}>
-                        {" Students may leave the room for a bathroom break or if they have finished the exam."}
+                        {" Students are allowed to leave the room."}
                     </Typography>
                 </Paper>
                 </Box>

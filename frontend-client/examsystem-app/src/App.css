@@ -41,9 +41,14 @@ body .MuiTypography-root{
 
 #search_btn {
     border-radius: 20px;
-
+    color: #e75480;
 }
 
+#search_btn:hover {
+    background-color: #e75480;
+    border-color: #584595;
+    color:yellow;
+}
 
 #card-table{
     position: relative;

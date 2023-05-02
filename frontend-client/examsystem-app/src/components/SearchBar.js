@@ -42,7 +42,7 @@ const SearchBar = ({onSearch,onChange}) => {
                             value={searchTerm}
                             onChange={handleInputChange}
                         />
-                        <Button variant="contained-primary" id="search_btn" type="submit">
+                        <Button variant="outline-secondary" id="search_btn" type="submit">
                             <FontAwesomeIcon icon={faSearch} />
                         </Button>
                     </Form>
