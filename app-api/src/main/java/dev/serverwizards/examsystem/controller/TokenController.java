@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/token")
+@RequestMapping("/api/authenticate")
 public class TokenController {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
@@ -35,9 +35,15 @@ public class TokenController {
 
     @PostMapping
     public ResponseEntity<?> authenticate(@Valid @RequestBody LoginRequest loginRequest) {
+
+        System.out.println("UserName " + loginRequest.getUsername());
+        System.out.println("Password " + loginRequest.getPassword());
+
+        String userName = loginRequest.getUsername().substring(0,loginRequest.getUsername().indexOf('@'));
+
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        loginRequest.getUsername(),
+                        userName,
                         loginRequest.getPassword()
                 )
         );

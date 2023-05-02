@@ -14,9 +14,12 @@ public class ExamLogsDto {
     private Long id;
     private String venue;
     private String message;
-    private LocalTime startTime;
-    private LocalTime endTime;
-    private LocalDate submittedDate;
+    private String examDay;
+    private String examStartTime;
+    private long registeredStudents;
+    private String startTime;
+    private String endTime;
+    private String submittedDate;
     private long studentsNo;
     private String moduleName;
     private String moduleCode;

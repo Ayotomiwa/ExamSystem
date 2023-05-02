@@ -13,8 +13,8 @@ import java.time.LocalTime;
 public class ExamDto {
     private Long examId;
     private String examDay;
-    private LocalTime startTime;
-    private LocalTime endTime;
+    private String startTime;
+    private String endTime;
     private String year;
     private String type;
 //    private List<ExamLogsDto> examLogs;

@@ -24,6 +24,7 @@ public class UserController {
 
     @PostMapping("/sign-up")
     public ResponseEntity<User>signUp(@RequestBody User user) {
+        System.out.println("User: " + user.getUsername() + " " + user.getEmail());
         if(user.getEmail() == null) {
             return ResponseEntity.badRequest().build();
         }
@@ -37,7 +38,7 @@ public class UserController {
         return ResponseEntity.ok(customUserDetailsService.save(user));
     }
 
-    @GetMapping("/logout")
+    @PostMapping("/logout")
     public ResponseEntity<?> logout(HttpServletRequest request, HttpServletResponse response) {
         // You can implement any additional log-out logic here, such as blacklisting the token on the server-side.
 

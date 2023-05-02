@@ -7,6 +7,7 @@ import org.mapstruct.*;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 
@@ -33,7 +34,7 @@ public interface ExamMapper {
 
     @Named("changeDateFormatToString")
     default String changeDateFormat(LocalDate day) {
-        return day.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+        return day.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
 
     @Named("changeStringFormatToDate")
@@ -41,14 +42,31 @@ public interface ExamMapper {
         return LocalDate.parse(day, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
 
+    @Named("changeStringFormatToLocalTime")
+    default LocalTime changeStringFormatToLocalTime(String time) {
+        return LocalTime.parse(time, DateTimeFormatter.ofPattern("HH:mm"));
+    }
+
+    @Named("changeLocalTimeFormatToString")
+    default String changeLocalTimeFormatToString(LocalTime time) {
+        if(time == null)
+            return null;
+        return time.format(DateTimeFormatter.ofPattern("HH:mm"));
+    }
+
     @Mapping(target = "type", qualifiedByName = "mapExamTypeToString")
     @Mapping(target = "examDay", qualifiedByName = "changeDateFormatToString")
     @Mapping(source = "id", target = "examId")
+    @Mapping(target = "startTime", qualifiedByName = "changeLocalTimeFormatToString")
+    @Mapping(target = "endTime", qualifiedByName = "changeLocalTimeFormatToString")
 //    @Mapping( target = "examLogs", ignore = true)
     ExamDto toDto(Exam exam);
 
     @Mapping(target = "type", qualifiedByName = "mapStringToExamType")
     @Mapping(target = "examDay", qualifiedByName = "changeStringFormatToDate")
+    @Mapping(target = "startTime", qualifiedByName = "changeStringFormatToLocalTime")
+    @Mapping(target = "endTime", qualifiedByName = "changeStringFormatToLocalTime")
+    @Mapping(source = "examId", target = "id")
 //    @Mapping( target = "examLogs", ignore = true)
     Exam toEntity(ExamDto examDto);
 

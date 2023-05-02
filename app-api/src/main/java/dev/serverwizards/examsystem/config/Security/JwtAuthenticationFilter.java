@@ -30,12 +30,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
             String jwt = getJwtFromRequest(request);
-            if (jwt != null && tokenProvider.validateToken(jwt)&& !tokenBlacklistService.isBlacklisted(jwt)) {
+            System.out.println("Jwt: " + jwt);
+            if (jwt != null && tokenProvider.validateToken(jwt)) {
                 String username = tokenProvider.getUsernameFromToken(jwt);
                 UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
+                System.out.println("User detailsssss: " + userDetails);
                 Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                System.out.println("Authentication: " + authentication);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
+            System.out.println("Token is valid: " + tokenProvider.validateToken(jwt));
 
         } catch (JwtException | IllegalArgumentException e) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid token");
@@ -48,8 +52,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private String getJwtFromRequest(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
         if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+            System.out.println("Token found in the header");
             return bearerToken.substring(7);
         }
+        System.out.println("Token not found in the headerrrrrrrrrrrrrrrrrrr");
         return null;
     }
 }

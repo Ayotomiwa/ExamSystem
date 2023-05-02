@@ -11,6 +11,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -23,26 +24,33 @@ public class ExamLogController {
     private final ExamLogServiceImpl service;
 
 
-    @GetMapping("/{exam_id}")
-    public Page<ExamLogsDto> examLogs(
+    @GetMapping("/page/{exam_id}")
+    public Page<ExamLogsDto> examLogsByPages(
             @RequestParam Optional<Integer> page,
             @RequestParam Optional<String> sortBy,
             @RequestParam Optional<Long> size,
             @PathVariable Long exam_id) {
 
-        return service.listExamLogsByExamId(
+        return service.listExamLogsByExamIdInPages(
                 PageRequest.of(page.orElse(0),
                         size.orElse(10L).intValue(),
                 Sort.Direction.ASC, sortBy.orElse("examId")),exam_id );
     }
 
+    @GetMapping("/{exam_id}")
+    public List<ExamLogsDto> examLogs(
+            @RequestParam Optional<String> sortBy,
+            @PathVariable Long exam_id) {
 
+        return service.listExamLogsByExamId(
+                Sort.by(Sort.Direction.ASC, sortBy.orElse("examId")), exam_id);
+    }
 
     @PostMapping("/create")
     public ExamLogsDto addExamLog(@RequestBody ExamLogsDto examLog) {
         System.out.println("Start Time: "+examLog.getStartTime());
         System.out.println("Start Time: "+examLog.getEndTime());
-           examLog.setSubmittedDate(LocalDate.parse("2023-03-07"));
+           examLog.setSubmittedDate("2023-03-07");
           return service.save(examLog);
     }
 

@@ -16,8 +16,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -49,12 +51,12 @@ public class ExamLogServiceImpl implements ExamLogService {
             System.out.println("Course exists");
             module = moduleRepo.findByModuleCodeAndModuleName(moduleCode, moduleName);
             System.out.println("DATE: " + examLogsDto.getSubmittedDate());
-            exam = examRepo.findByExamDayAndModule_courseId(examLogsDto.getSubmittedDate(),
+            exam = examRepo.findByExamDayAndModule_courseId(LocalDate.parse(examLogsDto.getSubmittedDate()),
                     module.getCourseId()).orElseGet(() -> {
                     System.out.println("Exam does not exist");
                         Exam newExam = new Exam();
                         newExam.setModule(module);
-                        newExam.setExamDay(examLogsDto.getSubmittedDate());
+                        newExam.setExamDay(LocalDate.parse(examLogsDto.getSubmittedDate()));
                         return examRepo.save(newExam);
                     });
         }
@@ -66,7 +68,7 @@ public class ExamLogServiceImpl implements ExamLogService {
             moduleRepo.save(module);
             exam = new Exam();
             exam.setModule(module);
-            exam.setExamDay(examLogsDto.getSubmittedDate());
+            exam.setExamDay(LocalDate.parse(examLogsDto.getSubmittedDate()));
             exam.setModule(module);
             examRepo.save(exam);
         }
@@ -82,9 +84,16 @@ public class ExamLogServiceImpl implements ExamLogService {
     }
 
     @Override
-    public Page<ExamLogsDto> listExamLogsByExamId(PageRequest page, long examId) {
+    public Page<ExamLogsDto> listExamLogsByExamIdInPages(PageRequest page, long examId) {
         Page<ExamLogs> examLogsPage = logRepo.findByExam_id(page, examId);
         return examLogsPage.map(examLogMapper::toDto);
+    }
+
+    public List<ExamLogsDto> listExamLogsByExamId(Sort sort, Long exam_id) {
+        List<ExamLogs> examLogsList = logRepo.findAllByExamId(sort, exam_id);
+        return examLogsList.stream()
+                .map(examLogMapper::toDto)
+                .collect(Collectors.toList());
     }
 
     @Override
