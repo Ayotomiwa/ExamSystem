@@ -35,7 +35,7 @@ import java.util.List;
     private Module module;
 
 
-    @OneToMany(mappedBy = "exam", orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "exam", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<ExamLogs> examLogs = new ArrayList<>();
 
 }
