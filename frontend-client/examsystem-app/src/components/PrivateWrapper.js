@@ -8,11 +8,12 @@ const PrivateWrapper = ({ children, setLogin, setNextPage}) => {
 
 
     useEffect(() => {
-        if (!user) {
+        if (!user && window.location.pathname !== "/") {
             setNextPage(window.location.pathname);
             setLogin(true);
+            console.log('user is not found');
         }
-    }, [user, setLogin]);
+    }, [user, setLogin, setNextPage]);
 
     return <>{user ? children : <Navigate to="/" />}</>;
 };
