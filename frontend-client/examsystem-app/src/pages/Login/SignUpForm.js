@@ -41,7 +41,7 @@ const SignUp = ({ show, setLogin, setSignUp }) => {
     };
 
     const createUser = () => {
-        fetch("http://localhost:8080/api/user/sign-up", {
+        fetch("https://lsbu-ex-timer.herokuapp.com/api/user/sign-up", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
