@@ -1,11 +1,17 @@
+package dev.serverwizards.examsystem.controller;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.net.http.HttpResponse;
 
 
 @RestController
-@Reguestmapping("/")
+@RequestMapping("/")
 public class HomeController{
-
-  public homeGreeting(){
-    Return Response.Entity.ok("Welcome to the Back-End of LSBU-EX-TIMER wink wink");
+  public ResponseEntity<String> homeGreeting(){
+    return ResponseEntity.ok("Hello World");
   }
 
 }
