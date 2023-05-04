@@ -81,7 +81,7 @@ const TimerPage = ({form, setForm, timerMode, setTimerMode, tempForm, setTempFor
         console.log(form.startTime);
         console.log(form.endTime);
 
-        fetch(`http://localhost:8080/api/exam-logs/create`, {
+        fetch(`https://lsbu-ex-timer.herokuapp.com/api/exam-logs/create`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
