@@ -14,7 +14,7 @@
     <name>examsystem</name>
     <description>examsystem</description>
     <properties>
-        <java.version>19</java.version>
+        <java.version>17</java.version>
         <org.mapstruct.version>1.5.3.Final</org.mapstruct.version>
 <!--        <spring-cloud-azure.version>5.0.0</spring-cloud-azure.version>-->
     </properties>
@@ -156,6 +156,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
                 <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
                     <annotationProcessorPaths>
                         <path>
                             <groupId>org.projectlombok</groupId>
