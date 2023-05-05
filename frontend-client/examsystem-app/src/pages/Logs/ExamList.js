@@ -1,4 +1,4 @@
-import { Breadcrumb, BreadcrumbItem, Card, Table, Button } from "react-bootstrap";
+import {Breadcrumb, BreadcrumbItem, Card, Table, Button, Spinner} from "react-bootstrap";
 import { TableContainer, TableHead, TableRow, TableCell, TableBody } from "@mui/material";
 import { Sort } from "@mui/icons-material";
 import "../../App.css";
@@ -19,25 +19,24 @@ const ExamList = ({setLoginModal, setNextPage}) => {
     const [sortColumn, setSortColumn] = useState("examDay");
     const [sortState, setSortState] = useState("DESC");
     const mounted = useRef(false);
-    const basicExamsUrl = "https://lsbu-ex-timer.herokuapp.com/api/exams";
+    const [loading, setLoading] = useState(false);
+    // const basicExamsUrl = "https://lsbu-ex-timer.herokuapp.com/api/exams";
+    const basicExamsUrl = "http://localhost:8080/api/exams";
     const fetchExamsUrl= `size=30&page=${page}&sortBy=${sortColumn}&sort=${sortState}`;
     const searchExamsUrl= basicExamsUrl + `/search?query=${searchTerm}` ;
 
 
     useEffect(() => {
         if (search === false || searchTerm === "") {
-            console.log("fetching examssssss")
             fetchExamsData();
         }
     }, [page, search === false, sortColumn, sortState]);
 
     useEffect(() => {
         if (search === true && searchTerm !== "") {
-            console.log("searching exams")
             if(page === 0){
                 setExams([]);
             }
-            console.log(searchExamsUrl + fetchExamsUrl);
             fetchSearchData();
         }
     }, [page, searchTerm, search, sortColumn, sortState]);
@@ -60,25 +59,34 @@ const ExamList = ({setLoginModal, setNextPage}) => {
     }
 
     const fetchExamsData = () => {
+        setLoading(true)
         fetch(basicExamsUrl + "?"+ fetchExamsUrl)
             .then(response => response.json())
             .then(data => {
                 processExamData(data);
+                setLoading(false);
             })
-            .catch(error => console.error(error));
+            .catch(error => {
+                console.error(error)
+                setLoading(false);
+            });
     }
 
     const fetchSearchData = () => {
+        setLoading(true);
         fetch(searchExamsUrl +"&"+ fetchExamsUrl)
             .then(response => response.json())
             .then(data => {
                 processExamData(data);
+                setLoading(false);
             })
-            .catch(error => console.error(error));
+            .catch(error => {
+                console.error(error)
+                setLoading(false);
+            });
     }
 
     const processExamData = (data) => {
-        console.log("size-  "+ data.numberOfElements + " heyyyyyy");
         setTotalExams(data.totalElements);
         setNumberOfExams(numberOfExams + data.numberOfElements)
         setExams(prevState => prevState.concat(data.content));
@@ -91,11 +99,9 @@ const ExamList = ({setLoginModal, setNextPage}) => {
     }
 
     const handleSearch = (searchTerm) => {
-        console.log(searchTerm + " Handlesearch " + search);
         if(searchTerm === ""){
             return;
         }
-        console.log("search button clicked");
         resetExamList(true);
         setSearchTerm(searchTerm);
 
@@ -111,7 +117,6 @@ const ExamList = ({setLoginModal, setNextPage}) => {
     };
 
     const loadMoreExams = () => {
-        console.log("load more button clicked");
         setPage(page + 1);
     }
 
@@ -123,7 +128,7 @@ const ExamList = ({setLoginModal, setNextPage}) => {
                         <Table  size="small" aria-label="a dense table" >
                             <TableHead>
                                 <TableRow>
-                                    <TableCell>
+                                    <TableCell width="40%">
                                         Module Code
                                         <Button variant="link" className="sort-btn" data-sort="module.moduleCode"
                                                 data-sort-state={sortColumn === "module.moduleCode" ? sortState : ""}
@@ -131,15 +136,14 @@ const ExamList = ({setLoginModal, setNextPage}) => {
                                             <Sort />
                                         </Button>
                                     </TableCell>
-                                    <TableCell>
+                                    <TableCell width="90%">
                                         Module Name
                                         <Button variant="link"  className="sort-btn" data-sort="module.moduleName"
-                                                data-sort-state={sortColumn === "module.moduleName" ? sortState : ""}
                                                 onClick={()=>handleSort("module.moduleName")}>
                                             <Sort  />
                                         </Button>
                                     </TableCell>
-                                    <TableCell>
+                                    <TableCell width="30%">
                                         Module Leader
                                         <Button variant="link"  className="sort-btn" data-sort="module.moduleLeader"
                                                 data-sort-state={sortColumn === "module.moduleLeader" ? sortState : ""}
@@ -147,7 +151,7 @@ const ExamList = ({setLoginModal, setNextPage}) => {
                                             <Sort />
                                         </Button>
                                     </TableCell>
-                                    <TableCell>
+                                    <TableCell width="30%">
                                         Exam Date
                                         <Button variant="link" className="sort-btn" data-sort="examDay"
                                                 data-sort-state={sortColumn === "examDay" ? sortState : ""}
@@ -158,13 +162,29 @@ const ExamList = ({setLoginModal, setNextPage}) => {
                                 </TableRow>
                             </TableHead>
                             <TableBody id="content_body">
-                                {exams.length === 0 ?
+
+                                    {loading ? (
+                                        <TableRow>
+                                        <TableCell colSpan="5" style={{ textAlign: "center" }}>
+                                            <div style={{
+                                                display: "flex",
+                                                justifyContent: "center",
+                                                alignItems: "center",
+                                                height: "100vh",
+                                                width: "100%",
+                                            }}>
+                                            <Spinner animation="border" variant="primary" id="spinner" size="100" style={{width:"100px", height:"100px"}} />
+                                            </div>
+                                        </TableCell>
+                                        </TableRow>
+
+                                    ) :
+                                exams.length === 0 ? (
                                    <tr><td colSpan="4"><p id={"no-data"}> No Data to be Displayed</p></td></tr>
-                                        : exams.map((exam) => {
-                                        console.log("Helloooo" + exam);
+                                ) : ( exams.map((exam, index) => {
                                         return (
                                     <ExamListRow
-                                        key={exam.examId}
+                                        key={`${exam.examId}-${index}`}
                                         examId={exam.examId}
                                         moduleCode={exam.module.moduleCode}
                                         moduleName={exam.module.moduleName}
@@ -174,7 +194,8 @@ const ExamList = ({setLoginModal, setNextPage}) => {
                                         setNextPage={setNextPage}
                                     />
                                     );
-                                })}
+                                })
+                                    )}
                             </TableBody>
                         </Table>
                     </TableContainer>

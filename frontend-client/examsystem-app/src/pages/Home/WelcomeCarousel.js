@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import {useContext, useState} from 'react';
 import { Button, Typography, Box, useTheme } from '@mui/material';
 import { Carousel as MuiCarousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.css';
@@ -6,6 +6,7 @@ import styled from '@mui/material/styles/styled';
 import LsbuLogo from '../../components/LsbuLogo';
 import LoginForm from '../Login/LoginForm';
 import WelcomeToLsbu from '../../assets/WelcomeToLsbu.jpg';
+import AuthHandler from "../../components/AuthHandler";
 
 const StyledSlide = styled('div')(({ theme, backgroundColor,backgroundImage }) => ({
     backgroundImage,
@@ -29,10 +30,26 @@ const LogoTitle = () => (
 const WelcomeCarousel = ({setLogin}) => {
     const [carouselIndex, setCarouselIndex] = useState(0);
     const theme = useTheme();
+    const { user } = useContext(AuthHandler);
+
+
 
     const handleSignIn = () => {
-        setLogin(true);
-    }
+        if(!user){
+            setLogin(true);
+        }
+    };
+
+
+    const handleLogButton = () => {
+        if (user){
+            window.location.href = '/exams';
+            return
+        }
+        handleSignIn()
+    };
+
+
 
     const handleStartExam = () => {
         window.location.href = '/new-exam';
@@ -57,8 +74,8 @@ const WelcomeCarousel = ({setLogin}) => {
             backgroundColor: "#e75480",
             color: "#fff",
             action: (
-                <Button variant="contained" color="secondary" onClick={handleSignIn}>
-                    Sign in
+                <Button variant="contained" color="secondary" onClick={handleLogButton}>
+                    {user ? "Exam Logs" : "Sign In"}
                 </Button>
             ),
         },

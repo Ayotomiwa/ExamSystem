@@ -8,22 +8,22 @@ import { styled } from '@mui/system';
 
 const StyledDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialog-paper': {
-        width: '50%',
-        maxWidth: '50%',
-        margin: 'auto',
-        backgroundColor: '#ffffff',
-        borderRadius: '5px',
+        width: "50%",
+        maxWidth: "50%",
+        margin: "auto",
+        backgroundColor: "white",
+        borderRadius: "5px",
     },
 }));
 
 const StyledDialogTitle = styled(DialogTitle)({
-    backgroundColor: '#584595',
-    color: '#ffffff',
-    alignItems: 'center',
+    backgroundColor: "#584595",
+    color: "#ffffff",
+    alignItems: "center",
 });
 
 const StyledIconButton = styled(IconButton)({
-    color: '#ffffff',
+    color: "#ffffff",
 });
 
 const StyledDialogContent = styled(DialogContent)(({ theme }) => ({
@@ -31,21 +31,21 @@ const StyledDialogContent = styled(DialogContent)(({ theme }) => ({
 }));
 
 const StyledDialogActions = styled(DialogActions)(({ theme }) => ({
-    backgroundColor: 'yellow',
+    backgroundColor: "#D4A137",
     padding: theme.spacing(1),
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
 }));
 
 const StyledButton = styled(Button)({
     color: '#584595',
 });
 
-const StyledTypography = styled(Typography)({
-    color: '#584595',
-    fontStyle: 'italic',
-});
+// const StyledTypography = styled(Typography)({
+//     color: '#584595',
+//     fontStyle: 'italic',
+// });
 
 
 const CollapsibleSection = ({ title, children }) => {
@@ -75,6 +75,7 @@ const LogModal = ({ open, user, logId, handleClose }) => {
 
 
 
+
     const addAuthHeader = (headers) => {
         if (user.token) {
             headers["Authorization"] = `Bearer ${user.token}`;
@@ -92,6 +93,7 @@ const LogModal = ({ open, user, logId, handleClose }) => {
         }
 
         fetch(`https://lsbu-ex-timer.herokuapp.com/api/exam-logs/log/${logId}`,{
+        //     fetch(`http://localhost:8080/api/exam-logs/log/${logId}`,{
             headers: addAuthHeader({ "Content-Type": "application/json" })
         })
             .then(response => response.json())
@@ -109,6 +111,7 @@ const LogModal = ({ open, user, logId, handleClose }) => {
             return;
         }
         fetch(`https://lsbu-ex-timer.herokuapp.com/api/exams/exam/${examId}`)
+        // fetch(`http://localhost:8080/api/exams/exam/${examId}`)
             .then(response => response.json())
             .then(data => {
                 setExam(data);
@@ -119,22 +122,42 @@ const LogModal = ({ open, user, logId, handleClose }) => {
 
 
     const examLogs = useMemo(() => {
-        if (!logs || !exam || !exam.module) return {};
+        if (!logs || !exam || !exam.module) {
+            return {};
+        }
+
+        const startTime = logs.startTime.split(':');
+        const endTime = logs.endTime.split(':');
+
+        const startMinutes = parseInt(startTime[0]) * 60 + parseInt(startTime[1]);
+        const endMinutes = parseInt(endTime[0]) * 60 + parseInt(endTime[1]);
+
+        const diffMinutes = endMinutes - startMinutes;
+        const hours = Math.floor(diffMinutes / 60);
+        const minutes = diffMinutes % 60;
+        const diffTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+
+
 
         return {
             startTime: logs.startTime,
             venue: logs.venue,
             endTime: logs.endTime,
             notes: logs.message,
-            studentsInVenue: logs.studentsLogged,
+            studentsInVenue: logs.studentsNO,
             submittedDate: logs.submittedDate,
             moduleName: exam.module.moduleName,
             moduleCode: exam.module.moduleCode,
+            timeDiff: diffTime,
             predictedStartTime: exam.startTime,
             totalStudents: exam.module.registeredStudents,
             moduleLeader: exam.module.moduleLeader
         };
     }, [logs, exam]);
+
+
+
+
 
     const printModal = () => {
         const printWindow = window.open("", "_blank");
@@ -208,7 +231,8 @@ const LogModal = ({ open, user, logId, handleClose }) => {
                         <strong>Total Students in Exam:</strong>{examLogs.totalStudents}
                     </Typography>
                     <Typography>
-                        <strong>% in Venue:</strong> {examLogs.studentsInVenue / examLogs.totalStudents * 100}%
+                        <strong>% in Venue:</strong> {(examLogs.studentsInVenue / examLogs.totalStudents * 100).toFixed(2)}%
+
                     </Typography>
                 </CollapsibleSection>
 
@@ -223,7 +247,7 @@ const LogModal = ({ open, user, logId, handleClose }) => {
                         <strong>End Time:</strong> {examLogs.endTime}
                     </Typography>
                     <Typography>
-                        <strong>Duration:</strong> {examLogs.startTime} - {examLogs.endTime};
+                        <strong>Duration:</strong> {`+${examLogs.timeDiff} hours`}
                     </Typography>
                     <Typography>
                         <strong>Venue:</strong> {examLogs.venue}
@@ -239,9 +263,9 @@ const LogModal = ({ open, user, logId, handleClose }) => {
                         padding={1}
                         marginTop={1}
                     >
-                            <StyledTypography>
+                            <Typography>
                                 {examLogs.notes}
-                            </StyledTypography>
+                            </Typography>
                     </Box>
                 </CollapsibleSection>
             </StyledDialogContent>
@@ -250,9 +274,9 @@ const LogModal = ({ open, user, logId, handleClose }) => {
                 <StyledButton color="primary" onClick={printModal} startIcon={<Print />}>
                     Print
                 </StyledButton>
-                <StyledTypography variant="caption" sx={{ flexGrow: 1, textAlign: "right" }}>
+                <Typography variant="caption" sx={{ flexGrow: 1, textAlign: "right" }}>
                     Submitted by: Guest
-                </StyledTypography>
+                </Typography>
             </StyledDialogActions>
         </StyledDialog>
     );

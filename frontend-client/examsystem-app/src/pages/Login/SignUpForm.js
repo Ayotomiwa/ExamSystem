@@ -1,16 +1,49 @@
-import {useContext, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import { Modal, Form, Button } from "react-bootstrap";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import TextField from "@mui/material/TextField";
 import {FaEnvelope, FaLock, FaSignInAlt, FaUserPlus} from "react-icons/fa";
 import AuthHandler from "../../components/AuthHandler";
 import {Box, InputAdornment} from "@mui/material";
+import ConfirmModal from "../../components/ConfirmModal";
+import confirmModal from "../../components/ConfirmModal";
 
 const SignUp = ({ show, setLogin, setSignUp }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
-    const { login } = useContext(AuthHandler);
+    const [signUpMessage, setSignUpMessage] = useState("");
+    const [statusModal, setStatusModal] = useState(false);
+    const [firstRender, setFirstRender] = useState(true);
+
+
+    useEffect(() => {
+
+        if (firstRender) {
+            setFirstRender(false);
+            return;
+        }
+
+        if (signUpMessage === "Sign Up Successful") {
+            setTimeout(() => {
+                setLogin(true);
+                setStatusModal(false);
+            }, 1000);
+
+        }
+        else if (signUpMessage !== ""){
+            setSignUp(false);
+            setTimeout(() => {
+                setSignUp(true);
+                setStatusModal(false);
+                setSignUpMessage("");
+            }, 600);
+
+        }
+    }, [signUpMessage, statusModal]);
+
+
+
 
     const handleEmailChange = (event) => {
         setEmail(event.target.value);
@@ -24,24 +57,27 @@ const SignUp = ({ show, setLogin, setSignUp }) => {
         setConfirmPassword(event.target.value);
     };
 
-    const handleLogin = () => {
-        setSignUp(false);
-        setLogin(true);
-        console.log("Login");
-    }
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        if (password !== confirmPassword) {
-            console.log("Passwords do not match!");
+        if (!email.endsWith("@lsbu.ac.uk")) {
+            setSignUpMessage("Email must end with @lsbu.ac.uk");
+            setStatusModal(true);
+        } else if (password !== confirmPassword) {
+            setSignUpMessage("Passwords do not match!");
+            setStatusModal(true);
         } else {
-            console.log("Signup Successful!");
+            createUser();
+            setPassword("");
+            setConfirmPassword("");
+            setEmail("");
         }
-        createUser();
     };
+
 
     const createUser = () => {
         fetch("https://lsbu-ex-timer.herokuapp.com/api/user/sign-up", {
+        // fetch("http://localhost:8080/api/user/sign-up", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -50,14 +86,45 @@ const SignUp = ({ show, setLogin, setSignUp }) => {
                 email: email,
                 password: password,
             })
-        }).then(r => r.json())
-        .then(data => {
-            login({ username: data.username, token: data.token })
-            console.log(data);
+        }).then(r => {
+            if(r.ok){
+                successfulSignUp();
+            }
+            return r.json();
         }).catch(err => {
             console.log(err);
+           invalidSignUp(err);
         })
     }
+
+    function closeSignUp() {
+        setSignUp(false);
+        setEmail("");
+        setPassword("");
+        setConfirmPassword("");
+        setSignUpMessage("");
+        console.log("Close Sign Up");
+    }
+
+    const handleLogin = () => {
+        setSignUp(false);
+        setLogin(true);
+        console.log("Login");
+    }
+
+    const successfulSignUp = () => {
+        setSignUp(false);
+        setSignUpMessage("Sign Up Successful");
+        setStatusModal(true);
+    }
+
+
+    const invalidSignUp = (error) => {
+        setSignUpMessage("Sign Up Failed, " + error.message);
+        setStatusModal(true);
+    }
+
+
 
     const theme = createTheme({
         palette: {
@@ -70,12 +137,9 @@ const SignUp = ({ show, setLogin, setSignUp }) => {
         },
     });
 
-    function closeSignUp() {
-        setSignUp(false);
-        console.log("Close Sign Up");
-    }
 
     return (
+        <>
         <ThemeProvider theme={theme}>
             <Modal show={show} onHide={closeSignUp} className="signup-modal">
                 <Modal.Header closeButton>
@@ -154,6 +218,15 @@ const SignUp = ({ show, setLogin, setSignUp }) => {
                 </Modal.Body>
             </Modal>
         </ThemeProvider>
+            <ConfirmModal
+                open={statusModal}
+                handleClose={() => setStatusModal(false)}
+                title={'Sign Up'}
+                content={
+                    signUpMessage
+                }
+            />
+        </>
     );
 };
 

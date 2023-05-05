@@ -3,19 +3,24 @@ import {useContext, useEffect} from "react";
 import AuthContext from "./AuthHandler";
 
 
-const PrivateWrapper = ({ children, setLogin, setNextPage}) => {
+const PrivateWrapper = ({ children, setLogin}) => {
+    const { userLoggedIn } = useContext(AuthContext);
     const { user } = useContext(AuthContext);
-
+    const location = useLocation();
+    const path = location.pathname;
 
     useEffect(() => {
-        if (!user && window.location.pathname !== "/") {
-            setNextPage(window.location.pathname);
+        if (!userLoggedIn() && (path.startsWith("/logs") || path === "/exams")) {
+            console.log("PrivateWrapper: user not logged in");
+            console.log(user + "user " + userLoggedIn() + " userLoggedIn ");
             setLogin(true);
-            console.log('user is not found');
-        }
-    }, [user, setLogin, setNextPage]);
 
-    return <>{user ? children : <Navigate to="/" />}</>;
+        }
+    }, [user]);
+
+    console.log("PrivateWrapper: userLoggedIn: " + userLoggedIn());
+
+    return <>{userLoggedIn() ? children : <Navigate to= "/" />}</>;
 };
 
 export default PrivateWrapper;

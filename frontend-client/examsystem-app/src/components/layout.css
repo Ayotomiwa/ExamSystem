@@ -19,7 +19,7 @@
 }
 
 .nav-link {
-    color: yellow;
+    color: #D4A137;
     font-size: 1.2rem;
     font-weight: 500;
     letter-spacing: 1px;
@@ -27,20 +27,30 @@
 }
 
 .nav-link:hover{
-    /*color: #e75480;*/
-    color:yellow;
-    border-bottom: 3px solid #e75480;
-    transition: all 0.3s ease-in-out;
+    color:#D4A137;
+    border-bottom: 1px solid yellow;
+    transition: all 0.1s ease-in-out;
 }
 
 .nav-link:active,
 .nav-link:focus{
-    color: #e75480;
-}
-
-.my-icon {
     color: yellow;
 }
+
+/*.my-icon {*/
+/*    color: #D4A137;*/
+/*    margin-left: 10px;*/
+/*}*/
+
+
+#account,
+#account:hover,
+#account:active{
+    border-bottom: none;
+    border-color: transparent;
+}
+
+
 .footer {
     background-color: #584595;
     color: #e75480;

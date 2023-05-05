@@ -1,83 +1,40 @@
 import React from 'react';
-import {
-    Dialog,
-    DialogTitle,
-    DialogContent,
-    DialogContentText,
-    DialogActions,
-    Button,
-    Typography,
-    createTheme, IconButton,
-
-} from '@mui/material';
-import {ThemeProvider} from "@mui/material/styles";
-import CloseIcon from "@mui/icons-material/Close";
-
+import { Modal } from 'react-bootstrap';
+import CloseIcon from '@mui/icons-material/Close';
+import './ConfirmModal.css';
+import {Button} from "@mui/material";
 
 const ConfirmModal = ({ open, handleClose, handleYes, handleNo, title, content, showYesAndNo }) => {
-
-    const theme = createTheme({
-        palette: {
-            primary: {
-                main: "#584595",
-            },
-            secondary: {
-                main: "#e75480",
-            },
-        },
-    });
-
-
-    const handleOk = () => {
-        handleClose();
-    };
-
-
     return (
-        <ThemeProvider theme={theme}>
-        <Dialog
-            open={open}
-            onClose={handleClose}
-        >
-            <DialogTitle sx={{ backgroundColor: theme.palette.primary.main }}>
-            <div style={{display:"flex", justifyContent:"space-between"}}>
-                <Typography sx={{ color: 'white', fontWeight: 'bold', fontSize:"20px"}}>
-                    {title}
-                </Typography>
-                <IconButton
-                    edge="end"
-                    color="inherit"
+        <Modal show={open} onHide={handleClose} className="confirm-modal">
+            <Modal.Header className="modal-header">
+                <Modal.Title className="modal-title">{title}</Modal.Title>
+                <Button
+                    className="close-button"
+                    variant="link"
                     onClick={handleClose}
                     aria-label="close"
-                    sx={{
-                        color: (theme) => theme.palette.grey[500],
-                    }}
                 >
                     <CloseIcon />
-                </IconButton>
-                </div>
-            </DialogTitle>
-            <DialogContent sx={{width: "500px"}}>
-                <DialogContentText sx={{ display: "grid", placeItems:"center", fontSize: "1.4rem", fontWeight: "medium", pt:"16px" }}>
-                    {content}
-                </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-                {showYesAndNo && (
-                    <div >
-                        <Button onClick={handleNo} variant="outlined" color="primary" sx={{mr:"20px"}}>
-                            No
-                        </Button>
-                        <Button onClick={handleYes} variant="contained" color="secondary" autoFocus>
-                            Yes
-                        </Button>
-                    </div>
-                )}
-            </DialogActions>
-        </Dialog>
-        </ThemeProvider>
+                </Button>
+            </Modal.Header>
+            <Modal.Body className="modal-body">
+                <p className="content-text">{content}</p>
+            </Modal.Body>
+            {showYesAndNo && (
+                <Modal.Footer className="modal-footer">
+                    <Button variant="outlined" onClick={handleNo} className="no-button">
+                        No
+                    </Button>
+                    <Button variant="contained" onClick={handleYes} className="yes-button">
+                        Yes
+                    </Button>
+                </Modal.Footer>
+            )}
+        </Modal>
     );
 };
 
 export default ConfirmModal;
+
 

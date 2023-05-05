@@ -117,6 +117,7 @@ const ExamForm = ({form, setForm, setShowForm, setShowRules, setIsStarted, tempF
         const fetchModules = async () => {
             try {
                 const response = await fetch("https://lsbu-ex-timer.herokuapp.com/api/modules");
+                // const response = await fetch("http://localhost:8080/api/modules");
                 const data = await response.json();
                 const uniqueData = Array.from(new Set(data.map(module => module.moduleName))).map(moduleName => {
                     return data.find(module => module.moduleName === moduleName);

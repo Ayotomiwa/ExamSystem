@@ -82,6 +82,7 @@ const TimerPage = ({form, setForm, timerMode, setTimerMode, tempForm, setTempFor
         console.log(form.endTime);
 
         fetch(`https://lsbu-ex-timer.herokuapp.com/api/exam-logs/create`, {
+        //     fetch(`http://localhost:8080/api/exam-logs/create`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -100,7 +101,7 @@ const TimerPage = ({form, setForm, timerMode, setTimerMode, tempForm, setTempFor
             }),
         })
             .then((res) => {
-                if(res.status === 200) {
+                if(res.status === "200") {
                     setSaveMessage("Exam saved successfully");
                 }
                 else{
@@ -235,7 +236,6 @@ const TimerPage = ({form, setForm, timerMode, setTimerMode, tempForm, setTempFor
     const fullScreenContainerStyle = {
         minHeight: "100vh",
         backgroundColor: isFullScreen ? "white" : "",
-        border: "1px solid red",
     };
 
 
@@ -244,7 +244,6 @@ const TimerPage = ({form, setForm, timerMode, setTimerMode, tempForm, setTempFor
             <Box sx={{
                 display: "flex",
                 flexDirection: "row",
-                border: "1px solid green",
                 minHeight: "100vh",
             }}>
                 <Box sx={{display: "flex", flexDirection: "column", flex: 1}}>

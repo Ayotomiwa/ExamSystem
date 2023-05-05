@@ -6,21 +6,6 @@ const AUthHandler = createContext();
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
 
-    useEffect(() => {
-        const storedUser = localStorage.getItem("user");
-        if (storedUser) {
-            console.log("storedUser: ", storedUser);
-            const decodedUser = jwtDecode(JSON.parse(storedUser).token);
-            const currentTime = Date.now() / 1000;
-
-            if (decodedUser.exp > currentTime) {
-                setUser(JSON.parse(storedUser));
-            } else {
-                localStorage.removeItem("user");
-                console.log("User token expired...Removed from local storage");
-            }
-        }
-    }, []);
 
     const login = (userData) => {
         localStorage.setItem("user", JSON.stringify(userData));
@@ -32,8 +17,45 @@ export const AuthProvider = ({ children }) => {
         setUser(null);
     };
 
+    useEffect(() => {
+        const storedUser = localStorage.getItem("user");
+        if (storedUser) {
+            console.log("storedUser: ", storedUser);
+            const decodedUser = jwtDecode(JSON.parse(storedUser).token);
+            const currentTime = Date.now() / 1000;
+
+            if (decodedUser.exp > currentTime) {
+                setUser(JSON.parse(storedUser));
+            } else {
+                localStorage.removeItem("user");
+                setUser(null);
+                console.log("User token expired...Removed from local storage");
+            }
+        }
+    }, []);
+
+
+    const userLoggedIn = () => {
+        const storedUser = localStorage.getItem("user");
+        if (storedUser) {
+            const decodedUser = jwtDecode(JSON.parse(storedUser).token);
+            const currentTime = Date.now() / 1000;
+
+            if (decodedUser.exp > currentTime) {
+                return true;
+            } else {
+                localStorage.removeItem("user");
+                console.log("User token expired...Removed from local storage");
+                return false;
+            }
+        }
+        return false;
+    }
+
+
+
     return (
-        <AUthHandler.Provider value={{ user, login, logout }}>
+        <AUthHandler.Provider value={{ user, userLoggedIn, login, logout }}>
             {children}
         </AUthHandler.Provider>
     );

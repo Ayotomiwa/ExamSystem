@@ -17,6 +17,9 @@ const ExamLogList = ({setLogin, setNextPage}) => {
     const [selectedLog, setSelectedLog] = useState(null);
     const { user } = useContext(AuthHandler);
 
+
+
+
     const addAuthHeader = (headers) => {
 
         if (user){
@@ -42,6 +45,7 @@ const ExamLogList = ({setLogin, setNextPage}) => {
                 behavior: "smooth"
             });
             fetch(`https://lsbu-ex-timer.herokuapp.com/api/exam-logs/${examId}`, {
+            //     fetch(`http://localhost:8080/api/exam-logs/${examId}`, {
                 headers: addAuthHeader({"Content-Type": "application/json"})
             })
                 .then(res => res.json())

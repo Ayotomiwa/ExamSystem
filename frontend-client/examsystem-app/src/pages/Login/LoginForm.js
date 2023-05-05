@@ -1,4 +1,4 @@
-import {useContext, useState} from "react";
+import React, {memo, useContext, useEffect, useMemo, useState} from "react";
 import { Modal, Form, Button } from "react-bootstrap";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import TextField from "@mui/material/TextField";
@@ -7,28 +7,50 @@ import "./loginForm.css";
 import AuthHandler from "../../components/AuthHandler";
 import {Box, InputAdornment} from "@mui/material";
 import {Navigate, useNavigate} from "react-router-dom";
+import ConfirmModal from "../../components/ConfirmModal";
 
-const LoginForm = ({ show, setLogin, setSignUp, nextPage}) => {
+const LoginForm = ({ show, setLoginModal, setSignUp}) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const { login } = useContext(AuthHandler);
+    const[loginMessage, setLoginMessage] = useState("");
+    const[statusModal, setStatusModal] = useState(false);
 
-    const handleEmailChange = (event) => {
-        setEmail(event.target.value);
-    };
 
-    const handlePasswordChange = (event) => {
-        setPassword(event.target.value);
-    };
+    //
+    // useEffect(() => {
+    //     if (show) {
+    //         document.body.style.overflow = "hidden";
+    //     } else {
+    //         document.body.style.overflow = "auto";
+    //     }
+    //     return () => {
+    //         document.body.style.overflow = "auto";
+    //     };
+    // }, [show, statusModal]);
+    //
+
 
     const handleSubmit = (event) => {
         event.preventDefault();
-            handleLogin();
+        handleLogin();
     };
+
+    useEffect(() => {
+        if(loginMessage === "Login Successful"){
+            setLoginModal(false);
+            setTimeout(() => {
+                setStatusModal(false);
+                setLoginMessage("");
+            }, 1000);
+
+        }
+    }, [loginMessage]);
 
 
     const handleLogin = () => {
         fetch(`https://lsbu-ex-timer.herokuapp.com/api/authenticate`, {
+        // fetch(`http://localhost:8080/api/authenticate`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -40,28 +62,28 @@ const LoginForm = ({ show, setLogin, setSignUp, nextPage}) => {
             })
             .then((res) => res.json())
             .then((data) => {
-                console.log("data: ", data);
                 if (data.token) {
-                    console.log("Login Success!");
                     login({ username: data.username, token: data.token });
-                    console.log("data.username: ", data.username);
-                    console.log("data.token: ", data.token);
-                    setLogin(false);
-                    window.location.href = nextPage;
-                    } else {
-                        console.log("Login Failed!");
-    }
-    }).catch((error) => console.error(error));
+                    setLoginMessage("Login Successful");
+                    setStatusModal(true);
+                    }
+                setEmail("");
+                setPassword("");
+    }).catch((error) => {
+        console.error(error)
+            setLoginMessage("Error: Login Failed - " + error.message);
+            setStatusModal(true);
+        });
     };
 
     const handleSignUp = () => {
-        setLogin(false);
+        setLoginModal(false);
         setSignUp(true);
         console.log("Sign Up");
     };
 
     const closeLogin = () => {
-        setLogin(false);
+        setLoginModal(false);
         console.log("Close Login");
     }
 
@@ -77,6 +99,7 @@ const LoginForm = ({ show, setLogin, setSignUp, nextPage}) => {
     });
 
     return (
+        <>
         <ThemeProvider theme={theme}>
             <Modal show={show} onHide={closeLogin} className="login-modal">
                 <Modal.Header closeButton>
@@ -89,7 +112,7 @@ const LoginForm = ({ show, setLogin, setSignUp, nextPage}) => {
                             variant="outlined"
                             type="email"
                             value={email}
-                            onChange={handleEmailChange}
+                            onChange={(event) => setEmail(event.target.value)}
                             fullWidth = {true}
                             required
                             InputProps={{
@@ -109,7 +132,7 @@ const LoginForm = ({ show, setLogin, setSignUp, nextPage}) => {
                             variant="outlined"
                             type="password"
                             value={password}
-                            onChange={handlePasswordChange}
+                            onChange={(event) => setPassword(event.target.value)}
                             fullWidth = {true}
                             required
                             InputProps={{
@@ -139,6 +162,15 @@ const LoginForm = ({ show, setLogin, setSignUp, nextPage}) => {
                 </Modal.Body>
             </Modal>
         </ThemeProvider>
+            <ConfirmModal
+        open={statusModal}
+        handleClose={() => setStatusModal(false)}
+        title={'Login'}
+        content={
+            loginMessage
+        }
+    />
+    </>
     );
 };
 

@@ -1,15 +1,22 @@
+.modal{
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+
+
+
 .modal-dialog {
     display: flex;
     align-items: center;
-    min-height: calc(100% - 1rem);
+    min-height: 100%;
 }
 
 .modal-content {
-    margin: 0 auto;
+    /*margin: 0 auto;*/
 }
 
 .modal-body {
-    padding: 16px;
+    padding: 30px;
 }
 
 .modal-header {
