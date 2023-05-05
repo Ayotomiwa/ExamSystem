@@ -10,7 +10,7 @@ const sideBar = ({onCancel, name, children}) => {
                 margin:"auto",
                 height:"100%",
                 color: "#584595",
-                width: "35vw",
+                width: "35%",
                 backgroundColor: 'transparent',
                 display: 'flex',
                 flexDirection: 'column',
