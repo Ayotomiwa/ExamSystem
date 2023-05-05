@@ -57,6 +57,24 @@ function App() {
     }, [formData]);
 
 
+    useEffect(() => {
+        const data = localStorage.getItem("tempForm");
+        const ogData = localStorage.getItem("formData");
+
+        const parsedData = JSON.parse(data);
+
+        if (data && ogData) {
+            setTempForm({
+                ...tempForm,
+                durationHrs: parsedData.durationHrs,
+                durationMins: parsedData.durationMins,
+                startTime: parsedData.startTime,
+                restrictedMinutes: parsedData.restrictedMinutes,
+            });
+        }
+
+    }, []);
+
     return (
         <AuthProvider>
             <Router>

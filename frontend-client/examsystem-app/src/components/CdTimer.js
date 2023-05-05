@@ -49,6 +49,7 @@ const CdTimer = React.memo(function CdTimer ({startTime, endTime, setAdjustedEnd
             }
         } else {
             setTimeLeft(dayjs.duration(0));
+            console.log("Time up");
             setTimeUp(true);
         }
 

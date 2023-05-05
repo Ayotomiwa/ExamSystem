@@ -155,6 +155,7 @@ const ExamForm = ({form, setForm, setShowForm, setShowRules, setIsStarted, tempF
         const examDuration = dayjs.duration({hours: parseInt(tempForm.durationHrs), minutes: parseInt(tempForm.durationMins)});
         const endTime = startTime.clone().add(examDuration.asMilliseconds(), 'milliseconds');
 
+
         setForm({
             ...form,
             durationHrs: tempForm.durationHrs,
@@ -163,6 +164,12 @@ const ExamForm = ({form, setForm, setShowForm, setShowRules, setIsStarted, tempF
             restrictedMinutes: tempForm.restrictedMinutes,
             endTime: endTime.format("HH:mm"),
         });
+
+        // console.log("Form submitted:");
+        // console.log(tempForm.durationMins);
+        // console.log(tempForm.durationHrs);
+        // console.log(tempForm.startTime);
+        // console.log(tempForm.restrictedMinutes);
 
         setIsStarted(true);
         setShowForm(false);

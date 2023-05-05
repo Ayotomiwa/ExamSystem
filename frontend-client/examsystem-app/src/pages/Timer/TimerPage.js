@@ -65,7 +65,7 @@ const TimerPage = ({form, setForm, timerMode, setTimerMode, tempForm, setTempFor
 
 
     function handleSaveToDatabase() {
-        if (!isStarted) {
+        if (!isStarted || !timeUp) {
             console.log("Exam not started or not ended")
             return;
         }
@@ -101,8 +101,9 @@ const TimerPage = ({form, setForm, timerMode, setTimerMode, tempForm, setTempFor
             }),
         })
             .then((res) => {
-                if(res.status === "200") {
+                if(res.ok) {
                     setSaveMessage("Exam saved successfully");
+                    resetTimerPage();
                 }
                 else{
                     setSaveMessage("An error occurred while saving the exam. Please try again.");
@@ -280,8 +281,6 @@ const TimerPage = ({form, setForm, timerMode, setTimerMode, tempForm, setTempFor
                                      isPaused={!play}
                                      isStarted={isStarted}
                                      setTimeUp={setTimeUp}
-                                     startTimeUpdated={startTimeUpdated}
-                                     setStartTimeUpdated={setStartTimeUpdated}
                             />
                         </Box>
 
@@ -478,7 +477,8 @@ const TimerPage = ({form, setForm, timerMode, setTimerMode, tempForm, setTempFor
                 content={
                     modalStage === 0
                     ? 'Before you save, do you want to add logs?'
-                    : `Save "${form.moduleName}" exam to the database?`
+                    : `Save "${form.moduleName}" exam to the database? \n
+                       The Exam Timer will be cleared \n`
                 }
                 showYesAndNo={true}
             />
