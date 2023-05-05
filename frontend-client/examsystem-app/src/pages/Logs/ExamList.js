@@ -20,8 +20,8 @@ const ExamList = ({setLoginModal, setNextPage}) => {
     const [sortState, setSortState] = useState("DESC");
     const mounted = useRef(false);
     const [loading, setLoading] = useState(false);
-    // const basicExamsUrl = "https://lsbu-ex-timer.herokuapp.com/api/exams";
-    const basicExamsUrl = "http://localhost:8080/api/exams";
+    const basicExamsUrl = "https://lsbu-ex-timer.herokuapp.com/api/exams";
+    // const basicExamsUrl = "http://localhost:8080/api/exams";
     const fetchExamsUrl= `size=30&page=${page}&sortBy=${sortColumn}&sort=${sortState}`;
     const searchExamsUrl= basicExamsUrl + `/search?query=${searchTerm}` ;
 
