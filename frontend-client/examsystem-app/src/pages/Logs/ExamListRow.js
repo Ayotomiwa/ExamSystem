@@ -13,7 +13,7 @@ const ExamListRow = ({examId, moduleCode, moduleName, moduleLeader, day, setLogi
     const handleLinkClick = (event) => {
         if (!user) {
             event.preventDefault();
-            setNextPage(`/logs/${examId}/${encodeURIComponent(moduleName)}`);
+            // setNextPage(`/logs/${examId}/${encodeURIComponent(moduleName)}`);
             setLoginModal(true);
         }
     };

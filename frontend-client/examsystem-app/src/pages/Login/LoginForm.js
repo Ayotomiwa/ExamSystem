@@ -36,21 +36,18 @@ const LoginForm = ({ show, setLoginModal, setSignUp}) => {
         handleLogin();
     };
 
-    useEffect(() => {
-        if(loginMessage === "Login Successful"){
-            setLoginModal(false);
-            setTimeout(() => {
-                setStatusModal(false);
-                setLoginMessage("");
-            }, 1000);
-
-        }
-    }, [loginMessage]);
+    // useEffect(() => {
+    //     if(loginMessage === "Login Successful"){
+    //         // setLoginModal(false);
+    //
+    //
+    //     }
+    // }, [loginMessage, statusModal, setLoginModal]);
 
 
     const handleLogin = () => {
-        fetch(`https://lsbu-ex-timer.herokuapp.com/api/authenticate`, {
-        // fetch(`http://localhost:8080/api/authenticate`, {
+        // fetch(`https://lsbu-ex-timer.herokuapp.com/api/authenticate`, {
+        fetch(`http://localhost:8080/api/authenticate`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -64,8 +61,8 @@ const LoginForm = ({ show, setLoginModal, setSignUp}) => {
             .then((data) => {
                 if (data.token) {
                     login({ username: data.username, token: data.token });
-                    setLoginMessage("Login Successful");
-                    setStatusModal(true);
+                    setLoginMessage("Login Successful - Welcome " + data.username);
+                    reloadPage();
                     }
                 setEmail("");
                 setPassword("");
@@ -75,6 +72,19 @@ const LoginForm = ({ show, setLoginModal, setSignUp}) => {
             setStatusModal(true);
         });
     };
+
+
+    const reloadPage = () => {
+        setLoginModal(false);
+        setStatusModal(true);
+        setTimeout(() => {
+            setStatusModal(false);
+            window.location.reload();
+            setLoginMessage("");
+        }, 1200);
+    }
+
+
 
     const handleSignUp = () => {
         setLoginModal(false);

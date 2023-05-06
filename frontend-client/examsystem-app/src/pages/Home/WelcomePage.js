@@ -42,9 +42,8 @@ const WelcomePage = ({setLogin}) => {
                     >
                         <Box>
                             <ArrowForwardIcon />
-                            <Typography variant="body1" sx={{ mt: 1, fontSize: "0.8rem", fontWeight: "bold" }}>
-                                Daily Exams
-                            </Typography>
+                            {/*<Typography variant="body1" sx={{ mt: 1, fontSize: "0.8rem", fontWeight: "bold" }}>*/}
+                            {/*</Typography>*/}
                         </Box>
                     </Button>
                 )}
@@ -71,7 +70,7 @@ const WelcomePage = ({setLogin}) => {
                         }}
                     >
                         <Typography variant="h6" component="div">
-                            Daily Exam List
+                            Recent Exam List
                         </Typography>
                         <IconButton
                             color="inherit"
@@ -82,7 +81,7 @@ const WelcomePage = ({setLogin}) => {
                         </IconButton>
                     </Box>
                     <Box>
-                        <FeaturedExams />
+                        <FeaturedExams SetLoginModal={setLogin}/>
                     </Box>
 
                 </Box>

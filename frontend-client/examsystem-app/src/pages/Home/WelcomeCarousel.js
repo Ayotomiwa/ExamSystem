@@ -69,7 +69,7 @@ const WelcomeCarousel = ({setLogin}) => {
             ),
         },
         {
-            title: 'Sign in to access exam logs',
+            title: 'Access exam logs',
             description: 'Keep track of your exams and stay organized',
             backgroundColor: "#e75480",
             color: "#fff",

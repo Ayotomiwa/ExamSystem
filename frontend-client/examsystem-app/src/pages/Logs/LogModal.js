@@ -92,8 +92,8 @@ const LogModal = ({ open, user, logId, handleClose }) => {
             return;
         }
 
-        fetch(`https://lsbu-ex-timer.herokuapp.com/api/exam-logs/log/${logId}`,{
-        //     fetch(`http://localhost:8080/api/exam-logs/log/${logId}`,{
+        // fetch(`https://lsbu-ex-timer.herokuapp.com/api/exam-logs/log/${logId}`,{
+            fetch(`http://localhost:8080/api/exam-logs/log/${logId}`,{
             headers: addAuthHeader({ "Content-Type": "application/json" })
         })
             .then(response => response.json())
@@ -110,8 +110,8 @@ const LogModal = ({ open, user, logId, handleClose }) => {
         if (examId === null) {
             return;
         }
-        fetch(`https://lsbu-ex-timer.herokuapp.com/api/exams/exam/${examId}`)
-        // fetch(`http://localhost:8080/api/exams/exam/${examId}`)
+        // fetch(`https://lsbu-ex-timer.herokuapp.com/api/exams/exam/${examId}`)
+        fetch(`http://localhost:8080/api/exams/exam/${examId}`)
             .then(response => response.json())
             .then(data => {
                 setExam(data);
