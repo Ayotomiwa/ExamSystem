@@ -18,7 +18,6 @@ public class ExamLogs {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long id;
-    private String venue;
     private String message;
     private LocalTime startTime;
     private LocalTime endTime;
@@ -29,5 +28,10 @@ public class ExamLogs {
     @ManyToOne( fetch = FetchType.LAZY)
     @JoinColumn(name = "examId", referencedColumnName = "id")
     private Exam exam;
+
+    @ManyToOne( fetch = FetchType.LAZY)
+    @JoinColumn(name = "venueId", referencedColumnName = "id")
+    private Venue venue;
+
     }
 

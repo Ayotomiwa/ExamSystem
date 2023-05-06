@@ -18,13 +18,14 @@ public interface ExamLogMapper {
     @Mapping(target = "submittedDate", qualifiedByName = "changeDateFormatToString")
     @Mapping(target = "exam.startTime", qualifiedByName = "changeLocalTimeFormatToString")
     @Mapping(target = "exam.endTime", qualifiedByName = "changeLocalTimeFormatToString")
-    @Mapping(target="startTime", qualifiedByName = "changeLocalTimeFormatToString")
-    @Mapping(target="endTime", qualifiedByName = "changeLocalTimeFormatToString")
-    @Mapping(source="exam.startTime", target="examStartTime")
-    @Mapping(source="exam.module.registeredStudents", target="registeredStudents")
+    @Mapping(target = "startTime", qualifiedByName = "changeLocalTimeFormatToString")
+    @Mapping(target = "endTime", qualifiedByName = "changeLocalTimeFormatToString")
+    @Mapping(source = "exam.startTime", target = "examStartTime")
+    @Mapping(source = "exam.id", target = "examId")
+    @Mapping(source = "exam.module.registeredStudents", target = "registeredStudents")
     @Mapping(source = "exam.module.moduleCode", target = "moduleCode")
     @Mapping(source = "exam.module.moduleName", target = "moduleName")
-    @Mapping(source = "exam.id", target = "examId")
+    @Mapping(source = "venue.name", target = "venue")
     ExamLogsDto toDto(ExamLogs examLog);
 
 
@@ -32,6 +33,7 @@ public interface ExamLogMapper {
     @Mapping(target="submittedDate", qualifiedByName = "changeStringFormatToDate")
     @Mapping(target="startTime", qualifiedByName = "changeStringFormatToLocalTime")
     @Mapping(target="endTime", qualifiedByName = "changeStringFormatToLocalTime")
+    @Mapping(source="venue", target="venue.name")
 //    @Mapping(source = "exam", target = "exam")
     ExamLogs toEntity(ExamLogsDto examLogDto);
 }

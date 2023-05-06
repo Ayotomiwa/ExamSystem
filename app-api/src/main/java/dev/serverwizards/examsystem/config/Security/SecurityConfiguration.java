@@ -68,6 +68,7 @@ public class SecurityConfiguration {
                                 .requestMatchers(HttpMethod.GET,"/api/modules/**").permitAll()
                                 .requestMatchers(HttpMethod.POST,"/api/exam-logs/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/exam-logs/{id}").authenticated()
+                                .requestMatchers(HttpMethod.GET, "/api/exam-logs/logs/{id}").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/api/**").authenticated()
 //                        .requestMatchers(HttpMethod.GET, "/api/exam-logs/{id}").authenticated()
                         .anyRequest().authenticated()

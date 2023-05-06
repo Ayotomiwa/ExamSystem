@@ -6,6 +6,7 @@ import dev.serverwizards.examsystem.service.implementation.CustomUserDetailsServ
 import dev.serverwizards.examsystem.service.implementation.TokenBlacklistService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -23,24 +24,23 @@ public class UserController {
     }
 
     @PostMapping("/sign-up")
-    public ResponseEntity<User>signUp(@RequestBody User user) {
+    public ResponseEntity<?> signUp(@RequestBody User user) {
         System.out.println("User: " + user.getUsername() + " " + user.getEmail());
         if(user.getEmail() == null) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email is required");
         }
         if (user.getUsername() == null) {
            user.setUsername(user.getEmail().substring(0, user.getEmail().indexOf("@")));
         }
         System.out.println("User: " + user.getUsername() + " " + user.getEmail());
         if (customUserDetailsService.existsByUsernameOrEmail(user.getUsername(), user.getEmail())) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User with the same username or email already exists.");
         }
         return ResponseEntity.ok(customUserDetailsService.save(user));
     }
 
     @PostMapping("/logout")
     public ResponseEntity<?> logout(HttpServletRequest request, HttpServletResponse response) {
-        // You can implement any additional log-out logic here, such as blacklisting the token on the server-side.
 
         String authHeader = request.getHeader("Authorization");
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
@@ -52,10 +52,8 @@ public class UserController {
             System.out.println("Token not found in the header");
         }
 
-        // Clear authentication information
         SecurityContextHolder.clearContext();
 
-        // Return a successful log-out response
         return ResponseEntity.ok("Logged out successfully.");
     }
 

@@ -4,13 +4,11 @@ import dev.serverwizards.examsystem.dto.ExamLogsDto;
 import dev.serverwizards.examsystem.dto.Mapper.ModuleMapper;
 import dev.serverwizards.examsystem.dto.Mapper.ExamLogMapper;
 import dev.serverwizards.examsystem.dto.Mapper.ExamMapper;
+import dev.serverwizards.examsystem.model.*;
 import dev.serverwizards.examsystem.model.Module;
-import dev.serverwizards.examsystem.model.Exam;
-import dev.serverwizards.examsystem.model.ExamLogs;
-import dev.serverwizards.examsystem.repository.ModuleRepository;
-import dev.serverwizards.examsystem.repository.ExamLogRepository;
-import dev.serverwizards.examsystem.repository.ExamRepository;
+import dev.serverwizards.examsystem.repository.*;
 import dev.serverwizards.examsystem.service.ExamLogService;
+import dev.serverwizards.examsystem.service.VenueService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +27,8 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ExamLogServiceImpl implements ExamLogService {
 
+    private final ExamVenueRepository examVenueRepo;
+    private final VenueService venueService;
     private final ExamLogRepository logRepo;
     private final ExamRepository examRepo;
     private final ModuleRepository moduleRepo;
@@ -72,14 +72,34 @@ public class ExamLogServiceImpl implements ExamLogService {
             exam.setModule(module);
             examRepo.save(exam);
         }
-
-//        Exam exam = examRepo.findByDayAndCourse_courseId (LocalDate.parse(examLogsDto.getExam().getDay(), DateTimeFormatter.ofPattern("yyyy-MM-dd")),courseDto.getCourseId() )
-//                .orElseGet(() -> {
-//                    examLogsDto.getExam().setCourse(courseDto);
-//                    return examRepo.save(examMapper.toEntity(examLogsDto.getExam()));
-//                });
-
         examLogs.setExam(exam);
+
+
+        Venue venue = venueService.findByName(examLogsDto.getVenue())
+                .orElseGet(() -> {
+                    Venue newVenue = new Venue();
+                    newVenue.setName(examLogsDto.getVenue());
+                    return venueService.save(newVenue);
+                });
+
+
+
+        boolean venueExists = exam.getExamVenues().stream()
+                .anyMatch(examVenue -> examVenue.getVenue().equals(venue));
+
+
+
+        if (!venueExists) {
+            ExamVenue examVenue = new ExamVenue();
+            examVenue.setExam(exam);
+            examVenue.setVenue(venue);
+            examVenueRepo.save(examVenue);
+            exam.getExamVenues().add(examVenue);
+            examRepo.save(exam);
+        }
+
+        examLogs.setVenue(venue);
+
         return examLogMapper.toDto(logRepo.save(examLogs));
     }
 

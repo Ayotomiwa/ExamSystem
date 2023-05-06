@@ -2,6 +2,8 @@ package dev.serverwizards.examsystem.service.implementation;
 import dev.serverwizards.examsystem.dto.ExamDto;
 import dev.serverwizards.examsystem.dto.Mapper.ExamMapper;
 import dev.serverwizards.examsystem.model.Exam;
+import dev.serverwizards.examsystem.model.ExamLogs;
+import dev.serverwizards.examsystem.repository.ExamLogRepository;
 import dev.serverwizards.examsystem.repository.ExamRepository;
 import dev.serverwizards.examsystem.service.ExamService;
 import jakarta.transaction.Transactional;
@@ -10,9 +12,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -23,6 +28,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ExamServiceImpl implements ExamService {
 
+private  final ExamLogRepository examLogRepo;
     private final ExamRepository repo;
     private final ExamMapper examMapper;
 
@@ -91,9 +97,18 @@ public class ExamServiceImpl implements ExamService {
 
     @Override
     public List<ExamDto> getDailyExam() {
-        LocalDate today = LocalDate.parse("2023-03-07");
+        LocalDate today = LocalDate.parse(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         List<Exam> exams = repo.findByExamDay(today);
         return exams.stream().map(examMapper::toDto).collect(Collectors.toList());
+    }
+
+    public List<ExamDto> getRecentExam() {
+        PageRequest pageRequest = PageRequest.of(0, 15, Sort.Direction.DESC, "submittedDate");
+        Page<ExamLogs> examLogs = examLogRepo.findAll(pageRequest);
+        List<Exam> exams = examLogs.stream().map(ExamLogs::getExam).toList();
+        List<Exam> uniqueExams = new HashSet<>(exams).stream().toList();
+
+        return uniqueExams.stream().map(examMapper::toDto).collect(Collectors.toList());
     }
 }
 

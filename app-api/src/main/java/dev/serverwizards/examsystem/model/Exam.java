@@ -38,4 +38,7 @@ import java.util.List;
     @OneToMany(mappedBy = "exam", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<ExamLogs> examLogs = new ArrayList<>();
 
+
+    @OneToMany(mappedBy = "exam", cascade = CascadeType.ALL)
+    List<ExamVenue> examVenues= new ArrayList<>();
 }

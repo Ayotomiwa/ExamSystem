@@ -13,4 +13,7 @@ public interface ExamLogRepository extends JpaRepository<ExamLogs, Long> {
     Page<ExamLogs> findByExam_id(PageRequest p, long examId);
 
     List<ExamLogs> findAllByExamId(Sort sort, Long examId);
+
+
+
 }
