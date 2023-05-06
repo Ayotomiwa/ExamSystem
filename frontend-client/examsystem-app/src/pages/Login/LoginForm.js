@@ -46,8 +46,8 @@ const LoginForm = ({ show, setLoginModal, setSignUp}) => {
 
 
     const handleLogin = () => {
-        // fetch(`https://lsbu-ex-timer.herokuapp.com/api/authenticate`, {
-        fetch(`http://localhost:8080/api/authenticate`, {
+        fetch(`https://lsbu-ex-timer.herokuapp.com/api/authenticate`, {
+        // fetch(`http://localhost:8080/api/authenticate`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

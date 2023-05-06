@@ -44,8 +44,8 @@ const ExamLogList = ({setLogin, setNextPage}) => {
                 top: 0,
                 behavior: "smooth"
             });
-            // fetch(`https://lsbu-ex-timer.herokuapp.com/api/exam-logs/${examId}`, {
-                fetch(`http://localhost:8080/api/exam-logs/${examId}`, {
+            fetch(`https://lsbu-ex-timer.herokuapp.com/api/exam-logs/${examId}`, {
+            //     fetch(`http://localhost:8080/api/exam-logs/${examId}`, {
                 headers: addAuthHeader({"Content-Type": "application/json"})
             })
                 .then(res => res.json())

@@ -10,7 +10,8 @@ const FeaturedExams = ({setLoginModal}) => {
     const [exams, setExams] = useState([]);
 
     useEffect(()=> {
-        fetch('http://localhost:8080/api/exams/recent')
+        fetch(`https://lsbu-ex-timer.herokuapp.com/api/exams/recent`)
+        // fetch('http://localhost:8080/api/exams/recent')
             .then(res=>res.json())
             .then(data => {
                 setExams(data)
