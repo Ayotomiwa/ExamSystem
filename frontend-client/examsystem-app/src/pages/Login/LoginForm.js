@@ -68,7 +68,7 @@ const LoginForm = ({ show, setLoginModal, setSignUp}) => {
                 setPassword("");
     }).catch((error) => {
         console.error(error)
-            setLoginMessage("Error: Login Failed - " + error.message);
+            setLoginMessage("Error: Login Failed - incorrect password.");
             setStatusModal(true);
         });
     };
