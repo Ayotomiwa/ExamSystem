@@ -1,0 +1,329 @@
+@startuml
+'class model.Module {
+'- Long courseId
+'- String moduleCode
+'- String moduleName
+'- String moduleLeader
+'- int registeredStudents
+'- List<Exam> exams
+'}
+'class model.LoginResponse {
+'- String token
+'- String username
+'}
+interface repository.ModuleRepository {
+~ Long findByModuleCode(String)
+~ Module findByModuleCodeAndModuleName(String,String)
+~ boolean existsByModuleCodeAndModuleName(String,String)
+}
+interface repository.ExamRepository {
+~ Long getOneIdByExam(ExamType,String,LocalDate)
+~ List<Exam> findByCourseFieldsContainingIgnoreCase(String)
+~ Optional<Exam> findByTypeAndYearAndExamDay(ExamType,String,LocalDate)
+~ Page<Exam> findByCourseFieldsContainingIgnoreCase(String,PageRequest)
+~ Optional<Exam> findByExamDayAndModule_courseId(LocalDate,long)
+~ List<Exam> findByExamDay(LocalDate)
+}
+'class dto.ExamLogsDto {
+'- Long id
+'- String venue
+'- String message
+'- String examDay
+'- String examStartTime
+'- long registeredStudents
+'- String startTime
+'- String endTime
+'- String submittedDate
+'- long studentsNo
+'- String moduleName
+'- String moduleCode
+'- long examId
+'}
+'enum model.types.ExamType {
+'+  RESIT
+'+  NORMAL
+'- String type
+'~ <<Create>> ExamType(String)
+'+ String getType()
+'}
+'interface service.ModuleService {
+'~ ModuleDto save(ModuleDto)
+'~ List<ModuleDto> findAllCourses()
+'~ Boolean delete(long)
+'~ ModuleDto findById(long)
+'~ Long findByModuleCode(String)
+'}
+'class model.Venue {
+'- Long id
+'- String name
+'- List<ExamLogs> examLogs
+'~ List<ExamVenue> examVenues
+'}
+'class controller.UserController {
+'- CustomUserDetailsService customUserDetailsService
+'- TokenBlacklistService tokenBlacklistService
+'+ <<Create>> UserController(CustomUserDetailsService,TokenBlacklistService)
+'+ ResponseEntity<?> signUp(User)
+'+ ResponseEntity<?> logout(HttpServletRequest,HttpServletResponse)
+'}
+'class controller.ExamLogController {
+'- ExamLogServiceImpl service
+'+ ResponseEntity<Page<ExamLogsDto>> examLogsByPages(Optional<Integer>,Optional<String>,Optional<Long>,Long)
+'+ ResponseEntity<List<ExamLogsDto>> examLogs(Optional<String>,Long)
+'+ ResponseEntity<ExamLogsDto> addExamLog(ExamLogsDto)
+'+ ExamLogsDto getExamLogById(long)
+'+ Boolean deleteExamLog(long)
+'}
+'class config.WebConfig {
+'+ void addCorsMappings(CorsRegistry)
+'}
+'class config.Security.JwtTokenProvider {
+'- String jwtSecret
+'- long jwtExpiration
+'- SecretKey jwtSecretKey
+'+ String generateToken(Authentication)
+'+ String getUsernameFromToken(String)
+'+ boolean validateToken(String)
+'}
+interface repository.ExamVenueRepository {
+~ List<ExamVenueRepository> findByExam(Exam)
+~ List<ExamVenueRepository> findByVenue(Venue)
+~ List<ExamVenueRepository> findByExamAndVenue(Exam,Venue)
+}
+'class model.ExamVenue {
+'~ Long id
+'~ Exam exam
+'~ Venue venue
+'}
+'class model.LoginRequest {
+'- String username
+'- String password
+'}
+interface repository.UserRepository {
+~ Optional<User> findByUsername(String)
+~ boolean existsByUsernameOrEmail(String,String)
+}
+'interface service.ExamLogService {
+'~ ExamLogsDto save(ExamLogsDto)
+'~ Page<ExamLogsDto> listExamLogsByExamIdInPages(PageRequest,long)
+'~ List<ExamLogsDto> listExamLogsByExamId(Sort,Long)
+'~ Boolean delete(long)
+'~ ExamLogsDto getById(long)
+'~ List<ExamLogsDto> findALL()
+'}
+'interface service.VenueService {
+'~ Venue save(Venue)
+'~ List<Venue> findAllVenues()
+'~ Boolean delete(long)
+'~ Venue findById(long)
+'~ Optional<Venue> findByName(String)
+'}
+'class dto.ExamDto {
+'- Long examId
+'- String examDay
+'- String startTime
+'- String endTime
+'- String year
+'- String type
+'- ModuleDto module
+'}
+'class service.implementation.ModuleServiceImpl {
+'- ModuleRepository repo
+'- ModuleMapper mapper
+'+ ModuleDto save(ModuleDto)
+'+ List<ModuleDto> findAllCourses()
+'+ Boolean delete(long)
+'+ ModuleDto findById(long)
+'+ Long findByModuleCode(String)
+'}
+'class service.implementation.VenueServiceImpl {
+'- VenueRepository venueRepo
+'+ Venue save(Venue)
+'+ List<Venue> findAllVenues()
+'+ Boolean delete(long)
+'+ Venue findById(long)
+'+ Optional<Venue> findByName(String)
+'}
+'interface dto.Mapper.ExamMapper {
+'~ ExamType mapStringToExamType(String)
+'~ String mapExamTypeToString(ExamType)
+'~ String changeDateFormat(LocalDate)
+'~ LocalDate changeStringFormatToDate(String)
+'~ LocalTime changeStringFormatToLocalTime(String)
+'~ String changeLocalTimeFormatToString(LocalTime)
+'~ ExamDto toDto(Exam)
+'~ Exam toEntity(ExamDto)
+'}
+interface repository.ExamLogRepository {
+~ Page<ExamLogs> findByExam_id(PageRequest,long)
+~ List<ExamLogs> findAllByExamId(Sort,Long)
+}
+'class service.implementation.ExamLogServiceImpl {
+'- ExamVenueRepository examVenueRepo
+'- VenueService venueService
+'- ExamLogRepository logRepo
+'- ExamRepository examRepo
+'- ModuleRepository moduleRepo
+'- ExamLogMapper examLogMapper
+'- ExamMapper examMapper
+'- ModuleMapper moduleMapper
+'+ ExamLogsDto save(ExamLogsDto)
+'+ Page<ExamLogsDto> listExamLogsByExamIdInPages(PageRequest,long)
+'+ List<ExamLogsDto> listExamLogsByExamId(Sort,Long)
+'+ ExamLogsDto getById(long)
+'+ List<ExamLogsDto> findALL()
+'+ Boolean delete(long)
+'}
+'interface dto.Mapper.ModuleMapper {
+'~ ModuleDto toDto(Module)
+'~ Module toEntity(ModuleDto)
+'}
+'class controller.TokenController {
+'- AuthenticationManager authenticationManager
+'- JwtTokenProvider jwtTokenProvider
+'- UserDetailsService userDetailsService
+'+ <<Create>> TokenController(AuthenticationManager,JwtTokenProvider,UserDetailsService)
+'+ ResponseEntity<?> authenticate(LoginRequest)
+'}
+'class model.User {
+'- Long id
+'- String username
+'- String password
+'- UserRole role
+'- String email
+'}
+'class dto.ModuleDto {
+'- Long courseId
+'- String moduleName
+'- String moduleCode
+'- Long registeredStudents
+'- String moduleLeader
+'- List<ExamDto> exams
+'}
+'interface service.ExamService {
+'~ ExamDto save(ExamDto)
+'~ Page<ExamDto> listExams(PageRequest)
+'~ Boolean delete(long)
+'~ ExamDto getById(Long)
+'~ List<ExamDto> getExamBySearch(String)
+'~ Page<ExamDto> getExamBySearchAndPage(String,PageRequest)
+'~ Long findExamId(ExamDto)
+'~ List<ExamDto> getDailyExam()
+'}
+'class model.Exam {
+'- Long id
+'- LocalDate examDay
+'- LocalTime startTime
+'- LocalTime endTime
+'- String year
+'- ExamType type
+'- Module module
+'- List<ExamLogs> examLogs
+'~ List<ExamVenue> examVenues
+'}
+'class model.ExamLogs {
+'- Long id
+'- String message
+'- LocalTime startTime
+'- LocalTime endTime
+'- LocalDate submittedDate
+'- Long studentsNo
+'- Exam exam
+'- Venue venue
+'}
+'class service.implementation.CustomUserDetailsService {
+'- UserRepository userRepository
+'- PasswordEncoder bCryptPasswordEncoder
+'+ <<Create>> CustomUserDetailsService(UserRepository,PasswordEncoder)
+'+ UserDetails loadUserByUsername(String)
+'+ boolean existsByUsernameOrEmail(String,String)
+'+ User save(User)
+'}
+'class ExamSystemApplication {
+'+ {static} void main(String[])
+'+ PasswordEncoder passwordEncoder()
+'}
+'enum model.types.UserRole {
+'+  ADMIN
+'+  AUTH_USER
+'+  GUEST
+'}
+'class controller.HomeController {
+'+ ResponseEntity<String> homeGreeting()
+'}
+'class controller.ModuleController {
+'- ModuleRepository repository
+'+ <<Create>> ModuleController(ModuleRepository)
+'+ ResponseEntity<List<Module>> exams()
+'+ ResponseEntity<Module> addModule(Module)
+'+ ResponseEntity<Void> deleteExam(long)
+'}
+'interface dto.Mapper.ExamLogMapper {
+'~ ExamLogsDto toDto(ExamLogs)
+'~ ExamLogs toEntity(ExamLogsDto)
+'}
+'class controller.ExamController {
+'- ExamServiceImpl service
+'+ ResponseEntity<Page<ExamDto>> exam(Optional<Integer>,Optional<String>,Optional<String>,Optional<Long>)
+'+ ResponseEntity<ExamDto> createExam(ExamDto)
+'+ ResponseEntity<List<ExamDto>> getDailyExam()
+'+ ResponseEntity<List<ExamDto>> getRecentExam()
+'+ ResponseEntity<Page<ExamDto>> searchExams(Optional<Integer>,Optional<String>,Optional<String>,Optional<Long>,String)
+'+ ExamDto findExamById(Long)
+'+ ResponseEntity<Void> deleteExam(long)
+'}
+'class config.Security.SecurityConfiguration {
+'- PasswordEncoder passwordEncoder
+'- JwtTokenProvider tokenProvider
+'- CustomUserDetailsService customUserDetailsService
+'- TokenBlacklistService tokenBlacklistService
+'+ <<Create>> SecurityConfiguration(JwtTokenProvider,CustomUserDetailsService,TokenBlacklistService)
+'+ AuthenticationManager authenticationManager(UserDetailsService)
+'+ SecurityFilterChain filterChain(HttpSecurity)
+'}
+'class service.implementation.ExamServiceImpl {
+'- ExamLogRepository examLogRepo
+'- ExamRepository repo
+'- ExamMapper examMapper
+'+ ExamDto save(ExamDto)
+'+ Page<ExamDto> listExams(PageRequest)
+'+ Boolean delete(long)
+'+ ExamDto getById(Long)
+'+ List<ExamDto> getExamBySearch(String)
+'+ Page<ExamDto> getExamBySearchAndPage(String,PageRequest)
+'+ Long findExamId(ExamDto)
+'+ List<ExamDto> getDailyExam()
+'+ List<ExamDto> getRecentExam()
+'}
+'class config.Security.JwtAuthenticationFilter {
+'- JwtTokenProvider tokenProvider
+'- CustomUserDetailsService customUserDetailsService
+'- TokenBlacklistService tokenBlacklistService
+'+ <<Create>> JwtAuthenticationFilter(JwtTokenProvider,CustomUserDetailsService,TokenBlacklistService)
+'# void doFilterInternal(HttpServletRequest,HttpServletResponse,FilterChain)
+'- String getJwtFromRequest(HttpServletRequest)
+'}
+'class service.implementation.TokenBlacklistService {
+'- Set<String> blacklistedTokens
+'+ void blacklistToken(String)
+'+ boolean isBlacklisted(String)
+'}
+interface repository.VenueRepository {
+~ Optional<Venue> findByName(String)
+~ boolean existsByName(String)
+}
+
+jpa.repository.JpaRepository <|-- repository.ModuleRepository
+jpa.repository.JpaRepository <|-- repository.ExamRepository
+'org.springframework.web.servlet.config.annotation.WebMvcConfigurer <|.. dev.serverwizards.examsystem.config.WebConfig
+jpa.repository.JpaRepository <|-- repository.ExamVenueRepository
+jpa.repository.JpaRepository <|-- repository.UserRepository
+'dev.serverwizards.examsystem.service.ModuleService <|.. dev.serverwizards.examsystem.service.implementation.ModuleServiceImpl
+'dev.serverwizards.examsystem.service.VenueService <|.. dev.serverwizards.examsystem.service.implementation.VenueServiceImpl
+jpa.repository.JpaRepository <|-- repository.ExamLogRepository
+'dev.serverwizards.examsystem.service.ExamLogService <|.. dev.serverwizards.examsystem.service.implementation.ExamLogServiceImpl
+'org.springframework.security.core.userdetails.UserDetailsService <|.. dev.serverwizards.examsystem.service.implementation.CustomUserDetailsService
+'dev.serverwizards.examsystem.service.ExamService <|.. dev.serverwizards.examsystem.service.implementation.ExamServiceImpl
+'org.springframework.web.filter.OncePerRequestFilter <|-- dev.serverwizards.examsystem.config.Security.JwtAuthenticationFilter
+jpa.repository.JpaRepository <|-- repository.VenueRepository
+@enduml

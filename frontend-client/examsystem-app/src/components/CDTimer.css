@@ -5,7 +5,7 @@
 .timer-text {
     font-weight: bold;
     font-family: 'Orbitron', sans-serif;
-    font-size: 9rem;
+    font-size: 15rem;
 }
 
 .timer-text-waiting {
@@ -13,6 +13,7 @@
     font-weight: bold;
     font-family: 'Orbitron', sans-serif;
 }
+
 
 @media (min-width: 1500px) {
     .timer-text {
@@ -23,12 +24,19 @@
         font-size: 8rem;
         color: #e75480;
     }
-
 }
+
 
 @media (max-width: 768px) {
     .timer-text {
         color: blue !important;
-        font-size: 4rem !important;
+        font-size: 7rem !important;
+    }
+}
+
+@media (max-width: 500px) {
+    .timer-text {
+        color: green !important;
+        font-size: 5rem !important;
     }
 }
