@@ -64,7 +64,7 @@ const WelcomeCarousel = ({setLogin}) => {
             color: "#fff",
             action: (
                 <Button variant="contained" color="secondary" onClick={handleStartExam}>
-                    Exam Timer
+                    Get Started
                 </Button>
             ),
         },

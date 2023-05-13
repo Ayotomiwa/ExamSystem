@@ -20,7 +20,7 @@ const FeaturedExams = ({setLoginModal}) => {
     },[]);
 
     return(
-        <div style={{ maxHeight: "500px", overflowY: "auto" }}>
+        <div style={{ height: "400px", overflowY: "auto" }}>
         <Table>
             <TableHead>
               <TableRow >

@@ -1,9 +1,9 @@
 import { createContext, useState, useEffect } from "react";
 import jwtDecode from "jwt-decode";
 
-const AUthHandler = createContext();
+const AUthHandler = createContext(null);
 
-export const AuthProvider = ({ children }) => {
+export const AuthProvider = ({ children}) => {
     const [user, setUser] = useState(null);
 
 
@@ -18,11 +18,14 @@ export const AuthProvider = ({ children }) => {
     };
 
     useEffect(() => {
+        console.log("UseEffect: Before if statement in AuthHandler.js");
         const storedUser = localStorage.getItem("user");
         if (storedUser) {
-            console.log("storedUser: ", storedUser);
+            // console.log("storedUser: ", storedUser);
             const decodedUser = jwtDecode(JSON.parse(storedUser).token);
             const currentTime = Date.now() / 1000;
+
+            console.log("UseEffect: Inside useEffect of AuthHandler.js");
 
             if (decodedUser.exp > currentTime) {
                 setUser(JSON.parse(storedUser));

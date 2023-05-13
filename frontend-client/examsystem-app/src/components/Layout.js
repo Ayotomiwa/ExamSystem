@@ -22,6 +22,8 @@ function Header({account, setLogin}) {
     const open = Boolean(anchorEl);
 
 
+
+
     const handleMenu = (event) => {
         setAnchorEl(event.currentTarget);
     };
@@ -57,10 +59,13 @@ function Header({account, setLogin}) {
                     <Nav.Link as={Link} to="/exams">
                         Logs
                     </Nav.Link>
-                    <div style={{marginLeft:"45em"}}> </div>
+                </Nav>
+                <Nav className="ms-auto me-lg-5">
+                    {/*<div style={{marginLeft:"auto", border: "2px solid red"}}>*/}
                     <NavDropdown
                         title={<span className="text-warning">{account}</span>}
                         id="account-dropdown"
+                        sx={{border: "2px solid blue", ml:"auto"}}
                     >
                         {user ? (
                             <NavDropdown.Item  onClick={handleSignOut} style={{
@@ -81,6 +86,7 @@ function Header({account, setLogin}) {
                                  }}>Sign In</NavDropdown.Item>
                         )}
                     </NavDropdown>
+                    {/*</div>*/}
                 </Nav>
             </Navbar.Collapse>
         </Navbar>

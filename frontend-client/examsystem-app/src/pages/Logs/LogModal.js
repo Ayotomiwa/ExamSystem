@@ -1,12 +1,21 @@
 import React, {useEffect, useMemo, useState} from 'react';
-import {Box, Button, Collapse, Dialog, DialogActions, DialogContent, DialogTitle, IconButton,
-    Paper, Typography,
+import {
+    Box,
+    Button,
+    Collapse,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    IconButton,
+    Paper,
+    Typography,
 } from '@mui/material';
-import { Close, Print } from '@mui/icons-material';
-import { styled } from '@mui/system';
+import {Close, Print} from '@mui/icons-material';
+import {styled} from '@mui/system';
 
 
-const StyledDialog = styled(Dialog)(({ theme }) => ({
+const StyledDialog = styled(Dialog)(({theme}) => ({
     '& .MuiDialog-paper': {
         width: "50%",
         maxWidth: "50%",
@@ -26,11 +35,11 @@ const StyledIconButton = styled(IconButton)({
     color: "#ffffff",
 });
 
-const StyledDialogContent = styled(DialogContent)(({ theme }) => ({
+const StyledDialogContent = styled(DialogContent)(({theme}) => ({
     padding: theme.spacing(2),
 }));
 
-const StyledDialogActions = styled(DialogActions)(({ theme }) => ({
+const StyledDialogActions = styled(DialogActions)(({theme}) => ({
     backgroundColor: "#D4A137",
     padding: theme.spacing(1),
     display: "flex",
@@ -48,7 +57,7 @@ const StyledButton = styled(Button)({
 // });
 
 
-const CollapsibleSection = ({ title, children }) => {
+const CollapsibleSection = ({title, children}) => {
     const [isOpen, setIsOpen] = useState(true);
 
     return (
@@ -60,20 +69,17 @@ const CollapsibleSection = ({ title, children }) => {
             >
                 <Typography variant="h6">{title}</Typography>
             </Button>
-            <Collapse in={isOpen} >
+            <Collapse in={isOpen}>
                 {children}
             </Collapse>
         </Box>
     );
 };
 
-const LogModal = ({ open, user, logId, handleClose }) => {
+const LogModal = ({open, user, logId, handleClose}) => {
     const [logs, setLogs] = useState([]);
     const [exam, setExam] = useState([]);
     const [examId, setExamId] = useState(null);
-
-
-
 
 
     const addAuthHeader = (headers) => {
@@ -84,25 +90,27 @@ const LogModal = ({ open, user, logId, handleClose }) => {
     };
 
 
-
     useEffect(() => {
 
-        if(!user){
+        console.log('useEffect in LogModal');
+
+        if (!user) {
             handleClose();
             return;
         }
 
-        fetch(`https://lsbu-ex-timer.herokuapp.com/api/exam-logs/log/${logId}`,{
-        //     fetch(`http://localhost:8080/api/exam-logs/log/${logId}`,{
-            headers: addAuthHeader({ "Content-Type": "application/json" })
+        fetch(`https://lsbu-ex-timer.herokuapp.com/api/exam-logs/log/${logId}`, {
+            //     fetch(`http://localhost:8080/api/exam-logs/log/${logId}`,{
+            headers: addAuthHeader({"Content-Type": "application/json"})
         })
             .then(response => response.json())
             .then(data => {
                 setLogs(data);
+                console.log('logs  ', data)
                 setExamId(data.examId);
             })
             .catch(error => console.log(error));
-    }, [open, logId]);
+    }, []);
 
 
     useEffect(() => {
@@ -111,7 +119,7 @@ const LogModal = ({ open, user, logId, handleClose }) => {
             return;
         }
         fetch(`https://lsbu-ex-timer.herokuapp.com/api/exams/exam/${examId}`)
-        // fetch(`http://localhost:8080/api/exams/exam/${examId}`)
+            // fetch(`http://localhost:8080/api/exams/exam/${examId}`)
             .then(response => response.json())
             .then(data => {
                 setExam(data);
@@ -135,8 +143,8 @@ const LogModal = ({ open, user, logId, handleClose }) => {
         const diffMinutes = endMinutes - startMinutes;
         const hours = Math.floor(diffMinutes / 60);
         const minutes = diffMinutes % 60;
-        const diffTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
-
+        const diffTime = `${hours.toString().padStart(2, '0')}:
+        ${minutes.toString().padStart(2, '0')}`;
 
 
         return {
@@ -144,7 +152,7 @@ const LogModal = ({ open, user, logId, handleClose }) => {
             venue: logs.venue,
             endTime: logs.endTime,
             notes: logs.message,
-            studentsInVenue: logs.studentsNO,
+            studentsInVenue: logs.studentsNo,
             submittedDate: logs.submittedDate,
             moduleName: exam.module.moduleName,
             moduleCode: exam.module.moduleCode,
@@ -154,9 +162,6 @@ const LogModal = ({ open, user, logId, handleClose }) => {
             moduleLeader: exam.module.moduleLeader
         };
     }, [logs, exam]);
-
-
-
 
 
     const printModal = () => {
@@ -205,12 +210,12 @@ const LogModal = ({ open, user, logId, handleClose }) => {
             <StyledDialogTitle>
                 <Box display="flex" alignItems="center" justifyContent="space-between">
                     Exam Logs
-                    <StyledIconButton edge="end" color="inherit" onClick={handleClose} >
-                        <Close />
+                    <StyledIconButton edge="end" color="inherit" onClick={handleClose}>
+                        <Close/>
                     </StyledIconButton>
                 </Box>
             </StyledDialogTitle>
-            <StyledDialogContent id="collapsible-modal-content" >
+            <StyledDialogContent id="collapsible-modal-content">
                 <CollapsibleSection title="Module Information">
                     <Typography>
                         <strong>Module Name:</strong> {examLogs.moduleName}
@@ -231,7 +236,8 @@ const LogModal = ({ open, user, logId, handleClose }) => {
                         <strong>Total Students in Exam:</strong>{examLogs.totalStudents}
                     </Typography>
                     <Typography>
-                        <strong>% in Venue:</strong> {(examLogs.studentsInVenue / examLogs.totalStudents * 100).toFixed(2)}%
+                        <strong>% in
+                            Venue:</strong> {(examLogs.studentsInVenue / examLogs.totalStudents * 100).toFixed(2)}%
 
                     </Typography>
                 </CollapsibleSection>
@@ -263,18 +269,18 @@ const LogModal = ({ open, user, logId, handleClose }) => {
                         padding={1}
                         marginTop={1}
                     >
-                            <Typography>
-                                {examLogs.notes}
-                            </Typography>
+                        <Typography>
+                            {examLogs.notes}
+                        </Typography>
                     </Box>
                 </CollapsibleSection>
             </StyledDialogContent>
 
             <StyledDialogActions>
-                <StyledButton color="primary" onClick={printModal} startIcon={<Print />}>
+                <StyledButton color="primary" onClick={printModal} startIcon={<Print/>}>
                     Print
                 </StyledButton>
-                <Typography variant="caption" sx={{ flexGrow: 1, textAlign: "right" }}>
+                <Typography variant="caption" sx={{flexGrow: 1, textAlign: "right"}}>
                     Submitted by: Guest
                 </Typography>
             </StyledDialogActions>

@@ -16,6 +16,7 @@ const ExamLogList = ({setLogin, setNextPage}) => {
     const { examId, moduleName } = useParams();
     const [selectedLog, setSelectedLog] = useState(null);
     const { user } = useContext(AuthHandler);
+    const { userLoggedIn } = useContext(AuthHandler);
 
 
 
@@ -25,21 +26,23 @@ const ExamLogList = ({setLogin, setNextPage}) => {
         if (user){
             if (user.token) {
                 headers["Authorization"] = `Bearer ${user.token}`;
-                console.log("headers: ", headers);
-                console.log("user.token: ", user.token);
+                // console.log("headers: ", headers);
+                // console.log("user.token: ", user.token);
             }
         else{
-            console.log("No user.token");
+            // console.log("No user.token");
         }
-        console.log("2nd headers: ", headers);
-        console.log("2nd user.token: ", user.token);
+        // console.log("2nd headers: ", headers);
+        // console.log("2nd user.token: ", user.token);
         }
         return headers;
     };
 
 
     useEffect(() => {
-        if(user) {
+        // console.log("log list fetching....");
+        // console.log("user: ", user)
+        if (user) {
             window.scrollTo({
                 top: 0,
                 behavior: "smooth"
@@ -50,25 +53,25 @@ const ExamLogList = ({setLogin, setNextPage}) => {
             })
                 .then(res => res.json())
                 .then(data => {
-                    console.log("data: ", data);
                     setLogs(data)
                 })
                 .catch(error => console.error(error));
         }
-    }, [examId]);
+    }, [examId, user]);
 
 
     const handleLogClick = (logId) => {
        setSelectedLog(logId);
-       console.log("user log:", user);
-       console.log("LogId in Log list:   ", logId);
+       // console.log("user log:", user);
+       // console.log("LogId in Log list:   ", logId);
        setIsModalOpen(true);
     }
 
     return (
         <PrivateWrapper setLogin={setLogin} setNextPage={setNextPage}>
         <TablePlatform title={moduleName}
-                       breadcrumbs={[    { label: "Exam List", url: "/exams" },    { label: moduleName },  ]}>
+                       breadcrumbs={[    { label: "Exam List", url: "/exams" },
+                           { label: moduleName },  ]}>
             <TableContainer className="table-container">
         <Table size="small" aria-label="a dense table" >
                 <TableHead>
@@ -93,7 +96,7 @@ const ExamLogList = ({setLogin, setNextPage}) => {
                     <TableRow key={log.id}>
                         <TableCell>{index + 1}</TableCell>
                         <TableCell>{log.venue}</TableCell>
-                        <TableCell>{log.type}</TableCell>
+                        <TableCell>{"Normal"}</TableCell>
                         <TableCell>{log.submittedDate}</TableCell>
                         <TableCell>
                             <Button
@@ -109,7 +112,10 @@ const ExamLogList = ({setLogin, setNextPage}) => {
                 </TableBody>
         </Table>
                 </TableContainer>
-            <LogModal open={isModalOpen} user={user} logId={selectedLog} handleClose={() => setIsModalOpen(false)} />
+            {isModalOpen && (
+            <LogModal open={isModalOpen} user={user} logId={selectedLog}
+                      handleClose={() => setIsModalOpen(false)} />
+            )}
         </TablePlatform>
         </PrivateWrapper>
     );

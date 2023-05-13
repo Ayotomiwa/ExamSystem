@@ -12,10 +12,7 @@ const ExamInfo = ({ startTime, endTime, restrictedMinutes, isPaused }) => {
     const [currentStatus, setCurrentStatus] = useState("");
     const [slideIn, setSlideIn] = useState(true);
     const[animationDone, setAnimationDone] = useState(false);
-    const[pauseTime, setPauseTime] = useState(null);
-    const[infoPaused, setInfoPaused] = useState(false);
-
-
+    let adjustedEndTime = endTime;
 
     useEffect(() => {
         setSlideIn(false);
@@ -30,19 +27,14 @@ const ExamInfo = ({ startTime, endTime, restrictedMinutes, isPaused }) => {
     useEffect(() => {
         const checkStatus = () => {
 
-            // if (isPaused) {
-            //        setPauseTime(dayjs());
-            //        setInfoPaused(true);
-            //      return;
-            // }
-            // else if(infoPaused){
-            //     startTime = dayjs(startTime).add(dayjs().diff(pauseTime)).format("HH:mm");
-            //     setInfoPaused(false);
-            // }
+            if (adjustedEndTime.isBefore(startTime) && !startTime.isSame(dayjs().startOf('day'))) {
+                adjustedEndTime = adjustedEndTime.add(1, 'day');
+            }
+
 
             const now = new Date();
             const start = new Date(startTime);
-            const end = new Date(endTime);
+            const end = new Date(adjustedEndTime);
             const restrictedEnd = new Date(start.getTime() + restrictedMinutes * 60000);
             const restrictedStart = new Date(end.getTime() - restrictedMinutes * 60000);
 
@@ -71,14 +63,14 @@ const ExamInfo = ({ startTime, endTime, restrictedMinutes, isPaused }) => {
 
     return (
         <Grow direction="left" in={slideIn} mountOnEnter unmountOnExit >
-        <Box sx={{width:"50%", display: "flex", justifyContent: "center", alignItems: "center", mx:"auto"}}>
+        <Box sx={{width:"auto", display: "flex", justifyContent: "center", alignItems: "center", mx:"auto"}}>
             {currentStatus === "restrictedStart" && animationDone && (
-                <Box sx={{ display: "flex", alignItems: "center" }}>
+                <Box sx={{ display: "flex", alignItems: "center" , flex:1}}>
                 <Typography sx={{ position: "relative", display: "inline-block", paddingRight:"40px" }}>
-                    <FontAwesomeIcon icon={faWalking} size="3x" />
+                    <FontAwesomeIcon icon={faWalking} size="4x" />
                     <FontAwesomeIcon
                         icon={faBan}
-                        size="5x"
+                        size="6x"
                         style={{
                             position: "absolute",
                             top: "50%",
@@ -89,7 +81,7 @@ const ExamInfo = ({ startTime, endTime, restrictedMinutes, isPaused }) => {
                     />
                 </Typography>
                 <Paper>
-                    <Typography sx={{fontSize:"25px"}}>
+                    <Typography sx={{fontSize:"30px", display: "flex", flex:1}}>
                         {" Students are not allowed to leave the room during the first "}
                         {restrictedMinutes}
                         {" minutes."}
@@ -100,10 +92,10 @@ const ExamInfo = ({ startTime, endTime, restrictedMinutes, isPaused }) => {
             {currentStatus === "allowed" && animationDone && (
                 <Box sx={{ display: "flex", alignItems: "center" }}>
                 <Typography sx={{ position: "relative", display: "inline-block", pr:"10px"}}>
-                    <FontAwesomeIcon icon={faWalking} size="4x" />
+                    <FontAwesomeIcon icon={faWalking} size="6x" />
                 </Typography>
                 <Paper>
-                    <Typography sx={{fontSize:"25px"}}>
+                    <Typography sx={{fontSize:"30px"}}>
                         {" Students are allowed to leave the room."}
                     </Typography>
                 </Paper>
@@ -115,7 +107,7 @@ const ExamInfo = ({ startTime, endTime, restrictedMinutes, isPaused }) => {
                         <FontAwesomeIcon icon={faWalking} size="3x" />
                         <FontAwesomeIcon
                             icon={faBan}
-                            size="5x"
+                            size="6x"
                             style={{
                                 position: "absolute",
                                 top: "50%",
@@ -126,7 +118,7 @@ const ExamInfo = ({ startTime, endTime, restrictedMinutes, isPaused }) => {
                         />
                     </Typography>
                     <Paper>
-                        <Typography sx={{fontSize:"25px"}}>
+                        <Typography sx={{fontSize:"30px"}}>
                             {" Students are not allowed to leave the room during the last "}
                             {restrictedMinutes}
                             {" minutes."}
@@ -136,7 +128,7 @@ const ExamInfo = ({ startTime, endTime, restrictedMinutes, isPaused }) => {
             )}
             {currentStatus === "done" && animationDone &&(
                 <Paper>
-                    <Typography sx={{fontSize:"30px"}}>
+                    <Typography sx={{fontSize:"40px"}}>
                         <AccessTimeIcon sx={{fontSize:"5rem"}}  />
                         {" Exam has already ended."}
                     </Typography>
@@ -145,16 +137,16 @@ const ExamInfo = ({ startTime, endTime, restrictedMinutes, isPaused }) => {
             {currentStatus === "waiting" && animationDone && (
                 <Paper>
                     <Typography sx={{fontSize:"40px"}}>
-                        <ScheduleIcon sx={{fontSize:"5rem"}} />
+                        <ScheduleIcon sx={{fontSize:"4rem"}} />
                         {"Exam starting soon"}
                     </Typography>
                 </Paper>
             )}
             {currentStatus === "start" && animationDone && (
                 <Paper>
-                    <Typography sx={{fontSize:"25px"}}>
+                    <Typography sx={{fontSize:"40px"}}>
                         {"Complete the form to start the exam"}
-                        <ArrowCircleRightSharp fontSize="large" />
+                        <ArrowCircleRightSharp fontSize="xlarge" />
                     </Typography>
                 </Paper>
             )}

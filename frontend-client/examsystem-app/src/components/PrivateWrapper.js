@@ -11,14 +11,12 @@ const PrivateWrapper = ({ children, setLogin}) => {
 
     useEffect(() => {
         if (!userLoggedIn() && (path.startsWith("/logs") || path === "/exams")) {
-            console.log("PrivateWrapper: user not logged in");
-            console.log(user + "user " + userLoggedIn() + " userLoggedIn ");
             setLogin(true);
 
         }
     }, [user]);
 
-    console.log("PrivateWrapper: userLoggedIn: " + userLoggedIn());
+    // console.log("PrivateWrapper: userLoggedIn: " + userLoggedIn());
 
     return <>{userLoggedIn() ? children : <Navigate to= "/" />}</>;
 };

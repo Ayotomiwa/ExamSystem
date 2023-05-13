@@ -89,29 +89,10 @@ const StyledSmallFlexItem = customStyle(StyledFlexItem)`
 `;
 
 
-
 const ExamForm = ({form, setForm, setShowForm, setShowRules, setIsStarted, tempForm, setTempForm}) => {
     const[modules, setModules] = useState([]);
     const [modulesMemo, setModulesMemo] = useState([]);
 
-
-    // useEffect(() => {
-    //
-    //     const fetchModules = async () => {
-    //         try {
-    //             const response = await fetch("http://localhost:8080/api/modules");
-    //             const data = await response.json();
-    //             const uniqueData = Array.from(new Set(data.map(module => module.moduleName))).map(moduleName => {
-    //                 return data.find(module => module.moduleName === moduleName);
-    //             });
-    //             setModules(uniqueData);
-    //         } catch (error) {
-    //             console.error("Error fetching modules:", error);
-    //         }
-    //     };
-    //
-    //     fetchModules().then(r => console.log("Modules fetched"));
-    // }, []);
 
     useEffect(() => {
         const fetchModules = async () => {
@@ -119,7 +100,8 @@ const ExamForm = ({form, setForm, setShowForm, setShowRules, setIsStarted, tempF
                 const response = await fetch("https://lsbu-ex-timer.herokuapp.com/api/modules");
                 // const response = await fetch("http://localhost:8080/api/modules");
                 const data = await response.json();
-                const uniqueData = Array.from(new Set(data.map(module => module.moduleName))).map(moduleName => {
+                const uniqueData = Array.from(new Set(data.map(module => module.moduleName)))
+                    .map(moduleName => {
                     return data.find(module => module.moduleName === moduleName);
                 });
                 setModules(uniqueData);
@@ -152,9 +134,10 @@ const ExamForm = ({form, setForm, setShowForm, setShowRules, setIsStarted, tempF
         event.preventDefault();
         const [hour, minute] = tempForm.startTime.split(":").map(Number);
         const startTime = dayjs().set("hour", hour).set("minute", minute)
-        const examDuration = dayjs.duration({hours: parseInt(tempForm.durationHrs), minutes: parseInt(tempForm.durationMins)});
-        const endTime = startTime.clone().add(examDuration.asMilliseconds(), 'milliseconds');
-
+        const examDuration = dayjs.duration({hours: parseInt(tempForm.durationHrs),
+            minutes: parseInt(tempForm.durationMins)});
+        const endTime = startTime.clone().add(examDuration.asMilliseconds(),
+            'milliseconds');
 
         setForm({
             ...form,
@@ -164,13 +147,6 @@ const ExamForm = ({form, setForm, setShowForm, setShowRules, setIsStarted, tempF
             restrictedMinutes: tempForm.restrictedMinutes,
             endTime: endTime.format("HH:mm"),
         });
-
-        // console.log("Form submitted:");
-        // console.log(tempForm.durationMins);
-        // console.log(tempForm.durationHrs);
-        // console.log(tempForm.startTime);
-        // console.log(tempForm.restrictedMinutes);
-
         setIsStarted(true);
         setShowForm(false);
     };
@@ -268,6 +244,7 @@ const ExamForm = ({form, setForm, setShowForm, setShowRules, setIsStarted, tempF
                                 onChange={handleChange}
                                 fullWidth
                                 required
+                                inputProps={{ min: 0 }}
                             />
                         </StyledFlexItem>
                         <StyledFlexRow>
@@ -346,7 +323,9 @@ const ExamForm = ({form, setForm, setShowForm, setShowRules, setIsStarted, tempF
                                 inputProps={{ min: 0, max: 60}}
                             />
                             <Tooltip
-                                title="Students are not allowed to leave the room during the restricted minutes (e.g., first 30 mins and last 30 mins)">
+                                title="Students are not allowed to leave the room
+                                during the restricted minutes
+                                (e.g., first 30 mins and last 30 mins)">
                                 <span>(?)</span>
                             </Tooltip>
                         </StyledSmallFlexItem>

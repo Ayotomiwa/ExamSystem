@@ -6,7 +6,7 @@ import "./table.css";
 import AuthHandler from "../../components/AuthHandler";
 
 
-const ExamListRow = ({examId, moduleCode, moduleName, moduleLeader, day, setLoginModal, setNextPage}) => {
+const ExamListRow = ({examId, moduleCode, moduleName, moduleLeader, day, setLoginModal}) => {
 
     const {user} = useContext(AuthHandler);
 

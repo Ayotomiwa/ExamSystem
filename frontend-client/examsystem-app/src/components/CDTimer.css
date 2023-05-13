@@ -17,12 +17,12 @@
 
 @media (min-width: 1500px) {
     .timer-text {
-        font-size: 15rem;
-        color: #e75480;
+        font-size: 20rem !important;
+        color: #e75480   !important;
     }
     .timer-text-waiting {
-        font-size: 8rem;
-        color: #e75480;
+        font-size: 8rem  !important;
+        color: #e75480  !important;
     }
 }
 
@@ -30,7 +30,7 @@
 @media (max-width: 768px) {
     .timer-text {
         color: blue !important;
-        font-size: 7rem !important;
+        font-size: 9rem !important;
     }
 }
 

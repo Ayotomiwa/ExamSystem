@@ -81,7 +81,7 @@ const WelcomePage = ({setLogin}) => {
                         </IconButton>
                     </Box>
                     <Box>
-                        <FeaturedExams SetLoginModal={setLogin}/>
+                        <FeaturedExams setLoginModal={setLogin}/>
                     </Box>
 
                 </Box>

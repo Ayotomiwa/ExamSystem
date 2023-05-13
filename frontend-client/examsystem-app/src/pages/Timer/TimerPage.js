@@ -30,8 +30,6 @@ const TimerPage = ({form, setForm, timerMode, setTimerMode, tempForm, setTempFor
     const [showButtons, setShowButtons] = useState(false);
     const [play, setPlay] = useState(true);
     const [showRules, setShowRules] = useState(false);
-    const [totalPausedDuration, setTotalPausedDuration] = useState(dayjs.duration(0));
-    const [lastPauseTime, setLastPauseTime] = useState(null);
     const [isStarted, setIsStarted] = useState(false);
     const [isFullScreen, toggleFullScreen] = useFullScreen();
     const fullScreenContainerRef = useRef(null);
@@ -39,15 +37,9 @@ const TimerPage = ({form, setForm, timerMode, setTimerMode, tempForm, setTempFor
     const [adjustedStartTime, setAdjustedStartTime] = useState(startTime);
     const [isRotated, setIsRotated] = useState(false);
     const [timeUp, setTimeUp] = useState(false);
-    const [sideBarOpen, setSideBarOpen] = useState(false);
-    const [examLogsSaved, setExamLogsSaved] = useState(false);
-    const [pauseStartTime, setPauseStartTime] = useState(null);
-    const [showSideBar, setShowSideBar] = useState(true);
     const [modalOpen, setModalOpen] = useState(false);
     const[databaseModalOpen, setDatabaseModalOpen] = useState(false);
     const [modalStage, setModalStage] = useState(0);
-    const [startTimeUpdated, setStartTimeUpdated] = useState(false);
-    const [endTimeUpdated, setEndTimeUpdated] = useState(false);
     const [saveMessage, setSaveMessage] = useState(null);
 
 
@@ -176,7 +168,7 @@ const TimerPage = ({form, setForm, timerMode, setTimerMode, tempForm, setTempFor
         } else if (event.currentTarget.id === "Rules") {
             if (showLogs) {
                 setShowLogs(false);
-            } else if (showForm) {
+            }if (showForm) {
                 setShowForm(false);
             }
             setShowRules(!showRules);
@@ -221,8 +213,7 @@ const TimerPage = ({form, setForm, timerMode, setTimerMode, tempForm, setTempFor
         })
         setIsStarted(false);
         setPlay(true);
-        setLastPauseTime(null);
-        setTotalPausedDuration(dayjs.duration(0));
+        setShowForm(true);
     }
 
     const handleMouseDown = () => {
@@ -256,23 +247,22 @@ const TimerPage = ({form, setForm, timerMode, setTimerMode, tempForm, setTempFor
                             Module Code: {form.moduleCode}
                         </Typography>
                     </Box>
-                    <Box sx={{display:"grid", placeItems:"center", minHeight:"120px", flex:1, p:"16px", overflowWrap: "break-word"}}>
+                    <Box sx={{display:"grid", placeItems:"center", minHeight:"120px", flex:1, p:"16px", ml:"20px"}}>
                         <ExamInfo startTime={startTime} endTime={adjustedEndTime}
                                   restrictedMinutes={form.restrictedMinutes} isPaused={!play}/>
                     </Box>
                     <Box sx={{display: "grid", placeItems: "center", ml: "10px", height: "100%"}}>
                         <Box
                             sx={{
-                                mt: "30px",
                                 display: 'flex',
                                 justifyContent: "center",
                                 alignItems: "center",
                                 backgroundColor: "white",
-                                border: "10px solid black",
-                                p: "30px",
-                                pb: "0px",
-                                pt: "0px",
-                                borderRadius: "25px"
+                                border: "2px solid black",
+                                borderRadius: "25px",
+                                mt: "30px",
+                                pt:"20px",
+                                pb:"20px"
                             }}
                         >
                             <CdTimer startTime={adjustedStartTime}
@@ -372,7 +362,8 @@ const TimerPage = ({form, setForm, timerMode, setTimerMode, tempForm, setTempFor
                                         backgroundColor: showRules ? "#e75480" : "transparent"
                                     }}
                                     startIcon={<ListAlt/>}
-                                    onClick={() => setShowRules(!showRules)}
+                                    onClick={() => handleTimerButtons(event)}
+                                    id="Rules"
                                 >
                                     Rules
                                 </Button>
@@ -440,13 +431,12 @@ const TimerPage = ({form, setForm, timerMode, setTimerMode, tempForm, setTempFor
                             variant="body1"
                             underline="hover"
                             color="primary"
-                            onClick={() => setTimerMode((prev) => !prev)}
-                        >
+                            onClick={() => setTimerMode((prev) => !prev)}>
                             {isFullScreen ? "" : (timerMode ? 'Timer Mode' : 'Exit Timer Mode')}
                         </Link>
                     </Box>
                 </Box>
-                {showForm && (
+                {showForm ? (
                     <SideBar onCancel={handleCancel} name="Form">
                         <ExamForm form={form}
                                   setForm={setForm}
@@ -457,16 +447,15 @@ const TimerPage = ({form, setForm, timerMode, setTimerMode, tempForm, setTempFor
                                   setTempForm={setTempForm}
 
                         />
-                    </SideBar>)}
+                    </SideBar>) : null}
 
-                {showLogs && (
+                {showLogs ? (
                     <SideBar onCancel={handleCancel} name="Logs">
                         <Notes form={form} setForm={setForm}/>
-                    </SideBar>)}
-                {showRules && (
+                    </SideBar>) : null}
+                {showRules ? (
                     <SideBar onCancel={handleCancel} name="Rules & Regulations">
-                        <Notes form={form} setForm={setForm}/>
-                    </SideBar>)}
+                    </SideBar>): null}
             </Box>
             <ConfirmModal
                 open={modalOpen}
