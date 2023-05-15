@@ -3,6 +3,8 @@ import "./lsbuLogo.css";
 
 const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
+
+
 const LsbuLogo = () => {
     const h1Ref = useRef(null);
     let interval = null;

@@ -136,8 +136,7 @@ const TimerPage = ({form, setForm, timerMode, setTimerMode, tempForm, setTempFor
 
 
     const handleCancel = () => {
-        setShowSideBar(false);
-        closeSideBar()
+        closeSideBar();
     };
 
 
@@ -211,6 +210,7 @@ const TimerPage = ({form, setForm, timerMode, setTimerMode, tempForm, setTempFor
             durationMins: "",
             restrictedMinutes: "30"
         })
+        closeSideBar();
         setIsStarted(false);
         setPlay(true);
         setShowForm(true);
