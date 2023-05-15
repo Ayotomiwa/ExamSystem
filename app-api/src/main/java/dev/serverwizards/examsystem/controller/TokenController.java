@@ -33,12 +33,8 @@ public class TokenController {
         this.userDetailsService = userDetailsService;
     }
 
-    @PostMapping
+    @PostMapping("")
     public ResponseEntity<?> authenticate(@Valid @RequestBody LoginRequest loginRequest) {
-
-        System.out.println("UserName " + loginRequest.getUsername());
-        System.out.println("Password " + loginRequest.getPassword());
-
         String userName = loginRequest.getUsername().substring(0,loginRequest.getUsername().indexOf('@'));
 
         Authentication authentication = authenticationManager.authenticate(
@@ -49,10 +45,8 @@ public class TokenController {
         );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-
         String jwt = jwtTokenProvider.generateToken(authentication);
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-
         return ResponseEntity.ok(new LoginResponse(jwt, userDetails.getUsername()));
     }
 }

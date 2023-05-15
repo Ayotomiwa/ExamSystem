@@ -37,11 +37,6 @@ public class SecurityConfiguration {
         this.customUserDetailsService = customUserDetailsService;
         this.tokenBlacklistService = tokenBlacklistService;
     }
-//    @Bean
-//    public PasswordEncoder passwordEncoder() {
-//        return new BCryptPasswordEncoder();
-//    }
-
 
     @Bean
     public AuthenticationManager authenticationManager(UserDetailsService userDetailsService) {

@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -18,7 +19,6 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
-@PreAuthorize("hasRole('ADMIN') or hasRole('AUTH_USER')")
 @RequestMapping("/api/exam-logs")
 public class ExamLogController {
 
@@ -57,7 +57,7 @@ public class ExamLogController {
 
     @PostMapping("/create")
     public ResponseEntity<ExamLogsDto> addExamLog(@RequestBody ExamLogsDto examLog) {
-          examLog.setSubmittedDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+          examLog.setSubmittedDate(String.valueOf(LocalDate.now()));
           ExamLogsDto examLogs = service.save(examLog);
         return ResponseEntity.ok(examLogs);
     }

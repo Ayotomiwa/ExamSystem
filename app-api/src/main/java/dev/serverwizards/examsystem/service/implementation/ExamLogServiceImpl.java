@@ -18,6 +18,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,7 +40,6 @@ public class ExamLogServiceImpl implements ExamLogService {
     @Override
     public ExamLogsDto save(ExamLogsDto examLogsDto) {
 
-
         String moduleCode = examLogsDto.getModuleCode();
         String moduleName = examLogsDto.getModuleName();
         ExamLogs examLogs = examLogMapper.toEntity(examLogsDto);
@@ -48,20 +48,21 @@ public class ExamLogServiceImpl implements ExamLogService {
         Exam exam;
 
         if(moduleRepo.existsByModuleCodeAndModuleName(moduleCode, moduleName)) {
-            System.out.println("Course exists");
             module = moduleRepo.findByModuleCodeAndModuleName(moduleCode, moduleName);
             System.out.println("DATE: " + examLogsDto.getSubmittedDate());
             exam = examRepo.findByExamDayAndModule_courseId(LocalDate.parse(examLogsDto.getSubmittedDate()),
                     module.getCourseId()).orElseGet(() -> {
-                    System.out.println("Exam does not exist");
+                System.out.println("Exam not found");
                         Exam newExam = new Exam();
                         newExam.setModule(module);
+                        newExam.setStartTime(LocalTime.parse(examLogsDto.getStartTime()));
+                        newExam.setEndTime(LocalTime.parse(examLogsDto.getEndTime()));
                         newExam.setExamDay(LocalDate.parse(examLogsDto.getSubmittedDate()));
+                        newExam.setYear(examLogsDto.getSubmittedDate().substring(0,4));
                         return examRepo.save(newExam);
                     });
         }
         else{
-            System.out.println("Course does not exist");
             module = new Module();
             module.setModuleCode(moduleCode);
             module.setModuleName(moduleName);
@@ -74,7 +75,6 @@ public class ExamLogServiceImpl implements ExamLogService {
         }
         examLogs.setExam(exam);
 
-
         Venue venue = venueService.findByName(examLogsDto.getVenue())
                 .orElseGet(() -> {
                     Venue newVenue = new Venue();
@@ -82,12 +82,8 @@ public class ExamLogServiceImpl implements ExamLogService {
                     return venueService.save(newVenue);
                 });
 
-
-
         boolean venueExists = exam.getExamVenues().stream()
                 .anyMatch(examVenue -> examVenue.getVenue().equals(venue));
-
-
 
         if (!venueExists) {
             ExamVenue examVenue = new ExamVenue();
@@ -99,7 +95,6 @@ public class ExamLogServiceImpl implements ExamLogService {
         }
 
         examLogs.setVenue(venue);
-
         return examLogMapper.toDto(logRepo.save(examLogs));
     }
 

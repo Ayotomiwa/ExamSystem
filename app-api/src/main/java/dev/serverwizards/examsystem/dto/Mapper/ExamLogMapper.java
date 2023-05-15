@@ -22,6 +22,7 @@ public interface ExamLogMapper {
     @Mapping(target = "endTime", qualifiedByName = "changeLocalTimeFormatToString")
     @Mapping(source = "exam.startTime", target = "examStartTime")
     @Mapping(source = "exam.id", target = "examId")
+    @Mapping(source = "exam.examDay", target = "examDay")
     @Mapping(source = "exam.module.registeredStudents", target = "registeredStudents")
     @Mapping(source = "exam.module.moduleCode", target = "moduleCode")
     @Mapping(source = "exam.module.moduleName", target = "moduleName")

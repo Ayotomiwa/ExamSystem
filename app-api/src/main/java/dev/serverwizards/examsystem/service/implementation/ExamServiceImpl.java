@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -106,7 +107,7 @@ private  final ExamLogRepository examLogRepo;
         PageRequest pageRequest = PageRequest.of(0, 15, Sort.Direction.DESC, "submittedDate");
         Page<ExamLogs> examLogs = examLogRepo.findAll(pageRequest);
         List<Exam> exams = examLogs.stream().map(ExamLogs::getExam).toList();
-        List<Exam> uniqueExams = new HashSet<>(exams).stream().toList();
+        List<Exam> uniqueExams = new LinkedHashSet<>(exams).stream().toList();
 
         return uniqueExams.stream().map(examMapper::toDto).collect(Collectors.toList());
     }

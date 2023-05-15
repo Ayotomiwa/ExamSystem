@@ -6,14 +6,21 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 
 import java.io.IOException;
+import java.nio.file.AccessDeniedException;
+import java.util.Arrays;
+import java.util.List;
+
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtTokenProvider tokenProvider;
@@ -28,6 +35,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        if(!requiresAuthentication(request)){
+            filterChain.doFilter(request, response);
+            return;
+        }
         try {
             String jwt = getJwtFromRequest(request);
             System.out.println("Jwt: " + jwt);
@@ -39,14 +50,31 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 System.out.println("Authentication: " + authentication);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
-            System.out.println("Token is valid: " + tokenProvider.validateToken(jwt));
 
-        } catch (JwtException | IllegalArgumentException e) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid token");
+            else if(jwt != null){
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.getWriter().write("Invalid or Missing token");
+                return;
+            }
+
+        } catch (JwtException | IllegalArgumentException e ) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("Invalid token");
             return;
         }
-
         filterChain.doFilter(request, response);
+    }
+
+    private boolean requiresAuthentication(HttpServletRequest request) {
+        List<RequestMatcher> permitAllMatchers = Arrays.asList(
+                new AntPathRequestMatcher("/api/user/**", HttpMethod.POST.toString()),
+                new AntPathRequestMatcher("/api/authenticate/**", HttpMethod.POST.toString()),
+                new AntPathRequestMatcher("/api/exams/**"),
+                new AntPathRequestMatcher("/api/modules/**", HttpMethod.GET.toString()),
+                new AntPathRequestMatcher("/api/exam-logs/**", HttpMethod.POST.toString())
+        );
+
+        return permitAllMatchers.stream().noneMatch(matcher -> matcher.matches(request));
     }
 
     private String getJwtFromRequest(HttpServletRequest request) {
