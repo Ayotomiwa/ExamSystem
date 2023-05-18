@@ -15,28 +15,28 @@
 }
 
 
-@media (min-width: 1500px) {
+@media screen and (min-width: 1500px) {
     .timer-text {
         font-size: 20rem !important;
-        color: #e75480   !important;
+        /*color: #e75480   !important;*/
     }
     .timer-text-waiting {
         font-size: 8rem  !important;
-        color: #e75480  !important;
+        /*color: #e75480  !important;*/
     }
 }
 
 
-@media (max-width: 768px) {
+@media screen and (max-width: 768px) {
     .timer-text {
-        color: blue !important;
-        font-size: 9rem !important;
+        /*color: blue !important;*/
+        font-size: 10rem !important;
     }
 }
 
-@media (max-width: 500px) {
+@media screen and (max-width: 600px) {
     .timer-text {
-        color: green !important;
-        font-size: 5rem !important;
+        /*color: green !important;*/
+        font-size: 7rem !important;
     }
 }
