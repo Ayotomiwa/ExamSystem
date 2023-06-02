@@ -28,18 +28,25 @@ const ExamList = ({setLoginModal}) => {
 
     useEffect(() => {
         if (search === false || searchTerm === "") {
+            setExams([]);
             fetchExamsData();
         }
-    }, [page, search === false, sortColumn, sortState]);
-
-    useEffect(() => {
-        if (search === true && searchTerm !== "") {
+        else if(search === true && searchTerm !== ""){
             if(page === 0){
                 setExams([]);
             }
             fetchSearchData();
         }
-    }, [page, searchTerm, search, sortColumn, sortState]);
+    }, [page, search,searchTerm, sortColumn, sortState]);
+
+    // useEffect(() => {
+    //     if (search === true && searchTerm !== "") {
+    //         if(page === 0){
+    //             setExams([]);
+    //         }
+    //         fetchSearchData();
+    //     }
+    // }, [page, searchTerm, search, sortColumn, sortState]);
 
 
 
@@ -93,6 +100,7 @@ const ExamList = ({setLoginModal}) => {
     }
 
     const resetExamList = (value) => {
+        // setExams([]);
         setNumberOfExams(0);
         setPage(0);
         setSearch(value);
@@ -104,16 +112,15 @@ const ExamList = ({setLoginModal}) => {
         }
         resetExamList(true);
         setSearchTerm(searchTerm);
-
     };
 
     const handleInputChange= (searchTerm) => {
         if (searchTerm === ""){
-            setExams([]);
+            // setExams([]);
+            // fetchExamsData();
             resetExamList(false);
             console.log(search);
         }
-
     };
 
     const loadMoreExams = () => {
@@ -125,34 +132,34 @@ const ExamList = ({setLoginModal}) => {
             <SearchBar onSearch={handleSearch} onChange={handleInputChange}/>
             <TablePlatform  breadcrumbs={[{ label: "Exams List", url: "/" }]}>
                     <TableContainer className="table-container">
-                        <Table  size="small" aria-label="a dense table" >
+                        <Table>
                             <TableHead>
                                 <TableRow>
-                                    <TableCell width="40%">
-                                        Module Code
+                                    <TableCell width="55%">
+                                        Module Code&nbsp;
                                         <Button variant="link" className="sort-btn" data-sort="module.moduleCode"
                                                 data-sort-state={sortColumn === "module.moduleCode" ? sortState : ""}
                                                 onClick={()=>handleSort("module.moduleCode")}>
                                             <Sort />
                                         </Button>
                                     </TableCell>
-                                    <TableCell width="90%">
-                                        Module Name
+                                    <TableCell width="70%">
+                                        Module Name&nbsp;
                                         <Button variant="link"  className="sort-btn" data-sort="module.moduleName"
                                                 onClick={()=>handleSort("module.moduleName")}>
                                             <Sort  />
                                         </Button>
                                     </TableCell>
-                                    <TableCell width="30%">
-                                        Module Leader
+                                    <TableCell width="35%">
+                                        Module Leader&nbsp;
                                         <Button variant="link"  className="sort-btn" data-sort="module.moduleLeader"
                                                 data-sort-state={sortColumn === "module.moduleLeader" ? sortState : ""}
                                                 onClick={()=>handleSort("module.moduleLeader")}>
                                             <Sort />
                                         </Button>
                                     </TableCell>
-                                    <TableCell width="30%">
-                                        Exam Date
+                                    <TableCell width="40%">
+                                        Exam Date&nbsp;
                                         <Button variant="link" className="sort-btn" data-sort="examDay"
                                                 data-sort-state={sortColumn === "examDay" ? sortState : ""}
                                                 onClick={()=>handleSort("examDay")}>
