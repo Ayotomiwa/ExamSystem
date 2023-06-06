@@ -1,5 +1,6 @@
 import {Box, IconButton, Slide} from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import React from "react";
 
 const sideBar = ({onCancel, name, children}) => {
     return (
@@ -10,7 +11,7 @@ const sideBar = ({onCancel, name, children}) => {
                 margin:"auto",
                 height:"100%",
                 color: "#584595",
-                width: "35%",
+                width: { xs: '100%', md: '50%', lg: '35%' },
                 backgroundColor: 'transparent',
                 display: 'flex',
                 flexDirection: 'column',
@@ -39,4 +40,4 @@ const sideBar = ({onCancel, name, children}) => {
     );
 }
 
-export default sideBar;
+export default React.memo(sideBar);

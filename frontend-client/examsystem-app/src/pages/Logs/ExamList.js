@@ -124,6 +124,9 @@ const ExamList = ({setLoginModal}) => {
     };
 
     const loadMoreExams = () => {
+        if (numberOfExams >= totalExams) {
+            return;
+        }
         setPage(page + 1);
     }
 

@@ -24,15 +24,20 @@
 }
 
 .table-container thead {
-    background-color: #e75480;
+    /*background-color: #e75480;*/
+    /*background-color: #584595;*/
+    /*background: linear-gradient(to right, #e75480,#e75480, #584595);*/
+    /*background: linear-gradient(to right, #e75480, #b96ca4, #584595);*/
+    background: linear-gradient(to right, #e75480, #9c52a6, #584595);
 }
 
 .table-container thead th {
     margin-right: auto;
+    padding: 13px;
     color: #fff;
-    font-weight: 500;
     font-size: 1.2em;
-    padding: 15px;
+    text-align: left;
+    white-space: pre-wrap;
 }
 
 .table-container tbody td {
@@ -55,6 +60,9 @@
     color: #D4A137;
     cursor: pointer;
     font-size: 1.2em;
+}
+.sort-btn:hover {
+    color: yellow;
 }
 
 /* Load More */
@@ -82,9 +90,9 @@
 }
 
 #load-more-btn:hover {
-    border-color: #584595;
+    border-color: #D4A137;
     background-color: #e75480;
-    color: #D4A137;
+    color: yellow;
 }
 
 
@@ -114,11 +122,6 @@
     animation: rotation 0.2s linear;
 }
 
-@media (max-width: 1200px) {
-    #table-container {
-        margin: 0 20px;
-    }
-}
 
 @media (max-width: 768px) {
     .table-container {
@@ -127,18 +130,6 @@
         padding: 0;
     }
 
-    .table thead {
-        white-space: nowrap;
-        overflow: hidden;
-    }
-
-
-    .table {
-        table-layout: fixed;
-        width: 100%;
-        padding: 0 0;
-        margin: 0 0;
-    }
 
     .table tbody td {
         white-space: pre-wrap;
@@ -148,15 +139,16 @@
 }
 
 .view-log-btn {
-    background-color: white;
-    border: 1px solid white;;
+    background-color: transparent;
+    border: 1px solid #e75480;
     color: #e75480;
+    /*color: #584595;*/
 }
 
 .view-log-btn:hover,
 .view-log-btn:after,
 .view-log-btn:active:focus{
-    border: 1px solid #584595;
+    border: 1px solid #D4A137;
     background-color: #e75480;
     color: yellow;
 }

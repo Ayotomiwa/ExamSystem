@@ -73,7 +73,7 @@ const ExamLogList = ({setLogin, setNextPage}) => {
                        breadcrumbs={[    { label: "Exam List", url: "/exams" },
                            { label: moduleName },  ]}>
             <TableContainer className="table-container">
-        <Table size="small" aria-label="a dense table" >
+        <Table>
                 <TableHead>
                 <TableRow>
                     <TableCell>Id
@@ -93,7 +93,7 @@ const ExamLogList = ({setLogin, setNextPage}) => {
                 </TableHead>
                 <TableBody id="content_body">
                 {logs.map((log, index) => (
-                    <TableRow key={log.id}>
+                    <TableRow key={log.id} sx={{ '&:nth-of-type(even)': { backgroundColor: "#f5f5f5"}}}>
                         <TableCell>{index + 1}</TableCell>
                         <TableCell>{log.venue}</TableCell>
                         <TableCell>{"Normal"}</TableCell>

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {TableBody, TableCell, TableHead, TableRow} from "@mui/material";
+import {Paper, TableBody, TableCell, TableHead, TableRow} from "@mui/material";
 import {Table} from "react-bootstrap";
 import ExamListRow from "../Logs/ExamListRow";
 
@@ -20,14 +20,14 @@ const FeaturedExams = ({setLoginModal}) => {
     },[]);
 
     return(
-        <div style={{ height: "400px", overflowY: "auto" }}>
+        <Paper sx={{overflowY: "auto", backgroundColor:"white", padding:"10px", pt:0 }}>
         <Table>
             <TableHead>
-              <TableRow >
-                <TableCell sx={{color: '#e75480'}}>ModuleCode</TableCell>
-                <TableCell sx={{color: '#e75480'}}>ModuleName</TableCell>
-                <TableCell sx={{color: '#e75480'}}>Module Leader</TableCell>
-                  <TableCell sx={{color: '#e75480'}}>Exam Date</TableCell>
+              <TableRow sx={{backgroundColor: "#f5f5f5"}} >
+                <TableCell sx={{color: '#e75480', fontSize:"16px"}}>Module Code</TableCell>
+                <TableCell sx={{color: '#e75480', fontSize:"16px"}}>Module Name</TableCell>
+                <TableCell sx={{color: '#e75480', fontSize:"16px"}}>Module Leader</TableCell>
+                  <TableCell sx={{color: '#e75480', fontSize:"16px"}}>Exam Date</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -47,7 +47,7 @@ const FeaturedExams = ({setLoginModal}) => {
                 ))}
             </TableBody>
         </Table>
-        </div>
+        </Paper>
     );
 };
 export default FeaturedExams;

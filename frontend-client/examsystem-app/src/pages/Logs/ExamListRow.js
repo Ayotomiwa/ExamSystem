@@ -19,7 +19,7 @@ const ExamListRow = ({examId, moduleCode, moduleName, moduleLeader, day, setLogi
     };
 
     return (
-        <TableRow>
+        <TableRow  sx={{ '&:nth-of-type(even)': { backgroundColor: "#f5f5f5"} }}>
             <TableCell>
                 {user ? (
                     <Link

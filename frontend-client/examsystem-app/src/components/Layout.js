@@ -144,7 +144,7 @@ function Layout({children, timerMode, setLogin}) {
     }, [user]);
 
     return (
-        <div id="layout">
+        <div id="layout" style={{flex:1}}>
             {timerMode && <Header account={account} setLogin={setLogin}/>}
             <main className="flex-fill">{children}</main>
             {(location !== "/new-exam") && <BackToTop />}

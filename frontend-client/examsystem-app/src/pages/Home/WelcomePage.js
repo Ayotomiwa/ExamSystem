@@ -18,8 +18,7 @@ const WelcomePage = ({setLogin}) => {
 
 
     return (
-        <Box sx={{ display: "flex", flexDirection: "column" }}>
-            <Box sx={{ display: "flex", flexDirection: "column", flex: 1 }}>
+            <Box sx={{ display: "flex", flexDirection: "column"}}>
                     <Box sx={{ Width: "100%"}}>
                         <WelcomeCarousel setLogin={setLogin}/>
                     </Box>
@@ -69,7 +68,7 @@ const WelcomePage = ({setLogin}) => {
                             borderBottom: "1px solid #ccc",
                         }}
                     >
-                        <Typography variant="h6" component="div">
+                        <Typography variant="h5" component="div">
                             Recent Exam List
                         </Typography>
                         <IconButton
@@ -86,10 +85,6 @@ const WelcomePage = ({setLogin}) => {
 
                 </Box>
             </Box>
-            <Box sx={{ display: "flex", flexDirection: "row", flex: 1 }}>
-
-            </Box>
-        </Box>
     );
 };
 

@@ -177,7 +177,7 @@ const TimerPage = ({form, setForm, timerMode, setTimerMode, tempForm, setTempFor
 
 
     function togglePause() {
-        if (dayjs().isBefore(startTime)) {
+        if (dayjs().isBefore(startTime) || (!isStarted)) {
             return;
         }
         setPlay(!play);

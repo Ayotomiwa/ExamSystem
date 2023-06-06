@@ -166,9 +166,9 @@ const LogModal = ({open, user, logId, handleClose}) => {
 
     const printModal = () => {
         const printWindow = window.open("", "_blank");
-        printWindow.document.write('<html lang="en"><head><title>Print Modal</title>');
+        printWindow.document.write('<html lang="en"><head><title>Exam Log</title>');
         printWindow.document.write('</head><body>');
-        printWindow.document.write("<h1>Exam Logs</h1>");
+        printWindow.document.write("<h1>Exam Log</h1>");
 
 
         const contentToPrint = document.getElementById("collapsible-modal-content");
