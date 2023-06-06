@@ -1,4 +1,5 @@
 package dev.serverwizards.examsystem.service.implementation;
+
 import dev.serverwizards.examsystem.dto.ExamDto;
 import dev.serverwizards.examsystem.dto.Mapper.ExamMapper;
 import dev.serverwizards.examsystem.model.Exam;
@@ -17,7 +18,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ExamServiceImpl implements ExamService {
 
-private  final ExamLogRepository examLogRepo;
+    private final ExamLogRepository examLogRepo;
     private final ExamRepository repo;
     private final ExamMapper examMapper;
 
@@ -65,25 +65,25 @@ private  final ExamLogRepository examLogRepo;
     }
 
     @Override
-    public List<ExamDto> getExamBySearch(String query)   {
+    public List<ExamDto> getExamBySearch(String query) {
         if (query == null || query.trim().isEmpty()) {
             List<Exam> exams = repo.findAll();
             System.out.println(exams.size());
             return exams.stream().map(examMapper::toDto).collect(Collectors.toList());
         }
         String searchPattern = "%" + query.trim() + "%";
-        List<Exam>exams = repo.findByCourseFieldsContainingIgnoreCase(searchPattern);
+        List<Exam> exams = repo.findByCourseFieldsContainingIgnoreCase(searchPattern);
         return exams.stream().map(examMapper::toDto).collect(Collectors.toList());
     }
 
     @Override
-    public Page<ExamDto> getExamBySearchAndPage(String query, PageRequest page)   {
+    public Page<ExamDto> getExamBySearchAndPage(String query, PageRequest page) {
         if (query == null || query.trim().isEmpty()) {
             Page<Exam> exams = repo.findAll(page);
             return exams.map(examMapper::toDto);
         }
         String searchPattern = "%" + query.trim() + "%";
-        Page<Exam>exams = repo.findByCourseFieldsContainingIgnoreCase(searchPattern, page);
+        Page<Exam> exams = repo.findByCourseFieldsContainingIgnoreCase(searchPattern, page);
         return exams.map(examMapper::toDto);
     }
 
