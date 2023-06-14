@@ -9,7 +9,7 @@ import Lsbu from "../assets/Lsbu.svg";
 import "./layout.css";
 import AuthHandler from "./AuthHandler";
 import {Button, Fade, IconButton, Menu, MenuItem, Typography} from "@mui/material";
-import {AccountCircle} from "@mui/icons-material";
+import {AccountCircle, ArrowUpward, ArrowUpwardOutlined} from "@mui/icons-material";
 
 
 library.add(fas, faUserCircle);
@@ -102,7 +102,7 @@ function BackToTop() {
     };
     return (
         <a className="back-to-top" onClick={handleBackToTop}>
-            Back To The Top
+           Top <ArrowUpward />
         </a>
     );
 }
@@ -144,11 +144,11 @@ function Layout({children, timerMode, setLogin}) {
     }, [user]);
 
     return (
-        <div id="layout" style={{flex:1}}>
-            {timerMode && <Header account={account} setLogin={setLogin}/>}
+        <div id="layout">
+            {!timerMode && <Header account={account} setLogin={setLogin}/>}
             <main className="flex-fill">{children}</main>
-            {(location !== "/new-exam") && <BackToTop />}
-            {timerMode && <Footer />}
+            {(location !== "/new-exam" && location !== "/") && <BackToTop />}
+            {!timerMode && <Footer />}
         </div>
     );
 }

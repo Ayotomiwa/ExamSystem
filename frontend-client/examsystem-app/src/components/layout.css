@@ -1,9 +1,7 @@
 
 
 #layout {
-    /*display: flex;*/
-    /*flex-direction: column;*/
-       /*min-height: 100vh;*/
+
 }
 
 .navbar {
@@ -53,8 +51,9 @@
 
 
 .footer {
-    background-color: #584595;
-    color: #e75480;
+    /*background-color: #584595;*/
+    background-color:#4d5154;
+    color: white;
     padding: 20px;
     position: relative;
     bottom: 0;

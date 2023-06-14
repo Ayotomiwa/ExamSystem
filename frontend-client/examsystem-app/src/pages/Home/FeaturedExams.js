@@ -20,7 +20,7 @@ const FeaturedExams = ({setLoginModal}) => {
     },[]);
 
     return(
-        <Paper sx={{overflowY: "auto", backgroundColor:"white", padding:"10px", pt:0 }}>
+        <Paper sx={{overflowY: "auto",height:"400px", backgroundColor:"white", padding:"10px", pt:0 }}>
         <Table>
             <TableHead>
               <TableRow sx={{backgroundColor: "#f5f5f5"}} >

@@ -37,6 +37,6 @@
 @media screen and (max-width: 600px) {
     .timer-text {
         /*color: green !important;*/
-        font-size: 7rem !important;
+        font-size: 6.5rem !important;
     }
 }

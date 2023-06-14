@@ -98,6 +98,7 @@ const CdTimer = React.memo(function CdTimer({
     if (!initialized) {
         return (
             <Typography
+                className="timer-text"
                 style={{fontFamily: "Orbitron, sans-serif", fontSize: "10rem"}}
             >
                 {/*00:00:00*/}

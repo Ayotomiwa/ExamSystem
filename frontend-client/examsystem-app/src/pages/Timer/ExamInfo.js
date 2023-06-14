@@ -63,26 +63,26 @@ const ExamInfo = ({ startTime, endTime, restrictedMinutes, isPaused }) => {
 
     return (
         <Grow direction="left" in={slideIn} mountOnEnter unmountOnExit >
-        <Box sx={{width:"auto", display: "flex", justifyContent: "center", alignItems: "center", mx:"auto"}}>
+        <Box sx={{display: "flex", justifyContent: "center", alignItems: "center", maxWidth:"90%"}}>
             {currentStatus === "restrictedStart" && animationDone && (
                 <Box sx={{ display: "flex", alignItems: "center" , flex:1}}>
                 <Typography sx={{ position: "relative", display: "inline-block", paddingRight:"40px" }}>
-                    <FontAwesomeIcon icon={faWalking} size="4x" />
+                    <FontAwesomeIcon icon={faWalking} size="3x" />
                     <FontAwesomeIcon
                         icon={faBan}
                         size="6x"
                         style={{
                             position: "absolute",
                             top: "50%",
-                            left: "30%",
+                            left: "28%",
                             transform: "translate(-50%, -50%)",
                             color: "red",
                         }}
                     />
                 </Typography>
                 <Paper>
-                    <Typography sx={{fontSize:"30px", display: "flex", flex:1}}>
-                        {" Students are not allowed to leave the room during the first "}
+                    <Typography sx={{fontSize:"30px", display: "flex", justifyContent:"center", alignItems:"center", flex:1,}}>
+                        {"No leave for the first "}
                         {restrictedMinutes}
                         {" minutes."}
                     </Typography>
@@ -96,7 +96,7 @@ const ExamInfo = ({ startTime, endTime, restrictedMinutes, isPaused }) => {
                 </Typography>
                 <Paper>
                     <Typography sx={{fontSize:"30px"}}>
-                        {" Students are allowed to leave the room."}
+                        {"Students are allowed to leave the room."}
                     </Typography>
                 </Paper>
                 </Box>
@@ -119,7 +119,7 @@ const ExamInfo = ({ startTime, endTime, restrictedMinutes, isPaused }) => {
                     </Typography>
                     <Paper>
                         <Typography sx={{fontSize:"30px"}}>
-                            {" Students are not allowed to leave the room during the last "}
+                            {"No leave during the last "}
                             {restrictedMinutes}
                             {" minutes."}
                         </Typography>
@@ -130,7 +130,7 @@ const ExamInfo = ({ startTime, endTime, restrictedMinutes, isPaused }) => {
                 <Paper>
                     <Typography sx={{fontSize:"40px"}}>
                         <AccessTimeIcon sx={{fontSize:"5rem"}}  />
-                        {" Exam has already ended."}
+                        {"Exam has already ended."}
                     </Typography>
                 </Paper>
             )}

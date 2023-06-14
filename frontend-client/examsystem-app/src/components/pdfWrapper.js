@@ -1,13 +1,12 @@
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
-const pdfRedirect = ({to}) => {
+const pdfWrapper = ({pdf}) => {
     const navigate = useNavigate();
 
-    return (
-        <div>
-            navigate(to);
-        </div>
-    )
+    window.open(pdf, "_blank", "noopener noreferrer");
+    navigate(-1);
+
+    return null;
+
 }
 
-export default pdfRedirect;

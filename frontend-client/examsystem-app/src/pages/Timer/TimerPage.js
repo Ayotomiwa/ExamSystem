@@ -13,6 +13,7 @@ import useFullScreen from "../../hooks/useFullScreen";
 import {Link} from "react-router-dom";
 import "./TimerPage.css"
 import ConfirmModal from "../../components/ConfirmModal";
+import Regulations from "../Home/Regulations";
 
 
 dayjs.extend(duration);
@@ -226,7 +227,7 @@ const TimerPage = ({form, setForm, timerMode, setTimerMode, tempForm, setTempFor
 
 
     const fullScreenContainerStyle = {
-        minHeight: "100vh",
+        minHeight: "100svh",
         backgroundColor: isFullScreen ? "white" : "",
     };
 
@@ -235,10 +236,11 @@ const TimerPage = ({form, setForm, timerMode, setTimerMode, tempForm, setTempFor
         <div ref={fullScreenContainerRef} style={fullScreenContainerStyle}>
             <Box sx={{
                 display: "flex",
+                flexWrap: "wrap",
                 flexDirection: "row",
-                minHeight: "100vh",
+                minHeight: "100svh",
             }}>
-                <Box sx={{display: "flex", flexDirection: "column", flex: 1}}>
+                <Box sx={{display: "flex", flexDirection: "column", flex:1}}>
                     <Box sx={{p: 3}}>
                         <Typography className="moduleName" variant="h4" sx={{fontWeight:"bold"}} >
                             Module Name: {form.moduleName}
@@ -247,7 +249,7 @@ const TimerPage = ({form, setForm, timerMode, setTimerMode, tempForm, setTempFor
                             Module Code: {form.moduleCode}
                         </Typography>
                     </Box>
-                    <Box sx={{display:"grid", placeItems:"center", minHeight:"120px", flex:1, p:"16px", ml:"20px"}}>
+                    <Box sx={{display:"flex", justifyContent:"center", alignItems:"center"}}>
                         <ExamInfo startTime={startTime} endTime={adjustedEndTime}
                                   restrictedMinutes={form.restrictedMinutes} isPaused={!play}/>
                     </Box>
@@ -362,7 +364,7 @@ const TimerPage = ({form, setForm, timerMode, setTimerMode, tempForm, setTempFor
                                         backgroundColor: showRules ? "#e75480" : "transparent"
                                     }}
                                     startIcon={<ListAlt/>}
-                                    onClick={() => handleTimerButtons(event)}
+                                    onClick={(event) => handleTimerButtons(event)}
                                     id="Rules"
                                 >
                                     Rules
@@ -397,16 +399,15 @@ const TimerPage = ({form, setForm, timerMode, setTimerMode, tempForm, setTempFor
                         <Box sx={{
                             mt: "50px",
                             display: 'flex',
-                            flexDirection: 'row',
-                            justifyContent: 'content',
-                            // border: "1px solid blue",
+                            flexWrap: 'wrap',
                             alignItems: 'center',
+                            justifyContent: 'space-evenly',
                         }}>
                             <Typography variant="h4">
                                 Start Time:<strong>{startTime.format("HH:mm")}</strong>
                             </Typography>
 
-                            <Typography variant="h4" sx={{ml: "100px"}}>
+                            <Typography variant="h4" sx={{ml:"20px"}}>
                                 End Time:<strong>{adjustedEndTime.format("HH:mm")}</strong>
                             </Typography>
                         </Box>
@@ -455,6 +456,7 @@ const TimerPage = ({form, setForm, timerMode, setTimerMode, tempForm, setTempFor
                     </SideBar>) : null}
                 {showRules ? (
                     <SideBar onCancel={handleCancel} name="Rules & Regulations">
+                        <Regulations/>
                     </SideBar>): null}
             </Box>
             <ConfirmModal
